@@ -5479,3 +5479,402 @@
 [2025-12-08T06:41:57.481+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:41:57.480+0000] {dag.py:3096} INFO - Sync 1 DAGs
 [2025-12-08T06:41:57.490+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:41:57.489+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
 [2025-12-08T06:41:57.497+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.203 seconds
+[2025-12-08T06:42:28.086+0000] {processor.py:161} INFO - Started process (PID=51018) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:42:28.086+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:42:28.087+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:42:28.087+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:42:28.275+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:42:28.285+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:42:28.285+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:42:28.296+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:42:28.295+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:42:28.305+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.225 seconds
+[2025-12-08T06:42:58.772+0000] {processor.py:161} INFO - Started process (PID=51078) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:42:58.773+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:42:58.773+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:42:58.773+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:42:58.925+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:42:58.943+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:42:58.943+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:42:58.953+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:42:58.952+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:42:58.961+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.193 seconds
+[2025-12-08T06:43:29.430+0000] {processor.py:161} INFO - Started process (PID=51138) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:43:29.430+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:43:29.431+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:43:29.431+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:43:29.603+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:43:29.612+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:43:29.612+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:43:29.621+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:43:29.621+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:43:29.631+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.207 seconds
+[2025-12-08T06:44:00.209+0000] {processor.py:161} INFO - Started process (PID=51198) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:44:00.210+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:44:00.210+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:44:00.210+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:44:00.386+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:44:00.396+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:44:00.396+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:44:00.404+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:44:00.404+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:44:00.417+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.212 seconds
+[2025-12-08T06:44:54.371+0000] {processor.py:161} INFO - Started process (PID=59) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:44:54.372+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:44:54.374+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:44:54.373+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:44:55.269+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:44:55.378+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:44:55.378+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:44:55.417+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:44:55.417+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:44:55.431+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 1.064 seconds
+[2025-12-08T06:45:25.599+0000] {processor.py:161} INFO - Started process (PID=67) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:45:25.599+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:45:25.600+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:45:25.600+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:45:25.888+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:45:25.899+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:45:25.899+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:45:25.906+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:45:25.906+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:45:25.913+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.320 seconds
+[2025-12-08T06:45:56.164+0000] {processor.py:161} INFO - Started process (PID=75) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:45:56.165+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:45:56.166+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:45:56.166+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:45:56.421+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:45:56.433+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:45:56.433+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:45:56.441+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:45:56.441+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:45:56.447+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.290 seconds
+[2025-12-08T06:46:26.682+0000] {processor.py:161} INFO - Started process (PID=83) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:46:26.683+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:46:26.683+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:46:26.683+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:46:26.902+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:46:26.912+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:46:26.912+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:46:26.919+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:46:26.919+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:46:26.925+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.250 seconds
+[2025-12-08T06:46:57.170+0000] {processor.py:161} INFO - Started process (PID=91) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:46:57.172+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:46:57.173+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:46:57.173+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:46:57.380+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:46:57.390+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:46:57.390+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:46:57.397+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:46:57.397+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:46:57.403+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.238 seconds
+[2025-12-08T06:47:27.447+0000] {processor.py:161} INFO - Started process (PID=99) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:47:27.449+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:47:27.450+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:47:27.449+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:47:27.721+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:47:27.733+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:47:27.733+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:47:27.740+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:47:27.740+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:47:27.745+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.309 seconds
+[2025-12-08T06:47:57.954+0000] {processor.py:161} INFO - Started process (PID=107) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:47:57.955+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:47:57.955+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:47:57.955+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:47:58.184+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:47:58.197+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:47:58.197+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:47:58.205+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:47:58.205+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:47:58.211+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.261 seconds
+[2025-12-08T06:48:28.472+0000] {processor.py:161} INFO - Started process (PID=115) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:48:28.473+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:48:28.474+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:48:28.473+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:48:28.719+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:48:28.729+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:48:28.729+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:48:28.736+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:48:28.736+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:48:28.742+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.275 seconds
+[2025-12-08T06:48:58.978+0000] {processor.py:161} INFO - Started process (PID=122) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:48:58.978+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:48:58.979+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:48:58.979+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:48:59.180+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:48:59.191+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:48:59.190+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:48:59.198+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:48:59.198+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:48:59.204+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.228 seconds
+[2025-12-08T06:49:29.392+0000] {processor.py:161} INFO - Started process (PID=130) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:49:29.392+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:49:29.392+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:49:29.392+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:49:29.605+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:49:29.616+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:49:29.616+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:49:29.624+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:49:29.624+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:49:29.630+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.242 seconds
+[2025-12-08T06:49:59.864+0000] {processor.py:161} INFO - Started process (PID=144) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:49:59.864+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:49:59.864+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:49:59.864+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:50:00.077+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:50:00.089+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:50:00.089+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:50:00.096+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:50:00.096+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:50:00.102+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.241 seconds
+[2025-12-08T06:50:30.298+0000] {processor.py:161} INFO - Started process (PID=152) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:50:30.298+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:50:30.299+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:50:30.299+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:50:30.514+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:50:30.526+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:50:30.526+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:50:30.534+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:50:30.534+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:50:30.541+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.246 seconds
+[2025-12-08T06:51:00.767+0000] {processor.py:161} INFO - Started process (PID=160) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:51:00.767+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:51:00.768+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:51:00.767+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:51:01.087+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:51:01.098+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:51:01.098+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:51:01.106+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:51:01.106+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:51:01.112+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.349 seconds
+[2025-12-08T06:51:31.373+0000] {processor.py:161} INFO - Started process (PID=168) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:51:31.374+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:51:31.374+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:51:31.374+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:51:31.607+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:51:31.617+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:51:31.617+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:51:31.625+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:51:31.625+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:51:31.631+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.261 seconds
+[2025-12-08T06:52:01.866+0000] {processor.py:161} INFO - Started process (PID=176) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:52:01.866+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:52:01.867+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:52:01.867+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:52:02.072+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:52:02.083+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:52:02.082+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:52:02.090+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:52:02.090+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:52:02.095+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.236 seconds
+[2025-12-08T06:52:32.340+0000] {processor.py:161} INFO - Started process (PID=184) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:52:32.340+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:52:32.341+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:52:32.341+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:52:32.545+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:52:32.556+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:52:32.556+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:52:32.563+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:52:32.563+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:52:32.569+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.236 seconds
+[2025-12-08T06:53:02.796+0000] {processor.py:161} INFO - Started process (PID=192) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:53:02.796+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:53:02.797+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:53:02.797+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:53:03.010+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:53:03.022+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:53:03.022+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:53:03.029+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:53:03.029+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:53:03.035+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.246 seconds
+[2025-12-08T06:53:33.197+0000] {processor.py:161} INFO - Started process (PID=200) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:53:33.197+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:53:33.198+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:53:33.198+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:53:33.387+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:53:33.397+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:53:33.397+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:53:33.404+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:53:33.404+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:53:33.409+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.215 seconds
+[2025-12-08T06:54:03.670+0000] {processor.py:161} INFO - Started process (PID=208) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:54:03.670+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:54:03.671+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:54:03.671+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:54:03.888+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:54:03.898+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:54:03.898+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:54:03.904+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:54:03.904+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:54:03.911+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.246 seconds
+[2025-12-08T06:54:34.193+0000] {processor.py:161} INFO - Started process (PID=216) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:54:34.194+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:54:34.195+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:54:34.194+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:54:34.385+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:54:34.395+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:54:34.395+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:54:34.402+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:54:34.402+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:54:34.409+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.222 seconds
+[2025-12-08T06:55:04.495+0000] {processor.py:161} INFO - Started process (PID=224) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:55:04.495+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:55:04.496+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:55:04.496+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:55:04.741+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:55:04.753+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:55:04.753+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:55:04.760+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:55:04.760+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:55:04.765+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.279 seconds
+[2025-12-08T06:55:34.865+0000] {processor.py:161} INFO - Started process (PID=232) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:55:34.865+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:55:34.866+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:55:34.866+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:55:35.058+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:55:35.068+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:55:35.068+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:55:35.074+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:55:35.074+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:55:35.080+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.221 seconds
+[2025-12-08T06:56:05.242+0000] {processor.py:161} INFO - Started process (PID=240) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:56:05.243+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:56:05.243+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:56:05.243+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:56:05.445+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:56:05.455+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:56:05.455+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:56:05.461+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:56:05.461+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:56:05.467+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.231 seconds
+[2025-12-08T06:56:35.567+0000] {processor.py:161} INFO - Started process (PID=248) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:56:35.567+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:56:35.568+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:56:35.568+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:56:35.769+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:56:35.778+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:56:35.778+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:56:35.785+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:56:35.785+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:56:35.790+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.229 seconds
+[2025-12-08T06:57:05.936+0000] {processor.py:161} INFO - Started process (PID=256) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:57:05.936+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:57:05.937+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:57:05.937+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:57:06.143+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:57:06.154+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:57:06.154+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:57:06.162+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:57:06.162+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:57:06.168+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.236 seconds
+[2025-12-08T06:57:36.321+0000] {processor.py:161} INFO - Started process (PID=264) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:57:36.322+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:57:36.322+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:57:36.322+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:57:36.534+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:57:36.545+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:57:36.545+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:57:36.552+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:57:36.552+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:57:36.558+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.243 seconds
+[2025-12-08T06:58:06.653+0000] {processor.py:161} INFO - Started process (PID=272) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:58:06.654+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:58:06.654+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:58:06.654+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:58:06.895+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:58:06.906+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:58:06.906+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:58:06.912+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:58:06.912+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:58:06.918+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.270 seconds
+[2025-12-08T06:58:37.096+0000] {processor.py:161} INFO - Started process (PID=280) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:58:37.097+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:58:37.098+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:58:37.097+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:58:37.332+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:58:37.341+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:58:37.341+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:58:37.348+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:58:37.348+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:58:37.353+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.264 seconds
+[2025-12-08T06:59:07.471+0000] {processor.py:161} INFO - Started process (PID=288) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:59:07.472+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:59:07.473+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:59:07.472+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:59:07.685+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:59:07.695+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:59:07.695+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:59:07.702+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:59:07.702+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:59:07.708+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.244 seconds
+[2025-12-08T06:59:37.886+0000] {processor.py:161} INFO - Started process (PID=296) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:59:37.887+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T06:59:37.887+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:59:37.887+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:59:38.090+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T06:59:38.100+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:59:38.100+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T06:59:38.107+0000] {logging_mixin.py:188} INFO - [2025-12-08T06:59:38.107+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T06:59:38.113+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.233 seconds
+[2025-12-08T07:00:08.246+0000] {processor.py:161} INFO - Started process (PID=304) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:00:08.246+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:00:08.246+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:00:08.246+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:00:08.457+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:00:08.469+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:00:08.469+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:00:08.476+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:00:08.476+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:00:08.483+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.240 seconds
+[2025-12-08T07:00:38.637+0000] {processor.py:161} INFO - Started process (PID=312) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:00:38.638+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:00:38.639+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:00:38.638+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:00:38.836+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:00:38.846+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:00:38.846+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:00:38.853+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:00:38.852+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:00:38.858+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.227 seconds
+[2025-12-08T07:01:08.980+0000] {processor.py:161} INFO - Started process (PID=320) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:01:08.980+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:01:08.981+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:01:08.981+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:01:09.188+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:01:09.198+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:01:09.198+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:01:09.204+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:01:09.204+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:01:09.211+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.237 seconds
+[2025-12-08T07:01:39.439+0000] {processor.py:161} INFO - Started process (PID=328) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:01:39.439+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:01:39.440+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:01:39.440+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:01:39.636+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:01:39.646+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:01:39.645+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:01:39.652+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:01:39.652+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:01:39.658+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.224 seconds
+[2025-12-08T07:02:09.832+0000] {processor.py:161} INFO - Started process (PID=336) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:02:09.833+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:02:09.834+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:02:09.833+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:02:10.056+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:02:10.066+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:02:10.066+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:02:10.073+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:02:10.072+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:02:10.078+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.251 seconds
+[2025-12-08T07:02:40.133+0000] {processor.py:161} INFO - Started process (PID=344) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:02:40.133+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:02:40.134+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:02:40.134+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:02:40.373+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:02:40.383+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:02:40.383+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:02:40.389+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:02:40.389+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:02:40.396+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.268 seconds
+[2025-12-08T07:03:10.603+0000] {processor.py:161} INFO - Started process (PID=352) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:03:10.604+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:03:10.605+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:03:10.604+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:03:10.824+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:03:10.834+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:03:10.834+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:03:10.840+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:03:10.840+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:03:10.845+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.247 seconds
+[2025-12-08T07:03:40.902+0000] {processor.py:161} INFO - Started process (PID=360) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:03:40.903+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:03:40.903+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:03:40.903+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:03:41.128+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:03:41.138+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:03:41.138+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:03:41.144+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:03:41.144+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:03:41.149+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.251 seconds
+[2025-12-08T07:04:11.174+0000] {processor.py:161} INFO - Started process (PID=368) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:04:11.174+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:04:11.174+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:04:11.174+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:04:11.395+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:04:11.404+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:04:11.404+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:04:11.410+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:04:11.410+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:04:11.416+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.245 seconds
+[2025-12-08T07:04:41.728+0000] {processor.py:161} INFO - Started process (PID=376) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:04:41.729+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:04:41.730+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:04:41.729+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:04:41.939+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:04:41.948+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:04:41.948+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:04:41.955+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:04:41.955+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:04:41.961+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.237 seconds
+[2025-12-08T07:05:12.047+0000] {processor.py:161} INFO - Started process (PID=384) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:05:12.047+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:05:12.048+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:05:12.047+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:05:12.247+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:05:12.256+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:05:12.256+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:05:12.262+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:05:12.262+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:05:12.267+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.226 seconds
+[2025-12-08T07:05:42.546+0000] {processor.py:161} INFO - Started process (PID=392) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:05:42.546+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:05:42.546+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:05:42.546+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:05:42.745+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:05:42.756+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:05:42.755+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:05:42.763+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:05:42.762+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:05:42.769+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.226 seconds
+[2025-12-08T07:06:12.876+0000] {processor.py:161} INFO - Started process (PID=400) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:06:12.876+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:06:12.877+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:06:12.876+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:06:13.084+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:06:13.096+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:06:13.096+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:06:13.104+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:06:13.104+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:06:13.111+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.238 seconds
+[2025-12-08T07:06:43.292+0000] {processor.py:161} INFO - Started process (PID=408) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:06:43.292+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:06:43.293+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:06:43.293+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:06:43.472+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:06:43.482+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:06:43.482+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:06:43.489+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:06:43.488+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:06:43.494+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.204 seconds
+[2025-12-08T07:07:13.678+0000] {processor.py:161} INFO - Started process (PID=416) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:07:13.679+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:07:13.680+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:07:13.679+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:07:13.885+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:07:13.898+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:07:13.898+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:07:13.905+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:07:13.905+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:07:13.910+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.237 seconds
+[2025-12-08T07:07:43.950+0000] {processor.py:161} INFO - Started process (PID=424) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:07:43.951+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:07:43.952+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:07:43.951+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:07:44.170+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:07:44.180+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:07:44.180+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:07:44.188+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:07:44.187+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:07:44.193+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.249 seconds
+[2025-12-08T07:08:14.448+0000] {processor.py:161} INFO - Started process (PID=432) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:08:14.448+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:08:14.449+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:08:14.449+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:08:14.700+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:08:14.712+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:08:14.712+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:08:14.719+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:08:14.719+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:08:14.725+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.282 seconds
+[2025-12-08T07:08:44.758+0000] {processor.py:161} INFO - Started process (PID=440) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:08:44.758+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:08:44.759+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:08:44.759+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:08:44.960+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:08:44.969+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:08:44.969+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:08:44.976+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:08:44.976+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:08:44.981+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.228 seconds
+[2025-12-08T07:09:15.054+0000] {processor.py:161} INFO - Started process (PID=448) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:09:15.054+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:09:15.055+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:09:15.055+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:09:15.262+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:09:15.272+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:09:15.272+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:09:15.279+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:09:15.279+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:09:15.285+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.237 seconds
+[2025-12-08T07:09:45.535+0000] {processor.py:161} INFO - Started process (PID=456) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:09:45.536+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:09:45.536+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:09:45.536+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:09:45.780+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:09:45.791+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:09:45.791+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:09:45.799+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:09:45.799+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:09:45.805+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.276 seconds
+[2025-12-08T07:10:16.017+0000] {processor.py:161} INFO - Started process (PID=464) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:10:16.018+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:10:16.018+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:10:16.018+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:10:16.262+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:10:16.273+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:10:16.273+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:10:16.279+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:10:16.279+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:10:16.285+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.271 seconds
+[2025-12-08T07:10:46.536+0000] {processor.py:161} INFO - Started process (PID=472) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:10:46.537+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:10:46.537+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:10:46.537+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:10:46.751+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:10:46.764+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:10:46.764+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:10:46.772+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:10:46.772+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:10:46.778+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.251 seconds
+[2025-12-08T07:11:17.004+0000] {processor.py:161} INFO - Started process (PID=480) to work on /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:11:17.005+0000] {processor.py:830} INFO - Processing file /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py for tasks to queue
+[2025-12-08T07:11:17.005+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:11:17.005+0000] {dagbag.py:540} INFO - Filling up the DagBag from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:11:17.246+0000] {processor.py:840} INFO - DAG(s) 'qldfuelapi_to_sqlite_etl' retrieved from /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py
+[2025-12-08T07:11:17.256+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:11:17.256+0000] {dag.py:3096} INFO - Sync 1 DAGs
+[2025-12-08T07:11:17.262+0000] {logging_mixin.py:188} INFO - [2025-12-08T07:11:17.262+0000] {dag.py:3954} INFO - Setting next_dagrun for qldfuelapi_to_sqlite_etl to 2025-12-08 00:00:00+00:00, run_after=2025-12-08 12:00:00+00:00
+[2025-12-08T07:11:17.268+0000] {processor.py:183} INFO - Processing /opt/airflow/dags/qldfuelapi_to_sqlite_etl.py took 0.268 seconds
