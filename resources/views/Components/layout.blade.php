@@ -22,12 +22,13 @@
                             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                             <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
                             <x-nav-link href="/fuel" :active="request()->is('fuel')">Fuel Sites</x-nav-link>
+                            <x-nav-link href="/dashboard" :active="request()->is('dashboard')">Dashboard</x-nav-link>
                             <x-nav-link href="/about" :active="request()->is('about')">About</x-nav-link>
                         </div>
                     </div>
                 </div>
 
-                <div class="hidden md:block flex items-center justify-between">
+                <div class="hidden md:block items-center justify-between">
 
                     <div class="ml-4 flex items-center md:ml-6">
 
@@ -103,6 +104,7 @@
                 <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
                     <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
                     <x-nav-link href="/fuel" :active="request()->is('fuel')">Fuel Sites</x-nav-link>
+                    <x-nav-link href="/dashboard" :active="request()->is('dashboard')">Dashboard</x-nav-link>
                     <x-nav-link href="/about" :active="request()->is('about')">About</x-nav-link>
 
                 </div>
@@ -131,6 +133,7 @@
                     </div>
                 </div>
             </div>
+        </div>
     </nav>
 
     <header class="bg-white shadow">

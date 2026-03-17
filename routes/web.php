@@ -1,23 +1,15 @@
 <?php
 
 use App\Http\Controllers\FuelSiteController;
-use App\Http\Controllers\JobController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ToolController;
-use App\Mail\JobPosted;
 use Illuminate\Support\Facades\Route;
 
 Route::view('/', 'home');
 Route::view('/about', 'about');
-
-
-
-//Route::get('mail', function (){
-//    \Illuminate\Support\Facades\Mail::to('johndoe@example.com')->send(new JobPosted());
-//    return 'done';
-//});
+Route::view('/dashboard', 'dashboard.index');
 
 Route::controller(FuelSiteController::class)->group(function() {
     Route::get('/fuel', 'index');

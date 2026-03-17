@@ -36,27 +36,27 @@ def transform_brands():
     # Create database connection
 
     engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
-    con = engine.connect()
+    conn = engine.connect()
 
     # Create Temp table
-    metadata = MetaData(bind=con)
+    metadata = MetaData(bind=conn)
     brand_temp_table = Table("temp_brands", metadata,
                              Column("id", Integer, primary_key=True),
                              Column("name", String),
                              Column("created_at", DateTime),
                              Column("updated_at", DateTime))
-    metadata.create_all(con)
+    metadata.create_all(conn)
 
     # Write brands to temp table
-    df.to_sql('temp_brands', con=con, if_exists='replace', index=False)
-    con.close()
+    df.to_sql('temp_brands', con=conn, if_exists='replace', index=False)
+    conn.close()
 
 
 def load_brands():
     engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
-    con = engine.connect()
+    conn = engine.connect()
 
-    con.execute("""
+    conn.execute("""
         UPDATE brands
         SET
             name = (SELECT name FROM temp_brands WHERE temp_brands.id = brands.id),
@@ -64,14 +64,14 @@ def load_brands():
         WHERE id IN (SELECT id FROM temp_brands);
     """)
 
-    con.execute("""
+    conn.execute("""
         INSERT INTO brands (id, name, created_at, updated_at)
         SELECT id, name, created_at, updated_at
         FROM temp_brands
         WHERE id NOT IN (SELECT id FROM brands);
     """)
 
-    con.close()
+    conn.close()
 
 
 # --------------- REGIONS
@@ -129,11 +129,11 @@ def transform_regions():
 
 def load_regions():
     engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
-    con = engine.connect()
+    conn = engine.connect()
 
     for region_type in ["suburbs", "cities", "states"]:
         print(region_type)
-        con.execute(f"""
+        conn.execute(f"""
         UPDATE {region_type}
         SET
             region_level = (SELECT region_level FROM temp_{region_type} where id = {region_type}.id),
@@ -146,12 +146,14 @@ def load_regions():
         where id in (select id FROM temp_{region_type});
         """)
 
-        con.execute(f"""
+        conn.execute(f"""
         insert into {region_type} (id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at)
             select id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at
             from temp_{region_type}
         where id not in (select id from {region_type})
         """)
+
+    conn.close()
 
 
 def sort_regions(df, region_type):
@@ -258,6 +260,7 @@ def load_fuel_sites():
         from temp_fuel_sites
     WHERE id not in (select id from fuel_sites);
     """)
+    conn.close()
 
 
 # ------------- FUEL TYPES
@@ -316,6 +319,7 @@ def load_fuel_types():
         SELECT id, name, created_at, updated_at FROM temp_fuel_types
         WHERE id not in (select id from fuel_types);
     """)
+    conn.close()
 
 
 
@@ -435,12 +439,14 @@ def load_fuel_prices():
                     WHERE id in (select current_id from comparison);
             """)
 
+    conn.close()
+
 
 
 dag = DAG(dag_id='qldfuelapi_to_sqlite_etl',
-          start_date=datetime(2025, 12, 2),
-          schedule_interval=timedelta(hours=12),
-          end_date=datetime(2025, 12, 10),
+          start_date=datetime(2026, 3, 13),
+          schedule_interval=timedelta(hours=24),
+          end_date=datetime(2026, 4, 25),
           default_args={"owner": "Roberto", "email": ["roberto@boffincentral.com"]})
 
 bash_task = BashOperator(task_id='bash_task',
@@ -502,15 +508,7 @@ load_fuel_prices_task = PythonOperator(task_id='load_fuel_prices',
 
 
 
-bash_task >> extract_brands_task >> transform_brands_task >> load_brands_task
-
-extract_regions_task >> transform_regions_task >> load_regions_task
-
-extract_fuel_sites_task >> transform_fuel_sites_task >> load_fuel_sites_task
-
-extract_fuel_types_task >> transform_fuel_types_task >> load_fuel_types_task
-
-extract_fuel_prices_task >> transform_fuel_prices_task >> load_fuel_prices_task
+bash_task >> extract_brands_task >> transform_brands_task >> load_brands_task >> extract_regions_task >> transform_regions_task >> load_regions_task >> extract_fuel_sites_task >> transform_fuel_sites_task >> load_fuel_sites_task >> extract_fuel_types_task >> transform_fuel_types_task >> load_fuel_types_task >> extract_fuel_prices_task >> transform_fuel_prices_task >> load_fuel_prices_task
 
 if __name__ == "__main__":
     dag.test()
