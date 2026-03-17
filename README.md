@@ -13,6 +13,8 @@ API, load data into tables, and then build the project
 - Run php artisan migrate:fresh --seed
 - npm run dev
 - Run php artisan serve --port=7025
+- Change directories into /airflow
+- run docker build up
 
 
 ## Queensland Fuel Price Reporting Scheme API
