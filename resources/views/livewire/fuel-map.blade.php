@@ -5,6 +5,18 @@
 {key: "{{ env('GOOGLE_API_TOKEN') }}", v: "beta"});
 </script>
 <style>
+/* ── Responsive map height ────────────────────────────── */
+#fuelMapWrapper {
+    height: calc(100dvh - 155px);
+    min-height: 400px;
+}
+@media (min-width: 640px) {
+    #fuelMapWrapper {
+        height: calc(100vh - 220px);
+        min-height: 520px;
+    }
+}
+
 /* ── Google Places Autocomplete — dark theme ──────────── */
 .pac-container {
     background: rgba(10,15,30,0.97);
@@ -37,10 +49,10 @@
 </style>
 @endassets
 
-<div class="relative rounded-2xl overflow-hidden shadow-2xl" style="height: calc(100vh - 220px); min-height: 520px;">
+<div id="fuelMapWrapper" class="relative rounded-none sm:rounded-2xl overflow-hidden shadow-2xl">
 
     {{-- ── Top control bar ─────────────────────────────────── --}}
-    <div class="absolute top-4 left-4 right-4 z-10 flex items-center gap-2.5">
+    <div class="absolute top-3 left-3 right-3 sm:top-4 sm:left-4 sm:right-4 z-10 flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5">
 
         {{-- Address search --}}
         <div class="relative flex-1">
@@ -53,7 +65,7 @@
                    type="text"
                    placeholder="Search suburb or address…"
                    autocomplete="off"
-                   class="w-full pl-10 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-500
+                   class="w-full pl-10 pr-4 py-3 sm:py-2.5 text-sm text-slate-100 placeholder-slate-500
                           bg-slate-950/90 backdrop-blur-xl
                           border border-white/[0.07] rounded-xl
                           focus:outline-none focus:ring-2 focus:ring-indigo-500/40 focus:border-indigo-500/40
@@ -61,19 +73,19 @@
         </div>
 
         {{-- Fuel type select --}}
-        <div class="relative flex-shrink-0">
+        <div class="relative">
             <div class="absolute inset-y-0 left-3 flex items-center pointer-events-none z-10">
                 <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h2l1 2h13l1-4H6M7 16a1 1 0 100 2 1 1 0 000-2zm10 0a1 1 0 100 2 1 1 0 000-2z"/>
                 </svg>
             </div>
             <select wire:model.live="selectedFuelTypeId"
-                    class="appearance-none pl-9 pr-8 py-2.5 text-sm text-slate-100
-                           bg-slate-950/90 backdrop-blur-xl
+                    class="appearance-none pl-9 pr-8 py-3 sm:py-2.5 text-sm text-slate-100
+                           bg-slate-950/90 backdrop-blur-xl w-full
                            border border-white/[0.07] rounded-xl
                            focus:outline-none focus:ring-2 focus:ring-indigo-500/40
                            shadow-[0_8px_32px_rgba(0,0,0,0.45)] cursor-pointer
-                           transition-all duration-200" style="min-width:175px">
+                           transition-all duration-200 sm:min-w-[175px]">
                 @foreach($fuelTypes as $type)
                     <option value="{{ $type->id }}" style="background:#020617;color:#f1f5f9">{{ $type->name }}</option>
                 @endforeach

@@ -2,7 +2,7 @@
 <html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>FuelHunter</title>
     @vite('resources/css/app.css')
 </head>
@@ -29,7 +29,7 @@
                                   d="M3 10h2l1 2h13l1-4H6M7 16a1 1 0 100 2 1 1 0 000-2zm10 0a1 1 0 100 2 1 1 0 000-2z"/>
                         </svg>
                     </div>
-                    <span class="text-white font-bold text-[15px] tracking-tight hidden sm:block">
+                    <span class="text-white font-bold text-[15px] tracking-tight">
                         Fuel<span class="text-indigo-400">Hunter</span>
                     </span>
                 </a>
@@ -139,14 +139,14 @@
 
 {{-- ── Page heading ──────────────────────────────────────────────────────── --}}
 <header class="bg-white border-b border-gray-100 shadow-sm">
-    <div class="mx-auto max-w-7xl px-4 py-5 sm:px-6 lg:px-8">
-        <h1 class="text-2xl font-bold tracking-tight text-gray-900">{{ $heading }}</h1>
+    <div class="mx-auto max-w-7xl px-4 py-3 sm:py-5 sm:px-6 lg:px-8">
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">{{ $heading }}</h1>
     </div>
 </header>
 
 {{-- ── Main content ──────────────────────────────────────────────────────── --}}
 <main>
-    <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl py-3 sm:py-6 sm:px-6 lg:px-8">
         {{ $slot }}
     </div>
 </main>

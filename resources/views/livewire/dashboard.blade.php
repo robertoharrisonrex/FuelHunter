@@ -212,7 +212,7 @@ $activePreset = match($dateFrom) {
             </div>
 
             {{-- Chart --}}
-            <div wire:ignore style="position:relative; height:420px">
+            <div wire:ignore class="relative h-[260px] sm:h-[420px]">
                 <canvas id="chartFuelTrends"></canvas>
             </div>
 
