@@ -4,33 +4,29 @@ namespace App\Livewire;
 
 use App\Models\FuelSite;
 use Livewire\Component;
+use Livewire\WithPagination;
 
 class Search extends Component
 {
-    public string $search = "";
+    use WithPagination;
 
+    public string $search = '';
+
+    public function updatedSearch(): void
+    {
+        $this->resetPage();
+    }
 
     public function render()
     {
-
-        return view('livewire.search', ['fuelSites' => FuelSite::with([
-            'Suburb','City', 'State'
-        ])->whereAny([
-            'address',
-            'name'
-        ], 'like', "%{$this->search}%")->latest()->paginate(10)]);
+        return view('livewire.search', [
+            'fuelSites' => FuelSite::with([
+                'Suburb', 'City', 'State', 'Brand',
+                'prices' => fn($q) => $q->where('fuel_id', 2)->where('price', '>', 50),
+            ])
+            ->whereAny(['address', 'name'], 'like', "%{$this->search}%")
+            ->latest()
+            ->paginate(12),
+        ]);
     }
-
-    public function getResults()
-    {
-        return view('livewire.search', ['fuelSites' => FuelSite::with([
-            'Suburb','City', 'State'
-        ])->whereAny([
-            'address',
-            'name'
-        ], 'like', "%{$this->search}%")->latest()->paginate(10)]);
-
-
-    }
-
 }

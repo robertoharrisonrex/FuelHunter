@@ -1,6 +1,4 @@
 <x-layout>
-    <x-slot:heading>
-        Home Page
-    </x-slot:heading>
-    <h1>Home</h1>
+    <x-slot:heading>Queensland Fuel Price Map</x-slot:heading>
+    <livewire:fuel-map />
 </x-layout>
