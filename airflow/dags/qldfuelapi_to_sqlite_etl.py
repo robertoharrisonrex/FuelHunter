@@ -439,13 +439,20 @@ def load_fuel_prices():
                     WHERE id in (select current_id from comparison);
             """)
 
+    conn.execute("""
+        INSERT INTO prices (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
+            SELECT site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at
+            FROM temp_prices
+        WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices);
+    """)
+
     conn.close()
 
 
 
 dag = DAG(dag_id='qldfuelapi_to_sqlite_etl',
           start_date=datetime(2026, 3, 13),
-          schedule_interval=timedelta(hours=24),
+          schedule_interval=timedelta(minutes=30),
           end_date=datetime(2026, 4, 25),
           default_args={"owner": "Roberto", "email": ["roberto@boffincentral.com"]})
 
