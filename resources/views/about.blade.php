@@ -5,22 +5,20 @@
 
         {{-- ── Project Summary ──────────────────────────────── --}}
         <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-            <div class="bg-slate-900 px-8 py-10 relative overflow-hidden">
-                <div class="absolute -top-16 -right-16 w-56 h-56 rounded-full bg-indigo-500/20 blur-3xl pointer-events-none"></div>
-                <div class="absolute -bottom-12 -left-8 w-40 h-40 rounded-full bg-violet-600/15 blur-3xl pointer-events-none"></div>
+            <div class="bg-indigo-600 px-8 py-10 relative overflow-hidden">
                 <div class="relative">
                     <div class="flex items-center gap-3 mb-4">
-                        <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shadow-[0_0_18px_rgba(99,102,241,0.5)]">
+                        <div class="w-10 h-10 rounded-xl bg-white/20 flex items-center justify-center">
                             <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 10h2l1 2h13l1-4H6M7 16a1 1 0 100 2 1 1 0 000-2zm10 0a1 1 0 100 2 1 1 0 000-2z"/>
                             </svg>
                         </div>
-                        <span class="text-xs font-bold text-indigo-400 uppercase tracking-widest">FuelHunter</span>
+                        <span class="text-xs font-bold text-indigo-200 uppercase tracking-widest">FuelHunter</span>
                     </div>
                     <h2 class="text-2xl font-bold text-white mb-3 tracking-tight">Track Queensland Fuel Prices in Real Time</h2>
-                    <p class="text-slate-300 text-sm leading-relaxed max-w-2xl">
+                    <p class="text-indigo-100 text-sm leading-relaxed max-w-2xl">
                         FuelHunter is an open-source price intelligence tool that pulls live data from the
-                        <span class="text-indigo-300 font-medium">Queensland Government Fuel Price Reporting Scheme</span>
+                        <span class="text-white font-medium">Queensland Government Fuel Price Reporting Scheme</span>
                         and presents it in a clean, interactive dashboard. Whether you want to find the cheapest
                         unleaded near you or track how prices have moved over the past month, FuelHunter has you covered.
                     </p>

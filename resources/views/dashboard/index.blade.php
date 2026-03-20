@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:heading>
-        Dashboard
+        Statistics
     </x-slot:heading>
 
     <livewire:Dashboard />

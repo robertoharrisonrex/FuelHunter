@@ -40,6 +40,10 @@ class FuelMap extends Component
                 $join->on('p98.site_id', '=', 'fuel_sites.id')
                      ->where('p98.fuel_id', '=', 8);
             })
+            ->leftJoin('prices as p_pd', function ($join) {
+                $join->on('p_pd.site_id', '=', 'fuel_sites.id')
+                     ->where('p_pd.fuel_id', '=', 14);
+            })
             ->select(
                 'fuel_sites.id',
                 'fuel_sites.name',
@@ -55,6 +59,7 @@ class FuelMap extends Component
                 'p_ul.price as price_ul',
                 'p95.price as price_95',
                 'p98.price as price_98',
+                'p_pd.price as price_pd',
             )
             ->get();
 
@@ -79,6 +84,7 @@ class FuelMap extends Component
             'price_ul' => $r->price_ul ? round($r->price_ul / 100, 3) : null,
             'price_95' => $r->price_95 ? round($r->price_95 / 100, 3) : null,
             'price_98' => $r->price_98 ? round($r->price_98 / 100, 3) : null,
+            'price_pd' => $r->price_pd ? round($r->price_pd / 100, 3) : null,
         ])->values()->toArray();
 
         return [

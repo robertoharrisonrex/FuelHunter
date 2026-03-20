@@ -1,7 +1,7 @@
-@props(['newClass' => 'relative inline-flex items-center px-2 py-2 -ml-px text-sm font-medium
-            text-black bg-white hover:bg-red-50 hover:border-red-500 border border-gray-300 rounded leading-5
-            hover:text-red-500 focus:z-10 focus:outline-none focus:ring ring-gray-300
-            focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150'])
+@props(['newClass' => 'inline-flex items-center rounded-xl px-4 py-2 text-sm font-semibold
+            text-red-600 bg-red-50 hover:bg-red-100 border border-red-200
+            focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-1
+            active:scale-95 transition-all duration-150'])
 
 
 <button {{$attributes->merge(['class' => $newClass])}} >{{$slot}}</button>

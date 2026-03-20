@@ -1,6 +1,4 @@
-
-
-
-<div class="flex rounded-md shadow-sm bg-white ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-600 sm:max-w-md">
-<input {{$attributes->merge(['class' => "block flex-1  border-0 bg-transparent py-1.5 pl-1 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"])}} >
-</div>
+<input {{$attributes->merge(['class' => "block w-full rounded-lg border border-slate-300 bg-white
+            py-2 px-3 text-sm text-slate-900 placeholder:text-slate-400
+            focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+            transition-shadow duration-150 sm:max-w-md"])}} >

@@ -1,75 +1,90 @@
 <x-layout>
-    <x-slot:heading>
-        Create User
-    </x-slot:heading>
-    <h1 class="text-lg mb-4 font-bold">Account Details</h1>
+    <x-slot:heading>Create Account</x-slot:heading>
 
-    <form id="register" method="POST" action="/register">
-        @csrf
-        <div class="space-y-12">
-            <div class="border-b border-gray-900/10 pb-12">
+    <div class="max-w-md mx-auto">
+        <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-8">
+            <h2 class="text-lg font-bold text-slate-900 mb-6">Account Details</h2>
 
-                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <x-form-field>
-                        <x-form-label for="first_name">First Name</x-form-label>
-                        <div class="mt-2">
-                            <x-form-input name="first_name" id="first_name"/>
-                            <div>
-                                <x-form-error name="first_name"/>
-                            </div>
-                        </div>
-                    </x-form-field>
-                    <x-form-field>
-                        <x-form-label for="last_name">Last Name</x-form-label>
-                        <div class="mt-2">
-                            <x-form-input name="last_name" id="last_name"/>
-                            <div>
-                                <x-form-error name="last_name"/>
-                            </div>
-                        </div>
-                    </x-form-field>
-                    <x-form-field>
-                        <x-form-label for="admin">Admin</x-form-label>
-                        <div class=" max-w-10 mt-2" >
-                            <input type="checkbox" name="admin" id="admin"/>
-                        </div>
-                    </x-form-field>
-                    <x-form-field>
-                        <x-form-label for="email">Email</x-form-label>
-                        <div class="mt-2">
-                            <x-form-input name="email" id="email"/>
-                            <div>
-                                <x-form-error name="email"/>
-                            </div>
-                        </div>
-                    </x-form-field>
-                    <x-form-field>
-                        <x-form-label for="password">Password</x-form-label>
-                        <div class="mt-2">
-                            <x-form-input name="password" id="password"/>
-                            <x-form-error name="password"/>
-                        </div>
-                    </x-form-field>>
-                    <x-form-field>
-                        <x-form-label for="password_confirmation">Confirm Password</x-form-label>
-                        <div class="mt-2">
-                            <x-form-input name="password_confirmation" id="password_confirmation"/>
-                            <div>
-                                <x-form-error name="password_confirmation"/>
-                            </div>
-                        </div>
-                    </x-form-field>
+            <form id="register" method="POST" action="/register" class="space-y-5">
+                @csrf
+
+                <div>
+                    <label for="first_name" class="block text-sm font-medium text-slate-700 mb-1.5">First Name</label>
+                    <input type="text" name="first_name" id="first_name"
+                           class="block w-full rounded-lg border border-slate-300 bg-white
+                                  py-2.5 px-3 text-sm text-slate-900 placeholder:text-slate-400
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                                  transition-shadow duration-150">
+                    @error('first_name')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
                 </div>
-            </div>
-        </div>
 
-        <div class="mt-6 flex items-center justify-center gap-x-6">
-            <a href="/" class="text-sm font-semibold leading-6 text-gray-900">Cancel</a>
-            <x-form-button type="submit" for="register">
-                Create User
-            </x-form-button>
-        </div>
-    </form>
+                <div>
+                    <label for="last_name" class="block text-sm font-medium text-slate-700 mb-1.5">Last Name</label>
+                    <input type="text" name="last_name" id="last_name"
+                           class="block w-full rounded-lg border border-slate-300 bg-white
+                                  py-2.5 px-3 text-sm text-slate-900 placeholder:text-slate-400
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                                  transition-shadow duration-150">
+                    @error('last_name')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
 
+                <div class="flex items-center gap-3">
+                    <input type="checkbox" name="admin" id="admin"
+                           class="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
+                    <label for="admin" class="text-sm font-medium text-slate-700">Admin</label>
+                </div>
+
+                <div>
+                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+                    <input type="email" name="email" id="email"
+                           class="block w-full rounded-lg border border-slate-300 bg-white
+                                  py-2.5 px-3 text-sm text-slate-900 placeholder:text-slate-400
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                                  transition-shadow duration-150">
+                    @error('email')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-slate-700 mb-1.5">Password</label>
+                    <input type="password" name="password" id="password"
+                           class="block w-full rounded-lg border border-slate-300 bg-white
+                                  py-2.5 px-3 text-sm text-slate-900 placeholder:text-slate-400
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                                  transition-shadow duration-150">
+                    @error('password')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div>
+                    <label for="password_confirmation" class="block text-sm font-medium text-slate-700 mb-1.5">Confirm Password</label>
+                    <input type="password" name="password_confirmation" id="password_confirmation"
+                           class="block w-full rounded-lg border border-slate-300 bg-white
+                                  py-2.5 px-3 text-sm text-slate-900 placeholder:text-slate-400
+                                  focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
+                                  transition-shadow duration-150">
+                    @error('password_confirmation')
+                        <p class="mt-1 text-xs text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
+                <div class="flex items-center justify-between gap-4 pt-2">
+                    <a href="/" class="text-sm font-semibold text-indigo-600 hover:text-indigo-800 transition-colors">Cancel</a>
+                    <button type="submit"
+                            class="flex justify-center items-center gap-2 bg-indigo-600 hover:bg-indigo-500
+                                   text-white rounded-xl px-6 py-2.5 text-sm font-bold
+                                   active:scale-95 transition-all duration-200">
+                        Create Account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
 </x-layout>
