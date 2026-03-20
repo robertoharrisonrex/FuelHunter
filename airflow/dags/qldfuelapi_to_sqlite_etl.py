@@ -451,7 +451,7 @@ def load_fuel_prices():
 
 
 dag = DAG(dag_id='qldfuelapi_to_sqlite_etl',
-          start_date=datetime(2026, 3, 13),
+          start_date=datetime(2026, 3, 18),
           schedule_interval=timedelta(minutes=30),
           end_date=datetime(2026, 4, 25),
           default_args={"owner": "Roberto", "email": ["roberto@boffincentral.com"]})
