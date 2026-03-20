@@ -73,6 +73,108 @@ class Dashboard extends Component
         ];
     }
 
+    private function brandsChartData(): array
+    {
+        $primaryId = $this->selectedFuelTypes[0] ?? null;
+        if (!$primaryId) {
+            return ['labels' => [], 'values' => []];
+        }
+
+        $rows = DB::table('prices')
+            ->join('fuel_sites', 'fuel_sites.id', '=', 'prices.site_id')
+            ->join('brands', 'brands.id', '=', 'fuel_sites.brand_id')
+            ->where('prices.fuel_id', $primaryId)
+            ->where('prices.price', '>', 50)
+            ->groupBy('brands.id', 'brands.name')
+            ->havingRaw('COUNT(DISTINCT prices.site_id) >= 5')
+            ->selectRaw('brands.name as brand_name, round(avg(prices.price), 1) as avg_price')
+            ->orderBy('avg_price')
+            ->limit(10)
+            ->get();
+
+        return [
+            'labels' => $rows->pluck('brand_name')->toArray(),
+            'values' => $rows->pluck('avg_price')->map(fn($v) => round((float) $v, 1))->toArray(),
+        ];
+    }
+
+    private function regionsChartData(): array
+    {
+        $primaryId = $this->selectedFuelTypes[0] ?? null;
+        if (!$primaryId) {
+            return ['labels' => [], 'values' => []];
+        }
+
+        $rows = DB::table('prices')
+            ->join('fuel_sites', 'fuel_sites.id', '=', 'prices.site_id')
+            ->join('cities', 'cities.id', '=', 'fuel_sites.geo_region_2')
+            ->where('prices.fuel_id', $primaryId)
+            ->where('prices.price', '>', 50)
+            ->groupBy('cities.id', 'cities.name')
+            ->havingRaw('COUNT(DISTINCT prices.site_id) >= 3')
+            ->selectRaw('cities.name as city_name, round(avg(prices.price), 1) as avg_price')
+            ->orderBy('avg_price')
+            ->limit(12)
+            ->get();
+
+        return [
+            'labels' => $rows->pluck('city_name')->toArray(),
+            'values' => $rows->pluck('avg_price')->map(fn($v) => round((float) $v, 1))->toArray(),
+        ];
+    }
+
+    private function weeklyChartData(): array
+    {
+        if (empty($this->selectedFuelTypes)) {
+            return ['datasets' => []];
+        }
+
+        $dateFrom = $this->dateFrom ?: now()->subDays(29)->format('Y-m-d');
+        $dateTo   = $this->dateTo   ?: now()->format('Y-m-d');
+        $ids      = $this->selectedFuelTypes;
+
+        $historical = DB::table('historical_site_prices')
+            ->whereIn('fuel_id', $ids)
+            ->where('price', '>', 50)
+            ->whereBetween(DB::raw('date(transaction_date_utc)'), [$dateFrom, $dateTo])
+            ->selectRaw("fuel_id, STRFTIME('%w', transaction_date_utc) as day_of_week, price");
+
+        $rows = DB::query()
+            ->fromSub(
+                DB::table('prices')
+                    ->whereIn('fuel_id', $ids)
+                    ->where('price', '>', 50)
+                    ->whereBetween(DB::raw('date(transaction_date_utc)'), [$dateFrom, $dateTo])
+                    ->selectRaw("fuel_id, STRFTIME('%w', transaction_date_utc) as day_of_week, price")
+                    ->unionAll($historical),
+                'combined'
+            )
+            ->selectRaw('fuel_id, day_of_week, round(avg(price), 1) as avg_price')
+            ->groupBy('fuel_id', 'day_of_week')
+            ->get();
+
+        $byFuelType = $rows->groupBy('fuel_id');
+
+        $datasets = [];
+        foreach ($ids as $fuelTypeId) {
+            $fuelType = $this->fuelTypes->firstWhere('id', $fuelTypeId);
+            $byDay    = $byFuelType->get($fuelTypeId, collect())->keyBy('day_of_week');
+
+            $data = [];
+            for ($d = 0; $d < 7; $d++) {
+                $row    = $byDay->get((string) $d);
+                $data[] = $row ? round((float) $row->avg_price, 1) : null;
+            }
+
+            $datasets[] = [
+                'label' => $fuelType?->name ?? "Fuel {$fuelTypeId}",
+                'data'  => $data,
+            ];
+        }
+
+        return ['datasets' => $datasets];
+    }
+
     private function chartData(): array
     {
         if (empty($this->selectedFuelTypes)) {
@@ -128,11 +230,17 @@ class Dashboard extends Component
 
     public function render()
     {
-        $chartData = $this->chartData();
-        $stats     = $this->summaryStats();
+        $chartData    = $this->chartData();
+        $stats        = $this->summaryStats();
+        $brandsChart  = $this->brandsChartData();
+        $regionsChart = $this->regionsChartData();
+        $weeklyChart  = $this->weeklyChartData();
 
-        $this->dispatch('chartUpdated', labels: $chartData['labels'], datasets: $chartData['datasets']);
+        $this->dispatch('chartUpdated',        labels: $chartData['labels'],   datasets: $chartData['datasets']);
+        $this->dispatch('brandsChartUpdated',  labels: $brandsChart['labels'], values: $brandsChart['values']);
+        $this->dispatch('regionsChartUpdated', labels: $regionsChart['labels'], values: $regionsChart['values']);
+        $this->dispatch('weeklyChartUpdated',  datasets: $weeklyChart['datasets']);
 
-        return view('livewire.dashboard', compact('chartData', 'stats'));
+        return view('livewire.dashboard', compact('chartData', 'stats', 'brandsChart', 'regionsChart', 'weeklyChart'));
     }
 }

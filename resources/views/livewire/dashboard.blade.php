@@ -212,6 +212,60 @@ $activePreset = match($dateFrom) {
         </div>
     </div>
 
+    {{-- ── Chart A: Brand Price Comparison ─────────────────────── --}}
+    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Brand Price Comparison</h2>
+                    <p class="text-slate-500 text-sm mt-0.5">Average price by brand · current prices</p>
+                </div>
+            </div>
+            <div wire:ignore class="relative h-[320px] sm:h-[420px]">
+                <canvas id="chartBrands"></canvas>
+            </div>
+            @if(empty($brandsChart['labels']))
+                <p class="text-center text-sm text-slate-400 mt-4">Select a fuel type to display brand comparison.</p>
+            @endif
+        </div>
+    </div>
+
+    {{-- ── Chart B: Price by Region ──────────────────────────────── --}}
+    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Price by City</h2>
+                    <p class="text-slate-500 text-sm mt-0.5">Average price by city · current prices</p>
+                </div>
+            </div>
+            <div wire:ignore class="relative h-[380px] sm:h-[500px]">
+                <canvas id="chartRegions"></canvas>
+            </div>
+            @if(empty($regionsChart['labels']))
+                <p class="text-center text-sm text-slate-400 mt-4">Select a fuel type to display regional comparison.</p>
+            @endif
+        </div>
+    </div>
+
+    {{-- ── Chart C: Weekly Price Pattern ─────────────────────────── --}}
+    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Weekly Price Pattern</h2>
+                    <p class="text-slate-500 text-sm mt-0.5">Average price by day of week · selected date range</p>
+                </div>
+            </div>
+            <div wire:ignore class="relative h-[260px] sm:h-[360px]">
+                <canvas id="chartWeekly"></canvas>
+            </div>
+            @if(empty($weeklyChart['datasets']))
+                <p class="text-center text-sm text-slate-400 mt-4">Select at least one fuel type to display the weekly pattern.</p>
+            @endif
+        </div>
+    </div>
+
 </div>
 
 @script
@@ -360,5 +414,159 @@ $activePreset = match($dateFrom) {
     );
 
     $wire.on('chartUpdated', ({ labels, datasets }) => hydrate(labels, datasets));
+
+    // ── Chart A: Brand Price Comparison ───────────────────────────
+    const brandsInitial = @json($brandsChart);
+    const brandsCanvas  = document.getElementById('chartBrands');
+
+    const barOptions = (axisTitle) => ({
+        responsive:          true,
+        maintainAspectRatio: false,
+        animation:           { duration: 600, easing: 'easeInOutQuart' },
+        indexAxis:           'y',
+        plugins: {
+            legend: { display: false },
+            tooltip: {
+                backgroundColor: 'rgba(2,6,23,0.94)',
+                titleColor:      '#e2e8f0',
+                bodyColor:       '#94a3b8',
+                borderColor:     'rgba(99,102,241,0.35)',
+                borderWidth:     1,
+                padding:         14,
+                cornerRadius:    12,
+                callbacks: {
+                    label: c => ` ${c.parsed.x !== null ? c.parsed.x.toFixed(1) + ' ¢/L' : 'N/A'}`,
+                },
+            },
+        },
+        scales: {
+            x: {
+                ticks:  { color: '#475569', font: { size: 11 }, callback: v => v + ' ¢' },
+                grid:   { color: 'rgba(15,23,42,0.05)' },
+                border: { display: false },
+                title:  { display: true, text: axisTitle, color: '#334155', font: { size: 11 } },
+            },
+            y: {
+                ticks:  { color: '#475569', font: { size: 11 } },
+                grid:   { display: false },
+                border: { display: false },
+            },
+        },
+    });
+
+    function buildBarDataset(labels, values) {
+        const c = { r: 99, g: 102, b: 241 };
+        return {
+            labels,
+            datasets: [{
+                data:            values,
+                backgroundColor: rgba(c, 0.85),
+                borderColor:     rgba(c, 1),
+                borderWidth:     1.5,
+                borderRadius:    5,
+            }],
+        };
+    }
+
+    const brandsChart = new Chart(brandsCanvas, {
+        type: 'bar',
+        data: buildBarDataset(brandsInitial.labels, brandsInitial.values),
+        options: barOptions('Avg Price (¢/L)'),
+    });
+
+    $wire.on('brandsChartUpdated', ({ labels, values }) => {
+        const d = buildBarDataset(labels, values);
+        brandsChart.data.labels   = d.labels;
+        brandsChart.data.datasets = d.datasets;
+        brandsChart.update();
+    });
+
+    // ── Chart B: Price by Region ───────────────────────────────────
+    const regionsInitial = @json($regionsChart);
+    const regionsCanvas  = document.getElementById('chartRegions');
+
+    const regionsChart = new Chart(regionsCanvas, {
+        type: 'bar',
+        data: buildBarDataset(regionsInitial.labels, regionsInitial.values),
+        options: barOptions('Avg Price (¢/L)'),
+    });
+
+    $wire.on('regionsChartUpdated', ({ labels, values }) => {
+        const d = buildBarDataset(labels, values);
+        regionsChart.data.labels   = d.labels;
+        regionsChart.data.datasets = d.datasets;
+        regionsChart.update();
+    });
+
+    // ── Chart C: Weekly Price Pattern ─────────────────────────────
+    const weeklyInitial  = @json($weeklyChart);
+    const weeklyCanvas   = document.getElementById('chartWeekly');
+    const DAY_LABELS     = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+
+    function buildWeeklyDatasets(rawDatasets) {
+        return rawDatasets.map((ds, i) => {
+            const c = PALETTE[i % PALETTE.length];
+            return {
+                label:           ds.label,
+                data:            ds.data,
+                backgroundColor: rgba(c, 0.75),
+                borderColor:     rgba(c, 1),
+                borderWidth:     1.5,
+                borderRadius:    4,
+            };
+        });
+    }
+
+    const weeklyChart = new Chart(weeklyCanvas, {
+        type: 'bar',
+        data: { labels: DAY_LABELS, datasets: buildWeeklyDatasets(weeklyInitial.datasets) },
+        options: {
+            responsive:          true,
+            maintainAspectRatio: false,
+            animation:           { duration: 600, easing: 'easeInOutQuart' },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color:         '#64748b',
+                        usePointStyle: true,
+                        pointStyle:    'circle',
+                        padding:       22,
+                        font: { size: 12, weight: '600', family: 'system-ui, sans-serif' },
+                    },
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(2,6,23,0.94)',
+                    titleColor:      '#e2e8f0',
+                    bodyColor:       '#94a3b8',
+                    borderColor:     'rgba(99,102,241,0.35)',
+                    borderWidth:     1,
+                    padding:         14,
+                    cornerRadius:    12,
+                    callbacks: {
+                        label: c => ` ${c.dataset.label}: ${c.parsed.y !== null ? c.parsed.y.toFixed(1) + ' ¢/L' : 'N/A'}`,
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    ticks:  { color: '#475569', font: { size: 11 } },
+                    grid:   { color: 'rgba(15,23,42,0.05)' },
+                    border: { display: false },
+                },
+                y: {
+                    ticks:  { color: '#475569', font: { size: 11 }, callback: v => v + ' ¢' },
+                    grid:   { color: 'rgba(15,23,42,0.05)' },
+                    border: { display: false },
+                    title:  { display: true, text: 'Avg Price (¢/L)', color: '#334155', font: { size: 11 } },
+                },
+            },
+        },
+    });
+
+    $wire.on('weeklyChartUpdated', ({ datasets }) => {
+        weeklyChart.data.datasets = buildWeeklyDatasets(datasets);
+        weeklyChart.update();
+    });
 </script>
 @endscript
