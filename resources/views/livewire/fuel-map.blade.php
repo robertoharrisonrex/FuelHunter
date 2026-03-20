@@ -107,12 +107,12 @@
             <div class="w-px self-stretch bg-white/[0.06]"></div>
             <div class="px-4 py-2.5">
                 <p class="text-[9px] font-bold text-slate-600 uppercase tracking-widest leading-none mb-1">Low</p>
-                <p class="text-sm font-bold text-emerald-400 leading-none">${{ number_format($mapData['min'], 2) }}</p>
+                <p class="text-sm font-bold text-emerald-400 leading-none">{{ number_format($mapData['min'] * 100, 1) }}</p>
             </div>
             <div class="w-px self-stretch bg-white/[0.06]"></div>
             <div class="px-4 py-2.5">
                 <p class="text-[9px] font-bold text-slate-600 uppercase tracking-widest leading-none mb-1">High</p>
-                <p class="text-sm font-bold text-red-400 leading-none">${{ number_format($mapData['max'], 2) }}</p>
+                <p class="text-sm font-bold text-red-400 leading-none">{{ number_format($mapData['max'] * 100, 1) }}</p>
             </div>
         </div>
         @endif
@@ -234,17 +234,22 @@
     // ── Format price-update timestamp ────────────────────────
     function formatUpdated(dateStr) {
         if (!dateStr) return '—';
-        const d    = new Date(dateStr + 'Z');
-        const days = Math.floor((new Date() - d) / 86400000);
-        if (days === 0) return 'Today';
-        if (days === 1) return 'Yesterday';
-        if (days < 7)  return `${days} days ago`;
-        return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+        const d      = new Date(dateStr + 'Z');
+        const mins   = Math.floor((new Date() - d) / 60000);
+        const hours  = Math.floor(mins / 60);
+        const days   = Math.floor(hours / 24);
+        const weeks  = Math.floor(days / 7);
+        const months = Math.floor(days / 30);
+        if (days > 28)      return months === 1 ? '1 month ago' : `${months} months ago`;
+        if (days > 6)       return weeks === 1  ? '1 week ago'  : `${weeks} weeks ago`;
+        if (hours >= 48)    return `${days} days ago`;
+        if (hours > 0)      return mins % 60 > 0 ? `${hours}h ${mins % 60}m ago` : `${hours}h ago`;
+        return `${mins}m ago`;
     }
 
     // ── Small secondary-price cell for info window ────────────
     function pricePill(label, price, color) {
-        const val   = price ? '$' + price.toFixed(2) : '—';
+        const val   = price ? (price * 100).toFixed(1) : '—';
         const bold  = price ? `color:${color};font-weight:700` : 'color:#cbd5e1;font-weight:500';
         return `<div style="flex:1;text-align:center">
                     <div style="font-size:9px;color:#94a3b8;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px">${label}</div>
@@ -297,7 +302,7 @@
             color:${highlight ? '#fff' : color};
             line-height:1;
         `;
-        priceEl.textContent = '$' + price.toFixed(2);
+        priceEl.textContent = (price * 100).toFixed(1);
         textWrap.appendChild(priceEl);
         el.appendChild(textWrap);
 
@@ -335,7 +340,7 @@
             const m = new google.maps.marker.AdvancedMarkerElement({
                 position: { lat: site.lat, lng: site.lng },
                 map,
-                title:    site.name + ' — $' + site.price.toFixed(2) + '/L',
+                title:    site.name + ' — ' + (site.price * 100).toFixed(1) + '/L',
                 content:  makePinEl(site.price, min, max, site.brand),
             });
             m._site = site;
@@ -381,7 +386,7 @@
                                 <span style="font-size:10px;color:#94a3b8">Updated ${formatUpdated(site.updated)}</span>
                             </div>
                             <div style="display:flex;align-items:baseline;gap:3px">
-                                <span style="font-size:38px;font-weight:900;color:${color};line-height:1;letter-spacing:-1px">$${site.price.toFixed(2)}</span>
+                                <span style="font-size:38px;font-weight:900;color:${color};line-height:1;letter-spacing:-1px">${(site.price * 100).toFixed(1)}</span>
                                 <span style="font-size:13px;color:#94a3b8;font-weight:600">/L</span>
                             </div>
                         </div>
@@ -459,15 +464,37 @@
         }
     }
 
+    // ── Map position persistence ─────────────────────────────
+    const MAP_STORAGE_KEY = 'fuelmap_position';
+
+    function saveMapPosition() {
+        const c = map.getCenter();
+        localStorage.setItem(MAP_STORAGE_KEY, JSON.stringify({
+            lat:  c.lat(),
+            lng:  c.lng(),
+            zoom: map.getZoom(),
+        }));
+    }
+
+    function loadMapPosition() {
+        try {
+            const raw = localStorage.getItem(MAP_STORAGE_KEY);
+            if (raw) return JSON.parse(raw);
+        } catch {}
+        return null;
+    }
+
     // ── Initialise Google Map ────────────────────────────────
     async function initMap() {
         const { Map }         = await google.maps.importLibrary('maps');
         await google.maps.importLibrary('marker');
         const { Autocomplete } = await google.maps.importLibrary('places');
 
+        const saved = loadMapPosition();
+
         map = new Map(document.getElementById('fuelMap'), {
-            center:            { lat: -27.4698, lng: 153.0251 },
-            zoom:              8,
+            center:            saved ? { lat: saved.lat, lng: saved.lng } : { lat: -27.4698, lng: 153.0251 },
+            zoom:              saved ? saved.zoom : 8,
             mapId:             'DEMO_MAP_ID',
             mapTypeControl:    false,
             streetViewControl: false,
@@ -477,7 +504,7 @@
 
         buildMarkers(initial.sites, initial.min, initial.max);
 
-        map.addListener('idle', updateHighlights);
+        map.addListener('idle', () => { updateHighlights(); saveMapPosition(); });
 
         // ── Address search (Places Autocomplete) ──────────────
         const input = document.getElementById('addressSearch');

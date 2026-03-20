@@ -7,6 +7,27 @@
         $palette     = ['bg-indigo-600','bg-teal-600','bg-amber-500','bg-rose-500','bg-violet-600','bg-emerald-600','bg-orange-500','bg-sky-600','bg-pink-600','bg-cyan-600'];
         $avatarColor = $palette[abs(crc32($brandName)) % count($palette)];
 
+        $latestUpdate = $fuelSite->prices->max('transaction_date_utc');
+        if ($latestUpdate) {
+            $diffMins = (int) \Carbon\Carbon::parse($latestUpdate)->diffInMinutes(now());
+            $diffHours = intdiv($diffMins, 60);
+            $diffDays  = intdiv($diffHours, 24);
+            $diffWeeks = intdiv($diffDays, 7);
+            $diffMonths = intdiv($diffDays, 30);
+            if ($diffDays > 28) {
+                $timeAgoStr = $diffMonths === 1 ? '1 month ago' : "{$diffMonths} months ago";
+            } elseif ($diffDays > 6) {
+                $timeAgoStr = $diffWeeks === 1 ? '1 week ago' : "{$diffWeeks} weeks ago";
+            } elseif ($diffHours >= 48) {
+                $timeAgoStr = "{$diffDays} days ago";
+            } elseif ($diffHours > 0) {
+                $minsAgo = $diffMins % 60;
+                $timeAgoStr = $minsAgo > 0 ? "{$diffHours}h {$minsAgo}m ago" : "{$diffHours}h ago";
+            } else {
+                $timeAgoStr = "{$diffMins}m ago";
+            }
+        }
+
         // Fuel type accent colours keyed on lower-case name fragments
         $fuelColors = [
             'diesel'   => ['bg-amber-500/15',  'text-amber-400',  'border-amber-500/20',  'bg-amber-500'],
@@ -76,6 +97,14 @@
                             </svg>
                             {{ $fuelSite->city?->name ?? '' }}{{ $fuelSite->state ? ' · ' . ucwords(strtolower($fuelSite->state->name)) : '' }}
                         </div>
+                        @if(isset($timeAgoStr))
+                            <div class="flex items-center gap-1.5 text-xs text-slate-500">
+                                <svg class="w-3.5 h-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/>
+                                </svg>
+                                Updated {{ $timeAgoStr }}
+                            </div>
+                        @endif
                         @if($fuelSite->latitude && $fuelSite->longitude)
                             <div class="flex items-center gap-1.5 text-xs text-slate-600 font-mono">
                                 <svg class="w-3.5 h-3.5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -124,9 +153,19 @@
                             </p>
                             <p class="text-[10px] text-gray-400 mt-1.5 leading-none">/L</p>
                             @if($price->transaction_date_utc)
-                                <p class="text-[11px] text-gray-400 mt-2">
-                                    {{ \Carbon\Carbon::parse($price->transaction_date_utc)->format('d M Y') }}
-                                </p>
+                                @php
+                                    $pm = (int) \Carbon\Carbon::parse($price->transaction_date_utc)->diffInMinutes(now());
+                                    $ph = intdiv($pm, 60);
+                                    $pd = intdiv($ph, 24);
+                                    $pw = intdiv($pd, 7);
+                                    $pmo = intdiv($pd, 30);
+                                    if ($pd > 28)       $pStr = $pmo === 1 ? '1 month ago' : "{$pmo} months ago";
+                                    elseif ($pd > 6)    $pStr = $pw === 1 ? '1 week ago' : "{$pw} weeks ago";
+                                    elseif ($ph >= 48)  $pStr = "{$pd} days ago";
+                                    elseif ($ph > 0)    $pStr = ($pm % 60 > 0) ? "{$ph}h ".($pm%60)."m ago" : "{$ph}h ago";
+                                    else                $pStr = "{$pm}m ago";
+                                @endphp
+                                <p class="text-[11px] text-gray-400 mt-2">{{ $pStr }}</p>
                             @endif
                         </div>
                     @endforeach
