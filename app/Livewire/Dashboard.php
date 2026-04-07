@@ -42,9 +42,27 @@ class Dashboard extends Component
             '1yr' => [now()->subYear()->addDay()->format('Y-m-d'), now()->format('Y-m-d')],
             default => [$this->dateFrom, $this->dateTo],
         };
+
+        Cookie::queue('dash_date_from', $this->dateFrom, 43200);
+        Cookie::queue('dash_date_to',   $this->dateTo,   43200);
     }
 
     public function applyFilters(): void {}
+
+    public function updatedDateFrom(): void
+    {
+        Cookie::queue('dash_date_from', $this->dateFrom, 43200);
+    }
+
+    public function updatedDateTo(): void
+    {
+        Cookie::queue('dash_date_to', $this->dateTo, 43200);
+    }
+
+    public function updatedSelectedFuelTypes(): void
+    {
+        Cookie::queue('dash_fuel_types', json_encode($this->selectedFuelTypes), 43200);
+    }
 
     private function cacheKey(string $prefix): string
     {
