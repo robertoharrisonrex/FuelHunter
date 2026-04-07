@@ -14,6 +14,8 @@
     .dash-card:nth-child(3) { animation-delay: 0.20s; }
     .dash-card:nth-child(4) { animation-delay: 0.28s; }
     .dash-card:nth-child(5) { animation-delay: 0.36s; }
+    .dash-card:nth-child(6) { animation-delay: 0.44s; }
+    .dash-card:nth-child(7) { animation-delay: 0.52s; }
 </style>
 @endassets
 
@@ -262,6 +264,24 @@ $activePreset = match($dateFrom) {
             </div>
             @if(empty($weeklyChart['datasets']))
                 <p class="text-center text-sm text-slate-400 mt-4">Select at least one fuel type to display the weekly pattern.</p>
+            @endif
+        </div>
+    </div>
+
+    {{-- ── Chart D: Fuel Type Availability ─────────────────────────── --}}
+    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-6">
+                <div>
+                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Fuel Type Availability</h2>
+                    <p class="text-slate-500 text-sm mt-0.5">Active stations without each fuel type per day</p>
+                </div>
+            </div>
+            <div wire:ignore class="relative h-[260px] sm:h-[420px]">
+                <canvas id="chartAvailability"></canvas>
+            </div>
+            @if(empty($availabilityChart['datasets']))
+                <p class="text-center text-sm text-slate-400 mt-4">Select at least one fuel type to display availability trends.</p>
             @endif
         </div>
     </div>
@@ -568,5 +588,81 @@ $activePreset = match($dateFrom) {
         weeklyChart.data.datasets = buildWeeklyDatasets(datasets);
         weeklyChart.update();
     });
+
+    // ── Chart D: Fuel Type Availability ───────────────────────────
+    const availabilityInitial = @json($availabilityChart);
+    const availabilityCanvas  = document.getElementById('chartAvailability');
+    const availabilityCtx     = availabilityCanvas.getContext('2d');
+
+    const availabilityChart = new Chart(availabilityCanvas, {
+        type: 'line',
+        data: { labels: availabilityInitial.labels, datasets: [] },
+        options: {
+            responsive:          true,
+            maintainAspectRatio: false,
+            animation: { duration: 800, easing: 'easeInOutQuart' },
+            interaction: { mode: 'index', intersect: false },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color:         '#64748b',
+                        usePointStyle: true,
+                        pointStyle:    'circle',
+                        padding:       22,
+                        font: { size: 12, weight: '600', family: 'system-ui, sans-serif' },
+                    },
+                },
+                tooltip: {
+                    backgroundColor: 'rgba(2,6,23,0.94)',
+                    titleColor:      '#e2e8f0',
+                    bodyColor:       '#94a3b8',
+                    borderColor:     'rgba(99,102,241,0.35)',
+                    borderWidth:     1,
+                    padding:         14,
+                    cornerRadius:    12,
+                    callbacks: {
+                        label: c => ` ${c.dataset.label}: ${c.parsed.y !== null ? c.parsed.y + ' sites without' : 'N/A'}`,
+                    },
+                },
+            },
+            scales: {
+                x: {
+                    ticks: { color: '#475569', maxTicksLimit: 9, font: { size: 11 } },
+                    grid:   { color: 'rgba(15,23,42,0.05)' },
+                    border: { display: false },
+                },
+                y: {
+                    min: 0,
+                    ticks: {
+                        color: '#475569',
+                        font:  { size: 11 },
+                        callback: v => v,
+                    },
+                    grid:   { color: 'rgba(15,23,42,0.05)' },
+                    border: { display: false },
+                    title: {
+                        display: true,
+                        text:    'Sites without fuel type',
+                        color:   '#334155',
+                        font:    { size: 11 },
+                    },
+                },
+            },
+        },
+        plugins: [glowPlugin],
+    });
+
+    function hydrateAvailability(labels, datasets) {
+        availabilityChart.data.labels   = labels;
+        availabilityChart.data.datasets = buildDatasets(datasets, availabilityChart.chartArea, availabilityCtx);
+        availabilityChart.update();
+    }
+
+    requestAnimationFrame(() =>
+        requestAnimationFrame(() => hydrateAvailability(availabilityInitial.labels, availabilityInitial.datasets))
+    );
+
+    $wire.on('availabilityChartUpdated', ({ labels, datasets }) => hydrateAvailability(labels, datasets));
 </script>
 @endscript

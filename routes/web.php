@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FuelSiteController;
+use App\Http\Controllers\MapDataController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
@@ -10,6 +11,8 @@ use Illuminate\Support\Facades\Route;
 Route::view('/', 'home');
 Route::view('/about', 'about');
 Route::view('/dashboard', 'dashboard.index');
+
+Route::get('/map-data/{fuelTypeId}', [MapDataController::class, 'show']);
 
 Route::controller(FuelSiteController::class)->group(function() {
     Route::get('/fuel', 'index');

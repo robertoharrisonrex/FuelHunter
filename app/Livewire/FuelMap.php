@@ -98,17 +98,11 @@ class FuelMap extends Component
 
     public function updatedSelectedFuelTypeId(): void
     {
-        $data = $this->mapData();
-        $this->dispatch('markersUpdated',
-            sites:        $data['sites'],
-            min:          $data['min'],
-            max:          $data['max'],
-            fuelTypeName: $data['fuel_type_name'],
-        );
+        $this->dispatch('fuelTypeChanged', fuelTypeId: $this->selectedFuelTypeId);
     }
 
     public function render()
     {
-        return view('livewire.fuel-map', ['mapData' => $this->mapData()]);
+        return view('livewire.fuel-map');
     }
 }

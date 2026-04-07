@@ -1,0 +1,117 @@
+<h2>Mobile navigation pattern?</h2>
+<p class="subtitle">On small screens, how should users navigate between pages?</p>
+
+<div class="cards">
+
+  <div class="card" data-choice="bottom-tab" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f1f5f9; padding: 12px; border-radius: 8px; display: flex; justify-content: center;">
+      <!-- Phone mockup -->
+      <div style="width: 160px; background: #f8fafc; border-radius: 20px; border: 2px solid #cbd5e1; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <!-- Frosted nav -->
+        <div style="background: rgba(255,255,255,0.85); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(15,23,42,0.06); padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <div style="width: 18px; height: 18px; border-radius: 5px; background: #6366f1;"></div>
+            <span style="font-weight: 700; font-size: 11px; color: #0f172a;">Fuel<span style="color: #6366f1;">Hunter</span></span>
+          </div>
+        </div>
+        <!-- Content area -->
+        <div style="background: #f0f4ff; height: 120px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px;">Map / Content</div>
+        <!-- Bottom tabs -->
+        <div style="background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-top: 1px solid rgba(15,23,42,0.06); padding: 6px 0; display: flex; justify-content: space-around; align-items: center;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+            <div style="width: 16px; height: 16px; border-radius: 8px; background: #eef2ff; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 8px; height: 6px; border: 1.5px solid #6366f1; border-radius: 1px;"></div>
+            </div>
+            <span style="font-size: 8px; color: #6366f1; font-weight: 600;">Map</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+            <div style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 10px; height: 8px; border: 1.5px solid #94a3b8; border-radius: 1px;"></div>
+            </div>
+            <span style="font-size: 8px; color: #94a3b8;">Dash</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+            <div style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 8px; height: 10px; border: 1.5px solid #94a3b8; border-radius: 1px;"></div>
+            </div>
+            <span style="font-size: 8px; color: #94a3b8;">Sites</span>
+          </div>
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+            <div style="width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;">
+              <div style="width: 10px; height: 10px; border: 1.5px solid #94a3b8; border-radius: 50%;"></div>
+            </div>
+            <span style="font-size: 8px; color: #94a3b8;">More</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A — Bottom Tab Bar</h3>
+      <p>Persistent tab bar at the bottom (like native iOS/Android apps). Instant one-thumb navigation. Best mobile UX for 2026 — no hamburger needed. Main tabs: Map, Dashboard, Sites, More.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hamburger" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f1f5f9; padding: 12px; border-radius: 8px; display: flex; justify-content: center;">
+      <div style="width: 160px; background: #f8fafc; border-radius: 20px; border: 2px solid #cbd5e1; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <!-- Frosted nav with hamburger -->
+        <div style="background: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(15,23,42,0.06); padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <div style="width: 18px; height: 18px; border-radius: 5px; background: #6366f1;"></div>
+            <span style="font-weight: 700; font-size: 11px; color: #0f172a;">Fuel<span style="color: #6366f1;">Hunter</span></span>
+          </div>
+          <!-- Hamburger icon -->
+          <div style="display: flex; flex-direction: column; gap: 2.5px; cursor: pointer;">
+            <div style="width: 14px; height: 1.5px; background: #475569; border-radius: 1px;"></div>
+            <div style="width: 14px; height: 1.5px; background: #475569; border-radius: 1px;"></div>
+            <div style="width: 10px; height: 1.5px; background: #475569; border-radius: 1px;"></div>
+          </div>
+        </div>
+        <!-- Slide-out menu shown open -->
+        <div style="display: flex;">
+          <div style="width: 100px; background: white; border-right: 1px solid #f1f5f9; padding: 8px;">
+            <div style="padding: 6px 8px; border-radius: 6px; background: #eef2ff; color: #6366f1; font-size: 9px; font-weight: 600; margin-bottom: 3px;">Map</div>
+            <div style="padding: 6px 8px; color: #64748b; font-size: 9px; margin-bottom: 3px;">Dashboard</div>
+            <div style="padding: 6px 8px; color: #64748b; font-size: 9px; margin-bottom: 3px;">Fuel Sites</div>
+            <div style="padding: 6px 8px; color: #64748b; font-size: 9px;">About</div>
+          </div>
+          <div style="flex: 1; background: rgba(0,0,0,0.08); height: 130px;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B — Slide Drawer</h3>
+      <p>Hamburger opens a side drawer (refined version of current approach). Familiar pattern, more room for nav items including auth links. Overlay darkens the content behind.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="hybrid-mobile" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: #f1f5f9; padding: 12px; border-radius: 8px; display: flex; justify-content: center;">
+      <div style="width: 160px; background: #f8fafc; border-radius: 20px; border: 2px solid #cbd5e1; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+        <!-- Minimal nav, no hamburger -->
+        <div style="background: rgba(255,255,255,0.85); border-bottom: 1px solid rgba(15,23,42,0.06); padding: 8px 12px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 4px;">
+            <div style="width: 18px; height: 18px; border-radius: 5px; background: #6366f1;"></div>
+            <span style="font-weight: 700; font-size: 11px; color: #0f172a;">Fuel<span style="color: #6366f1;">Hunter</span></span>
+          </div>
+          <div style="background: #6366f1; color: white; padding: 3px 8px; border-radius: 5px; font-size: 9px; font-weight: 600;">Sign in</div>
+        </div>
+        <!-- Content -->
+        <div style="background: #f0f4ff; height: 70px; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 10px;">Content</div>
+        <!-- Floating pill nav -->
+        <div style="padding: 6px 10px; background: #f8fafc;">
+          <div style="background: white; border: 1px solid #e2e8f0; border-radius: 20px; padding: 4px; display: flex; justify-content: space-around; box-shadow: 0 2px 8px rgba(0,0,0,0.06);">
+            <div style="padding: 3px 8px; border-radius: 14px; background: #6366f1; color: white; font-size: 8px; font-weight: 600;">Map</div>
+            <div style="padding: 3px 8px; color: #64748b; font-size: 8px;">Dash</div>
+            <div style="padding: 3px 8px; color: #64748b; font-size: 8px;">Sites</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C — Floating Pill Nav</h3>
+      <p>A floating pill/capsule navigation bar near the bottom of the page — not fixed to the screen edge. Trendy 2026 pattern seen in Figma, Notion Mobile, Linear. Feels light and modern.</p>
+    </div>
+  </div>
+
+</div>
