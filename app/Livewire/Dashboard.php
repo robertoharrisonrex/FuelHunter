@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Models\FuelType;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -18,13 +19,18 @@ class Dashboard extends Component
 
     public function mount(): void
     {
-        $this->dateFrom = now()->subDays(29)->format('Y-m-d');
-        $this->dateTo   = now()->format('Y-m-d');
+        $this->dateFrom  = Cookie::get('dash_date_from') ?? now()->subDays(29)->format('Y-m-d');
+        $this->dateTo    = Cookie::get('dash_date_to')   ?? now()->format('Y-m-d');
         $this->fuelTypes = FuelType::orderBy('name')->get();
 
-        $unleaded = $this->fuelTypes->first(fn($t) => strtolower($t->name) === 'unleaded')
-            ?? $this->fuelTypes->first(fn($t) => stripos($t->name, 'unleaded') !== false);
-        $this->selectedFuelTypes = $unleaded ? [(string) $unleaded->id] : [];
+        $savedFuelTypes = Cookie::get('dash_fuel_types');
+        if ($savedFuelTypes !== null) {
+            $this->selectedFuelTypes = json_decode($savedFuelTypes, true) ?? [];
+        } else {
+            $unleaded = $this->fuelTypes->first(fn($t) => strtolower($t->name) === 'unleaded')
+                ?? $this->fuelTypes->first(fn($t) => stripos($t->name, 'unleaded') !== false);
+            $this->selectedFuelTypes = $unleaded ? [(string) $unleaded->id] : [];
+        }
     }
 
     public function setPreset(string $preset): void
