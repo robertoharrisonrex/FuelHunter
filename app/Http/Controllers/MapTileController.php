@@ -35,7 +35,6 @@ class MapTileController extends Controller
                 })
                 ->leftJoin('brands',     'brands.id',     '=', 'fuel_sites.brand_id')
                 ->leftJoin('suburbs',    'suburbs.id',    '=', 'fuel_sites.geo_region_1')
-                ->leftJoin('fuel_types', 'fuel_types.id', '=', 'prices.fuel_id')
                 ->leftJoin('prices as p_ul', function ($join) {
                     $join->on('p_ul.site_id', '=', 'fuel_sites.id')->where('p_ul.fuel_id', '=', 2);
                 })
@@ -61,7 +60,6 @@ class MapTileController extends Controller
                     'prices.price',
                     'prices.transaction_date_utc',
                     'brands.name as brand_name',
-                    'fuel_types.name as fuel_type_name',
                     'p_ul.price as price_ul',
                     'p95.price as price_95',
                     'p98.price as price_98',
