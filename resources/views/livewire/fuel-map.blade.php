@@ -159,14 +159,13 @@
 
 @script
 <script>
-    // ── Constants ────────────────────────────────────────────
-    const TILE_SIZE = 0.5;  // degrees per tile edge
-    const MIN_ZOOM  = 11;   // minimum map zoom to show markers
+    let TILE_SIZE = 0.5;  // degrees per tile edge
+    let MIN_ZOOM  = 11;   // minimum map zoom to show markers
 
     // ── Session caches (keyed by fuelTypeId) ─────────────────
-    const tileCache      = {};  // tileCache[fuelTypeId]['latTile_lngTile'] = Site[]
-    const markerRegistry = {};  // markerRegistry[fuelTypeId][siteId] = AdvancedMarkerElement
-    const statsCache     = {};  // statsCache[fuelTypeId] = { min, max, count, fuel_type_name }
+    let tileCache      = {};  // tileCache[fuelTypeId]['latTile_lngTile'] = Site[]
+    let markerRegistry = {};  // markerRegistry[fuelTypeId][siteId] = AdvancedMarkerElement
+    let statsCache     = {};  // statsCache[fuelTypeId] = { min, max, count, fuel_type_name }
 
     // ── Map state ─────────────────────────────────────────────
     let map, activeInfoWindow, activeMarker;
@@ -176,7 +175,7 @@
     let currentFuelTypeId = parseInt($wire.selectedFuelTypeId);
 
     // ── Brand → favicon URL mapping ──────────────────────────
-    const BRAND_LOGOS = {
+    let BRAND_LOGOS = {
         '7 Eleven':          'https://www.google.com/s2/favicons?domain=7eleven.com.au&sz=64',
         'Ampol':             'https://www.google.com/s2/favicons?domain=ampol.com.au&sz=64',
         'EG Ampol':          'https://www.google.com/s2/favicons?domain=ampol.com.au&sz=64',
@@ -203,7 +202,7 @@
     };
 
     // ── Secondary fuel types shown in info window ─────────────
-    const SECONDARY_FUELS = [
+    let SECONDARY_FUELS = [
         { id: 2,  key: 'price_ul', label: 'Unleaded'     },
         { id: 5,  key: 'price_95', label: 'P.ULP 95'     },
         { id: 8,  key: 'price_98', label: 'P.ULP 98'     },
@@ -676,8 +675,8 @@
     initMap();
 
     // ── Persist selected fuel type across visits ──────────────
-    const FUEL_TYPE_KEY = 'fuelmap_fuel_type';
-    const savedFuelType = localStorage.getItem(FUEL_TYPE_KEY);
+    let FUEL_TYPE_KEY = 'fuelmap_fuel_type';
+    let savedFuelType = localStorage.getItem(FUEL_TYPE_KEY);
     if (savedFuelType && parseInt(savedFuelType) !== currentFuelTypeId) {
         $wire.set('selectedFuelTypeId', parseInt(savedFuelType));
     }
