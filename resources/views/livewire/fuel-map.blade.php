@@ -159,35 +159,21 @@
 
 @script
 <script>
+    // ── Constants ────────────────────────────────────────────
+    const TILE_SIZE = 0.5;  // degrees per tile edge
+    const MIN_ZOOM  = 11;   // minimum map zoom to show markers
+
+    // ── Session caches (keyed by fuelTypeId) ─────────────────
+    const tileCache      = {};  // tileCache[fuelTypeId]['latTile_lngTile'] = Site[]
+    const markerRegistry = {};  // markerRegistry[fuelTypeId][siteId] = AdvancedMarkerElement
+    const statsCache     = {};  // statsCache[fuelTypeId] = { min, max, count, fuel_type_name }
+
+    // ── Map state ─────────────────────────────────────────────
     let map, activeInfoWindow, activeMarker;
-    let markers = [];
-    let currentFuelTypeName = '';
     let highlightedMin = null, highlightedMax = null;
-
-    function updateStatsPills(data) {
-        const pills = document.getElementById('mapStatsPills');
-        if (!pills) return;
-        if (data.count > 0) {
-            document.getElementById('mapStatMin').textContent = (data.min * 100).toFixed(1);
-            document.getElementById('mapStatMax').textContent = (data.max * 100).toFixed(1);
-            pills.style.removeProperty('display');
-        } else {
-            pills.style.setProperty('display', 'none', 'important');
-        }
-    }
-
-    async function fetchMapData(fuelTypeId) {
-        const res  = await fetch(`/map-data/${fuelTypeId}`);
-        return res.json();
-    }
-
-    // ── Secondary fuel types (shown in info window, minus selected) ──
-    const SECONDARY_FUELS = [
-        { id: 2,  key: 'price_ul', label: 'Unleaded'      },
-        { id: 5,  key: 'price_95', label: 'P.ULP 95'      },
-        { id: 8,  key: 'price_98', label: 'P.ULP 98'      },
-        { id: 14, key: 'price_pd', label: 'Prem. Diesel'  },
-    ];
+    let currentFuelTypeName = '';
+    let globalMin = 0, globalMax = 0;
+    let currentFuelTypeId = parseInt($wire.selectedFuelTypeId);
 
     // ── Brand → favicon URL mapping ──────────────────────────
     const BRAND_LOGOS = {
@@ -215,6 +201,14 @@
         'Prime Petroleum':   'https://www.google.com/s2/favicons?domain=primepetroleum.com.au&sz=64',
         'U-Go':              'https://www.google.com/s2/favicons?domain=ugoselfserve.com.au&sz=64',
     };
+
+    // ── Secondary fuel types shown in info window ─────────────
+    const SECONDARY_FUELS = [
+        { id: 2,  key: 'price_ul', label: 'Unleaded'     },
+        { id: 5,  key: 'price_95', label: 'P.ULP 95'     },
+        { id: 8,  key: 'price_98', label: 'P.ULP 98'     },
+        { id: 14, key: 'price_pd', label: 'Prem. Diesel' },
+    ];
 
     // ── Colour interpolation (green → yellow → red) ──────────
     function priceColor(price, min, max) {
@@ -280,14 +274,14 @@
         const days   = Math.floor(hours / 24);
         const weeks  = Math.floor(days / 7);
         const months = Math.floor(days / 30);
-        if (days > 28)      return months === 1 ? '1 month ago' : `${months} months ago`;
-        if (days > 6)       return weeks === 1  ? '1 week ago'  : `${weeks} weeks ago`;
-        if (hours >= 48)    return `${days} days ago`;
-        if (hours > 0)      return mins % 60 > 0 ? `${hours}h ${mins % 60}m ago` : `${hours}h ago`;
+        if (days > 28)   return months === 1 ? '1 month ago' : `${months} months ago`;
+        if (days > 6)    return weeks  === 1 ? '1 week ago'  : `${weeks} weeks ago`;
+        if (hours >= 48) return `${days} days ago`;
+        if (hours > 0)   return mins % 60 > 0 ? `${hours}h ${mins % 60}m ago` : `${hours}h ago`;
         return `${mins}m ago`;
     }
 
-    // ── Small secondary-price cell for info window ────────────
+    // ── Secondary price pill ──────────────────────────────────
     function pricePill(label, price, color) {
         const val  = price ? (price * 100).toFixed(1) : '—';
         const bold = price ? `color:${color};font-weight:700` : 'color:#cbd5e1;font-weight:500';
@@ -297,13 +291,11 @@
                 </div>`;
     }
 
-    // ── Custom price pin element ─────────────────────────────
-    // highlight: null | 'cheapest' | 'priciest'
+    // ── Custom price pin element ──────────────────────────────
     function makePinEl(price, min, max, brandName, highlight = null) {
         const color    = priceColor(price, min, max);
         const pinColor = highlight ? color : '#1e40af';
 
-        // Highlight config
         const hlBg     = highlight === 'cheapest' ? '#f0fdf4' : highlight === 'priciest' ? '#fef2f2' : null;
         const hlBorder = highlight === 'cheapest' ? '#86efac' : highlight === 'priciest' ? '#fca5a5' : null;
         const hlAccent = highlight === 'cheapest' ? '#16a34a' : highlight === 'priciest' ? '#dc2626' : null;
@@ -371,196 +363,20 @@
         return el;
     }
 
-    // ── Async chunked clear (cancellable) ────────────────────
-    let clearSeq = 0;
-
-    function clearMarkersAsync(callback) {
-        highlightedMin = null; highlightedMax = null;
-        if (activeInfoWindow) { activeInfoWindow.close(); activeInfoWindow = null; }
-        if (activeMarker)     { activeMarker.zIndex = null; activeMarker = null; }
-        const seq      = ++clearSeq;
-        const toRemove = markers.slice();
-        markers        = [];
-        const CHUNK    = 200;
-        let i = 0;
-        function step() {
-            if (clearSeq !== seq) return;          // superseded — stop
-            const end = Math.min(i + CHUNK, toRemove.length);
-            for (; i < end; i++) toRemove[i].map = null;
-            if (i < toRemove.length) setTimeout(step, 0);
-            else callback?.();
-        }
-        step();
-    }
-
-    // ── Viewport culling ─────────────────────────────────────
-    let visTimer = null;
-
-    function updateMarkerVisibility() {
-        const bounds = map.getBounds();
-        if (!bounds) return;
-        const ne = bounds.getNorthEast(), sw = bounds.getSouthWest();
-        const latPad = (ne.lat() - sw.lat()) * 0.5;
-        const lngPad = (ne.lng() - sw.lng()) * 0.5;
-        markers.forEach(m => {
-            const { lat, lng } = m._site;
-            const inView = lat > sw.lat() - latPad && lat < ne.lat() + latPad &&
-                           lng > sw.lng() - lngPad && lng < ne.lng() + lngPad;
-            if (inView  && !m.map) m.map = map;
-            if (!inView &&  m.map) m.map = null;
-        });
-    }
-
-    // ── Open info window for a marker ───────────────────────
-    function openInfoWindow(m, site, min, max) {
-        if (activeInfoWindow) activeInfoWindow.close();
-        if (activeMarker) { activeMarker.zIndex = null; activeMarker = null; }
-        m.zIndex = 2000;
-        activeMarker = m;
-
-        const color   = priceColor(site.price, min, max);
-        const logoUrl = BRAND_LOGOS[site.brand];
-        const logoHtml = logoUrl
-            ? `<img src="${logoUrl}" style="width:36px;height:36px;flex-shrink:0;object-fit:contain;border-radius:8px;border:1px solid #e2e8f0;padding:3px;background:#fff;" onerror="this.style.display='none'">`
-            : `<div style="width:36px;height:36px;flex-shrink:0;border-radius:8px;background:${color};display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;font-family:system-ui,sans-serif;">${(site.brand||'?').charAt(0).toUpperCase()}</div>`;
-
-        const fullAddr = [site.addr, `${site.suburb} QLD ${site.postcode}`]
-            .filter(Boolean).join(', ');
-
-        const iw = new google.maps.InfoWindow({
-            maxWidth: 290,
-            content: `
-            <div style="font-family:system-ui,-apple-system,sans-serif;width:280px;">
-
-                <!-- Header: logo + name + brand -->
-                <div style="display:flex;align-items:center;gap:11px;padding:14px 16px 11px;background:#fff;">
-                    ${logoHtml}
-                    <div style="min-width:0">
-                        <div style="font-weight:700;font-size:13px;color:#0f172a;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${site.name}</div>
-                        <div style="font-size:10px;color:#94a3b8;font-weight:500;margin-top:1px">${site.brand || ''}</div>
-                    </div>
-                </div>
-
-                <!-- Full address -->
-                <div style="padding:0 16px 10px;background:#fff;">
-                    <div style="font-size:10px;color:#64748b;line-height:1.6">${fullAddr}</div>
-                </div>
-
-                <div style="height:1px;background:#f1f5f9"></div>
-
-                <!-- Selected fuel type + price -->
-                <div style="padding:12px 16px 10px;background:#fff;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-                        <span style="font-size:9px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;background:#eef2ff;padding:2px 8px;border-radius:6px">${currentFuelTypeName}</span>
-                        <span style="font-size:10px;color:#94a3b8">Updated ${formatUpdated(site.updated)}</span>
-                    </div>
-                    <div style="display:flex;align-items:baseline;gap:3px">
-                        <span style="font-size:36px;font-weight:900;color:${color};line-height:1;letter-spacing:-1px">${(site.price * 100).toFixed(1)}</span>
-                        <span style="font-size:13px;color:#94a3b8;font-weight:600">/L</span>
-                    </div>
-                </div>
-
-                <div style="height:1px;background:#f1f5f9"></div>
-
-                <!-- Secondary prices fine print -->
-                <div style="display:flex;gap:4px;padding:10px 12px;background:#fff;">
-                    ${SECONDARY_FUELS
-                        .filter(f => f.id !== parseInt($wire.selectedFuelTypeId))
-                        .map(f => pricePill(f.label, site[f.key], priceColor(site[f.key], min, max)))
-                        .join('')}
-                </div>
-
-            </div>`,
-        });
-        iw.open({ map, anchor: m });
-        activeInfoWindow = iw;
-    }
-
-    // ── Build markers (chunked to avoid blocking the main thread) ──
-    function buildMarkers(sites, min, max) {
-        if (!sites.length) { clearMarkersAsync(); return; }
-
-        clearMarkersAsync(() => {
-            const CHUNK = 100;
-            let offset = 0;
-
-            function processChunk() {
-                const end = Math.min(offset + CHUNK, sites.length);
-                for (let i = offset; i < end; i++) {
-                    const site = sites[i];
-                    const m = new google.maps.marker.AdvancedMarkerElement({
-                        position: { lat: site.lat, lng: site.lng },
-                        map,
-                        title:   site.name + ' — ' + (site.price * 100).toFixed(1) + '/L',
-                        content: makePinEl(site.price, min, max, site.brand),
-                    });
-                    m._site = site; m._min = min; m._max = max;
-                    m.addListener('click', () => openInfoWindow(m, site, min, max));
-                    markers.push(m);
-                }
-                offset = end;
-                if (offset < sites.length) {
-                    setTimeout(processChunk, 0);
-                } else {
-                    updateMarkerVisibility();
-                    updateHighlights();
-                }
-            }
-            processChunk();
-        });
-    }
-
-    // ── Highlight cheapest & priciest in current viewport ────
-    function updateHighlights() {
-        if (!map || !markers.length) return;
-        const bounds = map.getBounds();
-        if (!bounds) return;
-
-        let minMarker = null, maxMarker = null;
-        let minPrice = Infinity, maxPrice = -Infinity;
-
-        markers.forEach(m => {
-            if (bounds.contains(m.position)) {
-                if (m._site.price < minPrice) { minPrice = m._site.price; minMarker = m; }
-                if (m._site.price > maxPrice) { maxPrice = m._site.price; maxMarker = m; }
-            }
-        });
-
-        // If only one visible site, skip both (same marker would get two badges)
-        if (minMarker === maxMarker) { minMarker = null; maxMarker = null; }
-
-        // Reset cheapest
-        if (highlightedMin !== minMarker) {
-            if (highlightedMin) {
-                const s = highlightedMin._site;
-                highlightedMin.content = makePinEl(s.price, highlightedMin._min, highlightedMin._max, s.brand);
-                highlightedMin.zIndex  = null;
-            }
-            highlightedMin = minMarker;
-            if (minMarker) {
-                const s = minMarker._site;
-                minMarker.content = makePinEl(s.price, minMarker._min, minMarker._max, s.brand, 'cheapest');
-                minMarker.zIndex  = 1000;
-            }
-        }
-
-        // Reset priciest
-        if (highlightedMax !== maxMarker) {
-            if (highlightedMax) {
-                const s = highlightedMax._site;
-                highlightedMax.content = makePinEl(s.price, highlightedMax._min, highlightedMax._max, s.brand);
-                highlightedMax.zIndex  = null;
-            }
-            highlightedMax = maxMarker;
-            if (maxMarker) {
-                const s = maxMarker._site;
-                maxMarker.content = makePinEl(s.price, maxMarker._min, maxMarker._max, s.brand, 'priciest');
-                maxMarker.zIndex  = 999;
-            }
+    // ── Stats pills ───────────────────────────────────────────
+    function updateStatsPills(stats) {
+        const pills = document.getElementById('mapStatsPills');
+        if (!pills) return;
+        if (stats.count > 0) {
+            document.getElementById('mapStatMin').textContent = (stats.min * 100).toFixed(1);
+            document.getElementById('mapStatMax').textContent = (stats.max * 100).toFixed(1);
+            pills.style.removeProperty('display');
+        } else {
+            pills.style.setProperty('display', 'none', 'important');
         }
     }
 
-    // ── Map position persistence ─────────────────────────────
+    // ── Map position persistence ──────────────────────────────
     const MAP_STORAGE_KEY = 'fuelmap_position';
 
     function saveMapPosition() {
@@ -580,9 +396,220 @@
         return null;
     }
 
-    // ── Initialise Google Map ────────────────────────────────
+    // ── Open info window ──────────────────────────────────────
+    function openInfoWindow(m, site, min, max) {
+        if (activeInfoWindow) activeInfoWindow.close();
+        if (activeMarker) { activeMarker.zIndex = null; activeMarker = null; }
+        m.zIndex     = 2000;
+        activeMarker = m;
+
+        const color    = priceColor(site.price, min, max);
+        const logoUrl  = BRAND_LOGOS[site.brand];
+        const logoHtml = logoUrl
+            ? `<img src="${logoUrl}" style="width:36px;height:36px;flex-shrink:0;object-fit:contain;border-radius:8px;border:1px solid #e2e8f0;padding:3px;background:#fff;" onerror="this.style.display='none'">`
+            : `<div style="width:36px;height:36px;flex-shrink:0;border-radius:8px;background:${color};display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;font-weight:800;font-family:system-ui,sans-serif;">${(site.brand||'?').charAt(0).toUpperCase()}</div>`;
+
+        const fullAddr = [site.addr, `${site.suburb} QLD ${site.postcode}`]
+            .filter(Boolean).join(', ');
+
+        const iw = new google.maps.InfoWindow({
+            maxWidth: 290,
+            content: `
+            <div style="font-family:system-ui,-apple-system,sans-serif;width:280px;">
+                <div style="display:flex;align-items:center;gap:11px;padding:14px 16px 11px;background:#fff;">
+                    ${logoHtml}
+                    <div style="min-width:0">
+                        <div style="font-weight:700;font-size:13px;color:#0f172a;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${site.name}</div>
+                        <div style="font-size:10px;color:#94a3b8;font-weight:500;margin-top:1px">${site.brand || ''}</div>
+                    </div>
+                </div>
+                <div style="padding:0 16px 10px;background:#fff;">
+                    <div style="font-size:10px;color:#64748b;line-height:1.6">${fullAddr}</div>
+                </div>
+                <div style="height:1px;background:#f1f5f9"></div>
+                <div style="padding:12px 16px 10px;background:#fff;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+                        <span style="font-size:9px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;background:#eef2ff;padding:2px 8px;border-radius:6px">${currentFuelTypeName}</span>
+                        <span style="font-size:10px;color:#94a3b8">Updated ${formatUpdated(site.updated)}</span>
+                    </div>
+                    <div style="display:flex;align-items:baseline;gap:3px">
+                        <span style="font-size:36px;font-weight:900;color:${color};line-height:1;letter-spacing:-1px">${(site.price * 100).toFixed(1)}</span>
+                        <span style="font-size:13px;color:#94a3b8;font-weight:600">/L</span>
+                    </div>
+                </div>
+                <div style="height:1px;background:#f1f5f9"></div>
+                <div style="display:flex;gap:4px;padding:10px 12px;background:#fff;">
+                    ${SECONDARY_FUELS
+                        .filter(f => f.id !== parseInt($wire.selectedFuelTypeId))
+                        .map(f => pricePill(f.label, site[f.key], priceColor(site[f.key] || 0, min, max)))
+                        .join('')}
+                </div>
+            </div>`,
+        });
+        iw.open({ map, anchor: m });
+        activeInfoWindow = iw;
+    }
+
+    // ── Highlight cheapest & priciest in viewport ─────────────
+    function updateHighlights() {
+        if (!map || !markerRegistry[currentFuelTypeId]) return;
+        const bounds = map.getBounds();
+        if (!bounds) return;
+
+        let minMarker = null, maxMarker = null;
+        let minPrice = Infinity, maxPrice = -Infinity;
+
+        Object.values(markerRegistry[currentFuelTypeId]).forEach(m => {
+            if (!m.map) return;
+            if (bounds.contains(m.position)) {
+                if (m._site.price < minPrice) { minPrice = m._site.price; minMarker = m; }
+                if (m._site.price > maxPrice) { maxPrice = m._site.price; maxMarker = m; }
+            }
+        });
+
+        if (minMarker === maxMarker) { minMarker = null; maxMarker = null; }
+
+        if (highlightedMin !== minMarker) {
+            if (highlightedMin) {
+                const s = highlightedMin._site;
+                highlightedMin.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+                highlightedMin.zIndex  = null;
+            }
+            highlightedMin = minMarker;
+            if (minMarker) {
+                const s = minMarker._site;
+                minMarker.content = makePinEl(s.price, globalMin, globalMax, s.brand, 'cheapest');
+                minMarker.zIndex  = 1000;
+            }
+        }
+
+        if (highlightedMax !== maxMarker) {
+            if (highlightedMax) {
+                const s = highlightedMax._site;
+                highlightedMax.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+                highlightedMax.zIndex  = null;
+            }
+            highlightedMax = maxMarker;
+            if (maxMarker) {
+                const s = maxMarker._site;
+                maxMarker.content = makePinEl(s.price, globalMin, globalMax, s.brand, 'priciest');
+                maxMarker.zIndex  = 999;
+            }
+        }
+    }
+
+    // ── Zoom overlay helpers ──────────────────────────────────
+    function showZoomOverlay() {
+        document.getElementById('zoomOverlay').classList.remove('hidden');
+    }
+    function hideZoomOverlay() {
+        document.getElementById('zoomOverlay').classList.add('hidden');
+    }
+
+    // ── Tile coordinate helpers ───────────────────────────────
+    function tileKey(latTile, lngTile) {
+        return `${latTile}_${lngTile}`;
+    }
+
+    function getTilesForBounds(bounds) {
+        const sw = bounds.getSouthWest(), ne = bounds.getNorthEast();
+        const tiles = [];
+        for (let lat = Math.floor(sw.lat() / TILE_SIZE); lat <= Math.floor(ne.lat() / TILE_SIZE); lat++) {
+            for (let lng = Math.floor(sw.lng() / TILE_SIZE); lng <= Math.floor(ne.lng() / TILE_SIZE); lng++) {
+                tiles.push({ lat, lng });
+            }
+        }
+        return tiles;
+    }
+
+    // ── Fetch helpers ─────────────────────────────────────────
+    async function fetchTile(fuelTypeId, latTile, lngTile) {
+        const res = await fetch(`/map-tiles/${fuelTypeId}/${latTile}/${lngTile}`);
+        return res.json();
+    }
+
+    async function fetchStats(fuelTypeId) {
+        if (statsCache[fuelTypeId]) return statsCache[fuelTypeId];
+        const res  = await fetch(`/map-stats/${fuelTypeId}`);
+        const data = await res.json();
+        statsCache[fuelTypeId] = data;
+        return data;
+    }
+
+    // ── Hide all markers for a fuel type ─────────────────────
+    function hideAllMarkersForFuelType(fuelTypeId) {
+        const registry = markerRegistry[fuelTypeId];
+        if (!registry) return;
+        Object.values(registry).forEach(m => { m.map = null; });
+    }
+
+    // ── Load tiles covering the current viewport ──────────────
+    async function loadViewportTiles(fuelTypeId, bounds) {
+        if (!markerRegistry[fuelTypeId]) markerRegistry[fuelTypeId] = {};
+        if (!tileCache[fuelTypeId])      tileCache[fuelTypeId]      = {};
+
+        const viewportTiles = getTilesForBounds(bounds);
+        const viewportKeys  = new Set(viewportTiles.map(t => tileKey(t.lat, t.lng)));
+
+        // Show cached tile markers immediately
+        viewportTiles.forEach(t => {
+            const key   = tileKey(t.lat, t.lng);
+            const sites = tileCache[fuelTypeId][key];
+            if (!sites) return;
+            sites.forEach(site => {
+                const m = markerRegistry[fuelTypeId][site.id];
+                if (m) m.map = map;
+            });
+        });
+
+        // Hide markers whose tile has left the viewport
+        Object.values(markerRegistry[fuelTypeId]).forEach(m => {
+            if (m._tileKey && !viewportKeys.has(m._tileKey)) m.map = null;
+        });
+
+        // Fetch missing tiles in parallel
+        const missingTiles = viewportTiles.filter(
+            t => tileCache[fuelTypeId][tileKey(t.lat, t.lng)] === undefined
+        );
+
+        if (missingTiles.length === 0) {
+            updateHighlights();
+            return;
+        }
+
+        await Promise.all(missingTiles.map(async t => {
+            const key  = tileKey(t.lat, t.lng);
+            const data = await fetchTile(fuelTypeId, t.lat, t.lng);
+
+            tileCache[fuelTypeId][key] = data.sites ?? [];
+
+            // Only render markers if this tile is still in the viewport that triggered the fetch
+            if (!viewportKeys.has(key)) return;
+
+            (data.sites ?? []).forEach(site => {
+                if (markerRegistry[fuelTypeId][site.id]) {
+                    markerRegistry[fuelTypeId][site.id].map = map;
+                    return;
+                }
+                const m = new google.maps.marker.AdvancedMarkerElement({
+                    position: { lat: site.lat, lng: site.lng },
+                    map,
+                    title:   `${site.name} — ${(site.price * 100).toFixed(1)}/L`,
+                    content: makePinEl(site.price, globalMin, globalMax, site.brand),
+                });
+                m._site    = site;
+                m._tileKey = key;
+                m.addListener('click', () => openInfoWindow(m, site, globalMin, globalMax));
+                markerRegistry[fuelTypeId][site.id] = m;
+            });
+        }));
+
+        updateHighlights();
+    }
+
+    // ── Initialise Google Map ─────────────────────────────────
     async function initMap() {
-        const { Map }         = await google.maps.importLibrary('maps');
+        const { Map }          = await google.maps.importLibrary('maps');
         await google.maps.importLibrary('marker');
         const { Autocomplete } = await google.maps.importLibrary('places');
 
@@ -590,7 +617,7 @@
 
         map = new Map(document.getElementById('fuelMap'), {
             center:            saved ? { lat: saved.lat, lng: saved.lng } : { lat: -27.4698, lng: 153.0251 },
-            zoom:              saved ? saved.zoom : 8,
+            zoom:              saved ? saved.zoom : 12,
             mapId:             'DEMO_MAP_ID',
             clickableIcons:    false,
             mapTypeControl:    false,
@@ -599,29 +626,39 @@
             zoomControlOptions: { position: google.maps.ControlPosition.RIGHT_CENTER },
         });
 
-        fetchMapData($wire.selectedFuelTypeId).then(data => {
-            currentFuelTypeName = data.fuel_type_name ?? '';
-            buildMarkers(data.sites, data.min, data.max);
-            updateStatsPills(data);
-        });
-
-        map.addListener('bounds_changed', () => {
-            clearTimeout(visTimer);
-            visTimer = setTimeout(updateMarkerVisibility, 100);
-        });
-
         let highlightTimer = null;
-        map.addListener('idle', () => {
+
+        map.addListener('idle', async () => {
             saveMapPosition();
+
+            const zoom = map.getZoom();
+            if (zoom < MIN_ZOOM) {
+                showZoomOverlay();
+                hideAllMarkersForFuelType(currentFuelTypeId);
+                return;
+            }
+            hideZoomOverlay();
+
+            if (!statsCache[currentFuelTypeId]) {
+                const stats = await fetchStats(currentFuelTypeId);
+                globalMin           = stats.min;
+                globalMax           = stats.max;
+                currentFuelTypeName = stats.fuel_type_name;
+                updateStatsPills(stats);
+            }
+
+            await loadViewportTiles(currentFuelTypeId, map.getBounds());
+
             clearTimeout(highlightTimer);
             highlightTimer = setTimeout(updateHighlights, 150);
         });
+
         map.addListener('click', () => {
             if (activeInfoWindow) { activeInfoWindow.close(); activeInfoWindow = null; }
             if (activeMarker) { activeMarker.zIndex = null; activeMarker = null; }
         });
 
-        // ── Address search (Places Autocomplete) ──────────────
+        // ── Address search ────────────────────────────────────
         const input = document.getElementById('addressSearch');
         const ac    = new Autocomplete(input, {
             componentRestrictions: { country: 'au' },
@@ -638,21 +675,45 @@
 
     initMap();
 
-    // ── Persist selected fuel type across visits ─────────────
+    // ── Persist selected fuel type across visits ──────────────
     const FUEL_TYPE_KEY = 'fuelmap_fuel_type';
     const savedFuelType = localStorage.getItem(FUEL_TYPE_KEY);
-    if (savedFuelType && parseInt(savedFuelType) !== $wire.selectedFuelTypeId) {
+    if (savedFuelType && parseInt(savedFuelType) !== currentFuelTypeId) {
         $wire.set('selectedFuelTypeId', parseInt(savedFuelType));
     }
 
     // ── Livewire event — fuel type changed ───────────────────
-    $wire.on('fuelTypeChanged', ({ fuelTypeId }) => {
+    $wire.on('fuelTypeChanged', async ({ fuelTypeId }) => {
         localStorage.setItem(FUEL_TYPE_KEY, fuelTypeId);
-        fetchMapData(fuelTypeId).then(data => {
-            currentFuelTypeName = data.fuel_type_name ?? '';
-            buildMarkers(data.sites, data.min, data.max);
-            updateStatsPills(data);
-        });
+
+        if (activeInfoWindow) { activeInfoWindow.close(); activeInfoWindow = null; }
+        if (activeMarker)     { activeMarker.zIndex = null; activeMarker = null; }
+
+        if (highlightedMin) {
+            const s = highlightedMin._site;
+            highlightedMin.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+            highlightedMin.zIndex  = null;
+            highlightedMin         = null;
+        }
+        if (highlightedMax) {
+            const s = highlightedMax._site;
+            highlightedMax.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+            highlightedMax.zIndex  = null;
+            highlightedMax         = null;
+        }
+
+        hideAllMarkersForFuelType(currentFuelTypeId);
+        currentFuelTypeId = parseInt(fuelTypeId);
+
+        const stats = await fetchStats(currentFuelTypeId);
+        globalMin           = stats.min;
+        globalMax           = stats.max;
+        currentFuelTypeName = stats.fuel_type_name;
+        updateStatsPills(stats);
+
+        if (map && map.getZoom() >= MIN_ZOOM) {
+            await loadViewportTiles(currentFuelTypeId, map.getBounds());
+        }
     });
 </script>
 @endscript
