@@ -443,7 +443,6 @@ $activePreset = match($dateFrom) {
         responsive:          true,
         maintainAspectRatio: false,
         animation:           { duration: 600, easing: 'easeInOutQuart' },
-        indexAxis:           'y',
         plugins: {
             legend: { display: false },
             tooltip: {
@@ -455,21 +454,21 @@ $activePreset = match($dateFrom) {
                 padding:         14,
                 cornerRadius:    12,
                 callbacks: {
-                    label: c => ` ${c.parsed.x !== null ? c.parsed.x.toFixed(1) + ' ¢/L' : 'N/A'}`,
+                    label: c => ` ${c.parsed.y !== null ? c.parsed.y.toFixed(1) + ' ¢/L' : 'N/A'}`,
                 },
             },
         },
         scales: {
             x: {
+                ticks:  { color: '#475569', font: { size: 11 } },
+                grid:   { display: false },
+                border: { display: false },
+            },
+            y: {
                 ticks:  { color: '#475569', font: { size: 11 }, callback: v => v + ' ¢' },
                 grid:   { color: 'rgba(15,23,42,0.05)' },
                 border: { display: false },
                 title:  { display: true, text: axisTitle, color: '#334155', font: { size: 11 } },
-            },
-            y: {
-                ticks:  { color: '#475569', font: { size: 11 } },
-                grid:   { display: false },
-                border: { display: false },
             },
         },
     });
@@ -478,13 +477,29 @@ $activePreset = match($dateFrom) {
         const c = { r: 99, g: 102, b: 241 };
         return {
             labels,
-            datasets: [{
-                data:            values,
-                backgroundColor: rgba(c, 0.85),
-                borderColor:     rgba(c, 1),
-                borderWidth:     1.5,
-                borderRadius:    5,
-            }],
+            datasets: [
+                {
+                    type:            'bar',
+                    data:            values,
+                    backgroundColor: rgba(c, 0.65),
+                    borderColor:     rgba(c, 1),
+                    borderWidth:     1.5,
+                    borderRadius:    4,
+                },
+                {
+                    type:                 'line',
+                    data:                 values,
+                    borderColor:          rgba(c, 1),
+                    backgroundColor:      'transparent',
+                    borderWidth:          2.5,
+                    tension:              0.3,
+                    pointRadius:          4,
+                    pointBackgroundColor: rgba(c, 1),
+                    pointBorderColor:     '#ffffff',
+                    pointBorderWidth:     2,
+                    fill:                 false,
+                },
+            ],
         };
     }
 
@@ -524,17 +539,34 @@ $activePreset = match($dateFrom) {
     const DAY_LABELS     = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
     function buildWeeklyDatasets(rawDatasets) {
-        return rawDatasets.map((ds, i) => {
+        const result = [];
+        rawDatasets.forEach((ds, i) => {
             const c = PALETTE[i % PALETTE.length];
-            return {
+            result.push({
+                type:            'bar',
                 label:           ds.label,
                 data:            ds.data,
-                backgroundColor: rgba(c, 0.75),
+                backgroundColor: rgba(c, 0.65),
                 borderColor:     rgba(c, 1),
                 borderWidth:     1.5,
                 borderRadius:    4,
-            };
+            });
+            result.push({
+                type:                 'line',
+                label:                '',
+                data:                 ds.data,
+                borderColor:          rgba(c, 1),
+                backgroundColor:      'transparent',
+                borderWidth:          2.5,
+                tension:              0.3,
+                pointRadius:          4,
+                pointBackgroundColor: rgba(c, 1),
+                pointBorderColor:     '#ffffff',
+                pointBorderWidth:     2,
+                fill:                 false,
+            });
         });
+        return result;
     }
 
     const weeklyChart = new Chart(weeklyCanvas, {
@@ -553,6 +585,7 @@ $activePreset = match($dateFrom) {
                         pointStyle:    'circle',
                         padding:       22,
                         font: { size: 12, weight: '600', family: 'system-ui, sans-serif' },
+                        filter:        (item) => item.text !== '',
                     },
                 },
                 tooltip: {
@@ -564,7 +597,7 @@ $activePreset = match($dateFrom) {
                     padding:         14,
                     cornerRadius:    12,
                     callbacks: {
-                        label: c => ` ${c.dataset.label}: ${c.parsed.y !== null ? c.parsed.y.toFixed(1) + ' ¢/L' : 'N/A'}`,
+                        label: c => c.dataset.label ? ` ${c.dataset.label}: ${c.parsed.y !== null ? c.parsed.y.toFixed(1) + ' ¢/L' : 'N/A'}` : null,
                     },
                 },
             },
