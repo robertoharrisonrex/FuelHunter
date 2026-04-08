@@ -139,6 +139,19 @@
     </div>
 
 
+    {{-- ── Zoom overlay ──────────────────────────────────────── --}}
+    <div id="zoomOverlay" class="hidden absolute inset-0 z-20 flex items-center justify-center">
+        <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 p-8 text-center max-w-xs mx-4">
+            <div class="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-7 h-7 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607ZM10.5 7.5v6m3-3h-6"/>
+                </svg>
+            </div>
+            <h3 class="text-slate-900 font-bold text-base mb-1">Zoom in to see fuel stations</h3>
+            <p class="text-slate-500 text-sm">Zoom in to suburb level to load nearby fuel sites.</p>
+        </div>
+    </div>
+
     {{-- ── Map canvas ───────────────────────────────────────── --}}
     <div wire:ignore id="fuelMap" class="w-full h-full bg-slate-800"></div>
 
