@@ -122,7 +122,7 @@ def transform_regions():
             Column("region_id", Integer),
             Column("type", String),
             Column("name", String),
-            Column("abbreviation", DateTime),
+            Column("abbreviation", String),
             Column("region_parent_id", String),
             Column("created_at", DateTime),
             Column("updated_at", DateTime),
@@ -207,7 +207,7 @@ def transform_fuel_sites():
     fuel_sites_df['geo_region_3'] = df['G3'].astype(int)
     fuel_sites_df['geo_region_4'] = df['G4'].astype(int)
     fuel_sites_df['geo_region_5'] = df['G5'].astype(int)
-    fuel_sites_df['api_last_modified'] = df['M']
+    fuel_sites_df['api_last_modified'] = pd.to_datetime(df['M'], errors='coerce')
     fuel_sites_df['google_place_id'] = df['GPI'].astype(str)
     fuel_sites_df['created_at'] = datetime.now()
     fuel_sites_df['updated_at'] = datetime.now()
@@ -344,6 +344,7 @@ def extract_fuel_prices():
 def transform_fuel_prices():
     fuel_prices_df = pd.read_json('/tmp/fuelprices.json')
     fuel_prices_df.rename(columns={'SiteId': 'site_id', 'FuelId': 'fuel_id', 'Price':'price', 'CollectionMethod': 'collection_method', 'TransactionDateUtc': 'transaction_date_utc'}, inplace=True)
+    fuel_prices_df['transaction_date_utc'] = pd.to_datetime(fuel_prices_df['transaction_date_utc'], errors='coerce')
     fuel_prices_df.loc[fuel_prices_df['price'] == 9999.0, 'fuel_id'] = 0.0
     fuel_prices_df['price'] = fuel_prices_df['price'] / 10
     fuel_prices_df['created_at'] = datetime.now()
