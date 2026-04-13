@@ -64,6 +64,13 @@ class Dashboard extends Component
         Cookie::queue('dash_fuel_types', json_encode($this->selectedFuelTypes), 43200);
     }
 
+    private function dowExpression(string $column): string
+    {
+        return DB::connection()->getDriverName() === 'pgsql'
+            ? "EXTRACT(DOW FROM {$column})::integer"
+            : "STRFTIME('%w', {$column})";
+    }
+
     private function cacheKey(string $prefix): string
     {
         return $prefix . '_' . md5(
@@ -176,7 +183,7 @@ class Dashboard extends Component
                 ->whereIn('fuel_id', $ids)
                 ->where('price', '>', 50)
                 ->whereBetween('transaction_date', [$dateFrom, $dateTo])
-                ->selectRaw("fuel_id, STRFTIME('%w', transaction_date_utc) as day_of_week, price");
+                ->selectRaw("fuel_id, {$this->dowExpression('transaction_date_utc')} as day_of_week, price");
 
             $rows = DB::query()
                 ->fromSub(
@@ -184,7 +191,7 @@ class Dashboard extends Component
                         ->whereIn('fuel_id', $ids)
                         ->where('price', '>', 50)
                         ->whereBetween('transaction_date', [$dateFrom, $dateTo])
-                        ->selectRaw("fuel_id, STRFTIME('%w', transaction_date_utc) as day_of_week, price")
+                        ->selectRaw("fuel_id, {$this->dowExpression('transaction_date_utc')} as day_of_week, price")
                         ->unionAll($historical),
                     'combined'
                 )
