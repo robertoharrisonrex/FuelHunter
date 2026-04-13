@@ -70,7 +70,6 @@ sudo -u www-data npm ci
 sudo -u www-data npm run build
 sudo -u www-data php artisan config:cache
 sudo -u www-data php artisan route:cache
-sudo -u www-data php artisan view:cache
 sudo -u www-data php artisan migrate --force
 sudo -u www-data php artisan storage:link
 
