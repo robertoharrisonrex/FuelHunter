@@ -345,6 +345,7 @@ def transform_fuel_prices():
     fuel_prices_df = pd.read_json('/tmp/fuelprices.json')
     fuel_prices_df.rename(columns={'SiteId': 'site_id', 'FuelId': 'fuel_id', 'Price':'price', 'CollectionMethod': 'collection_method', 'TransactionDateUtc': 'transaction_date_utc'}, inplace=True)
     fuel_prices_df['transaction_date_utc'] = pd.to_datetime(fuel_prices_df['transaction_date_utc'], errors='coerce')
+    fuel_prices_df = fuel_prices_df.dropna(subset=['transaction_date_utc'])
     fuel_prices_df.loc[fuel_prices_df['price'] == 9999.0, 'fuel_id'] = 0.0
     fuel_prices_df['price'] = fuel_prices_df['price'] / 10
     fuel_prices_df['created_at'] = datetime.now()
