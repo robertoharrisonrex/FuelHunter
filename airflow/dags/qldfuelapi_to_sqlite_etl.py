@@ -37,8 +37,8 @@ def transform_brands():
         data = json.load(f)
     df = pd.DataFrame(data)
     df = df[['BrandId', 'Name']]
-    df['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    df['updated_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    df['created_at'] = datetime.now()
+    df['updated_at'] = datetime.now()
     df.rename(columns={'BrandId': 'id', 'Name': 'name'}, inplace=True)
 
     # Create database connection
@@ -173,8 +173,8 @@ def sort_regions(df, region_type):
     region_df['name'] = df['Name'].astype(str)
     region_df['abbreviation'] = df['Abbrev'].astype(str)
     region_df['region_parent_id'] = df['GeoRegionParentId'].astype("Int64")
-    region_df['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    region_df['updated_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    region_df['created_at'] = datetime.now()
+    region_df['updated_at'] = datetime.now()
     return region_df
 
 
@@ -209,8 +209,8 @@ def transform_fuel_sites():
     fuel_sites_df['geo_region_5'] = df['G5'].astype(int)
     fuel_sites_df['api_last_modified'] = df['M']
     fuel_sites_df['google_place_id'] = df['GPI'].astype(str)
-    fuel_sites_df['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    fuel_sites_df['updated_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    fuel_sites_df['created_at'] = datetime.now()
+    fuel_sites_df['updated_at'] = datetime.now()
 
     engine = _engine()
     metadata = MetaData()
@@ -290,8 +290,8 @@ def transform_fuel_types():
 
     # Transformations
     fuel_types_df.rename(columns={'FuelId': 'id', 'Name': 'name'}, inplace=True)
-    fuel_types_df['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    fuel_types_df['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    fuel_types_df['created_at'] = datetime.now()
+    fuel_types_df['updated_at'] = datetime.now()
 
     # Create temporary table
     engine = _engine()
@@ -346,8 +346,10 @@ def transform_fuel_prices():
     fuel_prices_df.rename(columns={'SiteId': 'site_id', 'FuelId': 'fuel_id', 'Price':'price', 'CollectionMethod': 'collection_method', 'TransactionDateUtc': 'transaction_date_utc'}, inplace=True)
     fuel_prices_df.loc[fuel_prices_df['price'] == 9999.0, 'fuel_id'] = 0.0
     fuel_prices_df['price'] = fuel_prices_df['price'] / 10
-    fuel_prices_df['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    fuel_prices_df['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    fuel_prices_df['created_at'] = datetime.now()
+    fuel_prices_df['updated_at'] = datetime.now()
+    # Deduplicate here so we don't need rowid/ctid SQL tricks later
+    fuel_prices_df = fuel_prices_df.drop_duplicates(subset=['site_id', 'fuel_id'], keep='last')
 
     engine = _engine()
     metadata = MetaData()
@@ -366,17 +368,6 @@ def transform_fuel_prices():
 def load_fuel_prices():
     engine = _engine()
     conn = engine.connect()
-
-    # Deduplicate temp_prices first: the price=9999→fuel_id=0 mapping can produce
-    # multiple rows with the same (site_id, fuel_id). Keep only the latest per pair.
-    conn.execute(text("""
-        DELETE FROM temp_prices
-        WHERE rowid NOT IN (
-            SELECT MAX(rowid)
-            FROM temp_prices
-            GROUP BY site_id, fuel_id
-        )
-    """))
 
     # Archive current prices that are being superseded by a newer incoming price.
     conn.execute(text("""
