@@ -10,6 +10,14 @@ from airflow.models import Variable
 from sqlalchemy import create_engine, Table, Column, Integer, String, MetaData, DateTime, text
 
 
+def _engine():
+    url = os.environ.get(
+        'FUELDB_URL',
+        'sqlite:////opt/airflow/database/database.sqlite'
+    )
+    return create_engine(url)
+
+
 #  ------------------   BRANDS
 
 def extract_brands():
@@ -35,17 +43,17 @@ def transform_brands():
 
     # Create database connection
 
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     conn = engine.connect()
 
     # Create Temp table
-    metadata = MetaData(bind=conn)
+    metadata = MetaData()
     brand_temp_table = Table("temp_brands", metadata,
                              Column("id", Integer, primary_key=True),
                              Column("name", String),
                              Column("created_at", DateTime),
                              Column("updated_at", DateTime))
-    metadata.create_all(conn)
+    metadata.create_all(engine)
 
     # Write brands to temp table
     df.to_sql('temp_brands', con=conn, if_exists='replace', index=False)
@@ -53,23 +61,23 @@ def transform_brands():
 
 
 def load_brands():
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     conn = engine.connect()
 
-    conn.execute("""
+    conn.execute(text("""
         UPDATE brands
         SET
             name = (SELECT name FROM temp_brands WHERE temp_brands.id = brands.id),
             updated_at = (SELECT updated_at FROM temp_brands WHERE temp_brands.id = brands.id)
         WHERE id IN (SELECT id FROM temp_brands);
-    """)
+    """))
 
-    conn.execute("""
+    conn.execute(text("""
         INSERT INTO brands (id, name, created_at, updated_at)
         SELECT id, name, created_at, updated_at
         FROM temp_brands
         WHERE id NOT IN (SELECT id FROM brands);
-    """)
+    """))
 
     conn.close()
 
@@ -102,7 +110,7 @@ def transform_regions():
     states = sort_regions(state_list, "State")
 
     # Create temporary tables
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     metadata = MetaData()
 
     for region_type in ["temp_suburbs", "temp_cities", "temp_states"]:
@@ -128,12 +136,12 @@ def transform_regions():
 
 
 def load_regions():
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     conn = engine.connect()
 
     for region_type in ["suburbs", "cities", "states"]:
         print(region_type)
-        conn.execute(f"""
+        conn.execute(text(f"""
         UPDATE {region_type}
         SET
             region_level = (SELECT region_level FROM temp_{region_type} where id = {region_type}.id),
@@ -144,14 +152,14 @@ def load_regions():
             region_parent_id = (SELECT region_id FROM temp_{region_type} where id = {region_type}.id),
             updated_at = (SELECT updated_at FROM temp_{region_type} where id = {region_type}.id)
         where id in (select id FROM temp_{region_type});
-        """)
+        """))
 
-        conn.execute(f"""
+        conn.execute(text(f"""
         insert into {region_type} (id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at)
             select id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at
             from temp_{region_type}
         where id not in (select id from {region_type})
-        """)
+        """))
 
     conn.close()
 
@@ -204,7 +212,7 @@ def transform_fuel_sites():
     fuel_sites_df['created_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     fuel_sites_df['updated_at'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     metadata = MetaData()
 
     fuelsites = Table('temp_fuel_sites', metadata,
@@ -231,10 +239,10 @@ def transform_fuel_sites():
 
 
 def load_fuel_sites():
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     conn = engine.connect()
 
-    conn.execute("""
+    conn.execute(text("""
     UPDATE fuel_sites
     SET
         address = (select address from temp_fuel_sites where id = fuel_sites.id),
@@ -252,14 +260,14 @@ def load_fuel_sites():
         google_place_id = (select google_place_id from temp_fuel_sites where id = fuel_sites.id),
         updated_at = (select updated_at from temp_fuel_sites where id = fuel_sites.id)
     WHERE id in (select id from temp_fuel_sites);
-    """)
+    """))
 
-    conn.execute("""
+    conn.execute(text("""
     INSERT INTO fuel_sites (id, address, name, brand_id, postcode, latitude, longitude, geo_region_1, geo_region_2, geo_region_3, geo_region_4, geo_region_5, api_last_modified, google_place_id, created_at, updated_at)
         select id, address, name, brand_id, postcode, latitude, longitude, geo_region_1, geo_region_2, geo_region_3, geo_region_4, geo_region_5, api_last_modified, google_place_id, created_at, updated_at
         from temp_fuel_sites
     WHERE id not in (select id from fuel_sites);
-    """)
+    """))
     conn.close()
 
 
@@ -286,7 +294,7 @@ def transform_fuel_types():
     fuel_types_df['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
     # Create temporary table
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     metadata = MetaData()
     temp_fuel_types = Table('temp_fuel_types', metadata,
                             Column('id', Integer),
@@ -301,24 +309,24 @@ def transform_fuel_types():
 
 
 def load_fuel_types():
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     conn = engine.connect()
 
     # UPDATE existing fuel_type if it exists (based on id)
-    conn.execute("""
+    conn.execute(text("""
     UPDATE fuel_types
         SET
             name = (select name from temp_fuel_types where id = fuel_types.id),
             updated_at = (select updated_at from temp_fuel_types where id = fuel_types.id)
     WHERE id in (select id from temp_fuel_types);
-    """)
+    """))
 
     # INSERT existing fuel_type if it exists (based on id)
-    conn.execute("""
+    conn.execute(text("""
     INSERT INTO fuel_types (id, name, created_at, updated_at)
         SELECT id, name, created_at, updated_at FROM temp_fuel_types
         WHERE id not in (select id from fuel_types);
-    """)
+    """))
     conn.close()
 
 
@@ -341,7 +349,7 @@ def transform_fuel_prices():
     fuel_prices_df['created_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     fuel_prices_df['updated_at'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     metadata = MetaData()
     temp_fuel_prices = Table('temp_prices', metadata,
                              Column('site_id', Integer),
@@ -356,32 +364,32 @@ def transform_fuel_prices():
 
 
 def load_fuel_prices():
-    engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
+    engine = _engine()
     conn = engine.connect()
 
     # Deduplicate temp_prices first: the price=9999→fuel_id=0 mapping can produce
     # multiple rows with the same (site_id, fuel_id). Keep only the latest per pair.
-    conn.execute("""
+    conn.execute(text("""
         DELETE FROM temp_prices
         WHERE rowid NOT IN (
             SELECT MAX(rowid)
             FROM temp_prices
             GROUP BY site_id, fuel_id
         )
-    """)
+    """))
 
     # Archive current prices that are being superseded by a newer incoming price.
-    conn.execute("""
+    conn.execute(text("""
         INSERT INTO historical_site_prices
             (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
         SELECT p.site_id, p.fuel_id, p.collection_method, p.transaction_date_utc, p.price, p.created_at, p.updated_at
         FROM prices p
         JOIN temp_prices tp ON tp.site_id = p.site_id AND tp.fuel_id = p.fuel_id
         WHERE tp.transaction_date_utc > p.transaction_date_utc
-    """)
+    """))
 
     # Delete the now-archived (superseded) prices from the current prices table.
-    conn.execute("""
+    conn.execute(text("""
         DELETE FROM prices
         WHERE id IN (
             SELECT p.id
@@ -389,17 +397,17 @@ def load_fuel_prices():
             JOIN temp_prices tp ON tp.site_id = p.site_id AND tp.fuel_id = p.fuel_id
             WHERE tp.transaction_date_utc > p.transaction_date_utc
         )
-    """)
+    """))
 
     # Insert new prices for: (a) updated pairs just deleted above, and (b) brand-new pairs.
     # Pairs with the same date as the existing price are ignored (they remain unchanged).
-    conn.execute("""
+    conn.execute(text("""
         INSERT INTO prices
             (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
         SELECT site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at
         FROM temp_prices
         WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices)
-    """)
+    """))
 
     conn.close()
 
