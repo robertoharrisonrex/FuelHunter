@@ -358,92 +358,47 @@ def transform_fuel_prices():
 def load_fuel_prices():
     engine = create_engine('sqlite:////opt/airflow/database/database.sqlite')
     conn = engine.connect()
-    # If a price exists with the same incoming (site_id, fuel_id, and transaction_date), ignore
 
-    # If a price exists with the same incoming (site_id, fuel_id) but a different transaction_date, move old record to historical_site_prices + delete existing record + insert new record
+    # Deduplicate temp_prices first: the price=9999→fuel_id=0 mapping can produce
+    # multiple rows with the same (site_id, fuel_id). Keep only the latest per pair.
     conn.execute("""
-       WITH
-	comparison AS (
-		SELECT
-			temp_prices.site_id AS temp_site_id,
-			temp_prices.fuel_id AS temp_fuel_id,
-			temp_prices.collection_method AS temp_collection_method,
-			temp_prices.transaction_date_utc AS temp_transaction_date_utc,
-			temp_prices.price AS temp_price,
-			temp_prices.created_at AS temp_created_at,
-			temp_prices.updated_at AS temp_updated_at,
-			prices.site_id AS current_site_id,
-			prices.fuel_id AS current_fuel_id,
-			prices.collection_method AS current_collection_method,
-			prices.transaction_date_utc AS current_transaction_date_utc,
-			prices.price AS current_price,
-			prices.created_at AS current_created_at,
-			prices.updated_at AS current_updated_at
-		FROM
-			temp_prices
-			JOIN prices ON prices.site_id = temp_prices.site_id
-			AND prices.fuel_id = temp_prices.fuel_id
-		WHERE
-			temp_prices.transaction_date_utc > prices.transaction_date_utc
-	)
-
-        INSERT into prices (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
-            select temp_site_id, temp_fuel_id, temp_collection_method, temp_transaction_date_utc, temp_price, temp_created_at, temp_updated_at
-        FROM comparison;
+        DELETE FROM temp_prices
+        WHERE rowid NOT IN (
+            SELECT MAX(rowid)
+            FROM temp_prices
+            GROUP BY site_id, fuel_id
+        )
     """)
 
+    # Archive current prices that are being superseded by a newer incoming price.
     conn.execute("""
-           WITH
-    	comparison AS (
-    		SELECT
-    			temp_prices.site_id AS temp_site_id,
-    			temp_prices.fuel_id AS temp_fuel_id,
-    			temp_prices.collection_method AS temp_collection_method,
-    			temp_prices.transaction_date_utc AS temp_transaction_date_utc,
-    			temp_prices.price AS temp_price,
-    			temp_prices.created_at AS temp_created_at,
-    			temp_prices.updated_at AS temp_updated_at,
-    			prices.site_id AS current_site_id,
-    			prices.fuel_id AS current_fuel_id,
-    			prices.collection_method AS current_collection_method,
-    			prices.transaction_date_utc AS current_transaction_date_utc,
-    			prices.price AS current_price,
-    			prices.created_at AS current_created_at,
-    			prices.updated_at AS current_updated_at
-    		FROM
-    			temp_prices
-    			JOIN prices ON prices.site_id = temp_prices.site_id
-    			AND prices.fuel_id = temp_prices.fuel_id
-    		WHERE
-    			temp_prices.transaction_date_utc > prices.transaction_date_utc
-    	)
+        INSERT INTO historical_site_prices
+            (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
+        SELECT p.site_id, p.fuel_id, p.collection_method, p.transaction_date_utc, p.price, p.created_at, p.updated_at
+        FROM prices p
+        JOIN temp_prices tp ON tp.site_id = p.site_id AND tp.fuel_id = p.fuel_id
+        WHERE tp.transaction_date_utc > p.transaction_date_utc
+    """)
 
-            INSERT into historical_site_prices (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
-                select current_site_id, current_fuel_id, current_collection_method, current_transaction_date_utc, current_price, current_created_at, current_updated_at
-            FROM comparison;
-        """)
-
+    # Delete the now-archived (superseded) prices from the current prices table.
     conn.execute("""
-               WITH
-        	comparison AS (
-        		SELECT
-        			prices.id AS current_id
-        		FROM
-        			temp_prices
-        			JOIN prices ON prices.site_id = temp_prices.site_id
-        			AND prices.fuel_id = temp_prices.fuel_id
-        		WHERE
-        			temp_prices.transaction_date_utc > prices.transaction_date_utc
-        	)
-                DELETE FROM prices
-                    WHERE id in (select current_id from comparison);
-            """)
+        DELETE FROM prices
+        WHERE id IN (
+            SELECT p.id
+            FROM prices p
+            JOIN temp_prices tp ON tp.site_id = p.site_id AND tp.fuel_id = p.fuel_id
+            WHERE tp.transaction_date_utc > p.transaction_date_utc
+        )
+    """)
 
+    # Insert new prices for: (a) updated pairs just deleted above, and (b) brand-new pairs.
+    # Pairs with the same date as the existing price are ignored (they remain unchanged).
     conn.execute("""
-        INSERT INTO prices (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
-            SELECT site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at
-            FROM temp_prices
-        WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices);
+        INSERT INTO prices
+            (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
+        SELECT site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at
+        FROM temp_prices
+        WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices)
     """)
 
     conn.close()
