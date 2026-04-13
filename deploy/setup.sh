@@ -34,7 +34,7 @@ apt-get install -y -qq docker-compose-plugin
 
 echo "==> Clone repo"
 mkdir -p "$DEPLOY_PATH"
-git clone https://github.com/YOUR_ORG/fuelHunter.git "$DEPLOY_PATH"
+git clone https://github.com/robertoharrisonrex/FuelHunter.git "$DEPLOY_PATH"
 chown -R www-data:www-data "$DEPLOY_PATH"
 
 echo "==> .env"
