@@ -58,6 +58,7 @@ def fetch_and_store_oil_prices():
                 })
             except Exception as e:
                 logging.warning('oilprice_etl: failed to fetch %s: %s', code, e)
+
         conn.commit()
 
 
