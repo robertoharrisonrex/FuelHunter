@@ -24,6 +24,9 @@ test('cities endpoint returns correct json structure', function () {
              ->assertJsonCount(1)
              ->assertJsonPath('0.city_id', 5)
              ->assertJsonPath('0.city_name', 'Brisbane')
+             ->assertJsonPath('0.avg_price', 20752)
+             ->assertJsonPath('0.lat', -27.471)
+             ->assertJsonPath('0.lng', 153.024)
              ->assertJsonPath('0.deviation', 412)
              ->assertJsonPath('0.site_count', 142);
 });
@@ -59,5 +62,9 @@ test('suburbs endpoint returns correct json structure', function () {
              ->assertJsonCount(1)
              ->assertJsonPath('0.suburb_id', 12)
              ->assertJsonPath('0.suburb_name', 'Newmarket')
-             ->assertJsonPath('0.deviation', -240);
+             ->assertJsonPath('0.avg_price', 20100)
+             ->assertJsonPath('0.lat', -27.441)
+             ->assertJsonPath('0.lng', 153.012)
+             ->assertJsonPath('0.deviation', -240)
+             ->assertJsonPath('0.site_count', 4);
 });

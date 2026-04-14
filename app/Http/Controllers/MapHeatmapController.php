@@ -75,6 +75,7 @@ class MapHeatmapController extends Controller
             }
 
             $totalSites = $rows->sum('site_count');
+            // Deviation is relative to city average (not statewide) — gives contrast within drill-down view
             $areaAvg    = $totalSites > 0
                 ? $rows->sum(fn($r) => (float) $r->avg_price * (int) $r->site_count) / $totalSites
                 : 0;

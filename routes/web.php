@@ -18,8 +18,10 @@ Route::view('/dashboard', 'dashboard.index');
 Route::get('/map-data/{fuelTypeId}', [MapDataController::class, 'show']);
 Route::get('/map-stats/{fuelTypeId}', [MapStatsController::class, 'show']);
 Route::get('/map-tiles/{fuelTypeId}/{latTile}/{lngTile}', [MapTileController::class, 'show'])->where(['latTile' => '-?\d+', 'lngTile' => '-?\d+']);
-Route::get('/map-heatmap/{fuelTypeId}',               [MapHeatmapController::class, 'cities']);
-Route::get('/map-heatmap/{fuelTypeId}/city/{cityId}', [MapHeatmapController::class, 'suburbs']);
+Route::get('/map-heatmap/{fuelTypeId}',               [MapHeatmapController::class, 'cities'])
+    ->where(['fuelTypeId' => '\d+']);
+Route::get('/map-heatmap/{fuelTypeId}/city/{cityId}', [MapHeatmapController::class, 'suburbs'])
+    ->where(['fuelTypeId' => '\d+', 'cityId' => '\d+']);
 
 Route::controller(FuelSiteController::class)->group(function() {
     Route::get('/fuel', 'index');
