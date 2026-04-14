@@ -185,7 +185,7 @@
          style="display: none;">
 
         {{-- Dark mode toggle --}}
-        <button @click="$store.theme.toggle()"
+        <button @click.stop="$store.theme.toggle()"
                 class="flex items-center justify-between w-full px-4 py-3 border-b border-slate-100 dark:border-slate-700
                        text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-150">
             <div class="flex items-center gap-3">
