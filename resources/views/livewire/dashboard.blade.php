@@ -283,6 +283,23 @@ $activePreset = match($dateFrom) {
         return `rgba(${c.r},${c.g},${c.b},${a})`;
     }
 
+    function getChartTheme() {
+        const dark = document.documentElement.classList.contains('dark');
+        return {
+            gridColor:    dark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.05)',
+            tickColor:    dark ? '#475569' : '#475569',
+            legendColor:  dark ? '#94a3b8' : '#64748b',
+            yTitleColor:  dark ? '#94a3b8' : '#334155',
+            tooltipBg:    'rgba(2,6,23,0.94)',
+            tooltipTitle: '#e2e8f0',
+            tooltipBody:  '#94a3b8',
+            pieBorder:    dark ? '#0f172a' : '#ffffff',
+            legendText:   dark ? '#94a3b8' : '#64748b',
+            legendMuted:  dark ? '#475569' : '#94a3b8',
+            legendCount:  dark ? '#334155' : '#cbd5e1',
+        };
+    }
+
     function buildDatasets(rawDatasets, chartArea, ctx) {
         return rawDatasets.map((ds, i) => {
             const c     = PALETTE[i % PALETTE.length];
@@ -505,23 +522,6 @@ $activePreset = match($dateFrom) {
     };
     let OIL_ACTIVE_CODE = 'WTI_USD';
 
-    function getChartTheme() {
-        const dark = document.documentElement.classList.contains('dark');
-        return {
-            gridColor:    dark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.05)',
-            tickColor:    dark ? '#475569' : '#475569',
-            legendColor:  dark ? '#94a3b8' : '#64748b',
-            yTitleColor:  dark ? '#94a3b8' : '#334155',
-            tooltipBg:    'rgba(2,6,23,0.94)',
-            tooltipTitle: '#e2e8f0',
-            tooltipBody:  '#94a3b8',
-            pieBorder:    dark ? '#0f172a' : '#ffffff',
-            legendText:   dark ? '#94a3b8' : '#64748b',
-            legendMuted:  dark ? '#475569' : '#94a3b8',
-            legendCount:  dark ? '#334155' : '#cbd5e1',
-        };
-    }
-
     let oilChartRef   = null;
     let oilToggleBtns = null;
 
@@ -655,8 +655,10 @@ $activePreset = match($dateFrom) {
         chart.update('none');
 
         // Brand share chart
-        brandShareChart.data.datasets[0].borderColor          = t.pieBorder;
-        brandShareChart.options.plugins.tooltip.backgroundColor = t.tooltipBg;
+        brandShareChart.data.datasets[0].borderColor                    = t.pieBorder;
+        brandShareChart.options.plugins.tooltip.backgroundColor         = t.tooltipBg;
+        brandShareChart.options.plugins.tooltip.titleColor              = t.tooltipTitle;
+        brandShareChart.options.plugins.tooltip.bodyColor               = t.tooltipBody;
         brandShareChart.update('none');
         buildLegend(
             brandShareChart.data.labels,
