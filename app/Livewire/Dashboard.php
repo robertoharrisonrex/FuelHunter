@@ -91,7 +91,7 @@ class Dashboard extends Component
                     ->join('fuel_types', 'fuel_types.id', '=', 'prices.fuel_id')
                     ->where('prices.fuel_id', $primaryId)
                     ->where('prices.price', '>', 50)
-                    ->selectRaw('fuel_types.name as fuel_type_name, round(avg(prices.price), 1) as avg_price, count(distinct prices.site_id) as site_count')
+                    ->selectRaw('fuel_types.name as fuel_type_name, round(avg(prices.price)::numeric, 1) as avg_price, count(distinct prices.site_id) as site_count')
                     ->first();
 
                 if ($row) {
@@ -129,7 +129,7 @@ class Dashboard extends Component
                 ->where('prices.price', '>', 50)
                 ->groupBy('brands.id', 'brands.name')
                 ->havingRaw('COUNT(DISTINCT prices.site_id) >= 5')
-                ->selectRaw('brands.name as brand_name, round(avg(prices.price), 1) as avg_price')
+                ->selectRaw('brands.name as brand_name, round(avg(prices.price)::numeric, 1) as avg_price')
                 ->orderBy('avg_price')
                 ->limit(10)
                 ->get();
@@ -156,7 +156,7 @@ class Dashboard extends Component
                 ->where('prices.price', '>', 50)
                 ->groupBy('cities.id', 'cities.name')
                 ->havingRaw('COUNT(DISTINCT prices.site_id) >= 3')
-                ->selectRaw('cities.name as city_name, round(avg(prices.price), 1) as avg_price')
+                ->selectRaw('cities.name as city_name, round(avg(prices.price)::numeric, 1) as avg_price')
                 ->orderBy('avg_price')
                 ->limit(12)
                 ->get();
@@ -195,7 +195,7 @@ class Dashboard extends Component
                         ->unionAll($historical),
                     'combined'
                 )
-                ->selectRaw('fuel_id, day_of_week, round(avg(price), 1) as avg_price')
+                ->selectRaw('fuel_id, day_of_week, round(avg(price)::numeric, 1) as avg_price')
                 ->groupBy('fuel_id', 'day_of_week')
                 ->get();
 
@@ -328,7 +328,7 @@ class Dashboard extends Component
                         ->unionAll($historical),
                     'combined'
                 )
-                ->selectRaw('fuel_id, date, round(avg(price), 2) as avg_price')
+                ->selectRaw('fuel_id, date, round(avg(price)::numeric, 2) as avg_price')
                 ->groupBy('fuel_id', 'date')
                 ->orderBy('date')
                 ->get();
