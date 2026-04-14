@@ -3,7 +3,7 @@
     {{-- ── Search bar ────────────────────────────────────────────── --}}
     <div class="relative">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
-            <svg class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <svg class="w-5 h-5 text-gray-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
             </svg>
         </div>
@@ -30,7 +30,7 @@
             stations in Queensland
         </p>
         @if($fuelSites->total() > 0)
-            <p class="text-xs text-gray-400">
+            <p class="text-xs text-gray-400 dark:text-slate-500">
                 {{ $fuelSites->firstItem() }}–{{ $fuelSites->lastItem() }} of {{ number_format($fuelSites->total()) }}
             </p>
         @endif
@@ -78,11 +78,11 @@
                             {{ $fuelSite->address }}{{ $fuelSite->suburb ? ', ' . $fuelSite->suburb->name : '' }}, {{ $fuelSite->postcode }}
                         </p>
                         <div class="flex items-center gap-1 mt-1">
-                            <svg class="w-3 h-3 text-gray-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <svg class="w-3 h-3 text-gray-300 dark:text-slate-600 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
-                            <span class="text-[11px] text-gray-400">
+                            <span class="text-[11px] text-gray-400 dark:text-slate-500">
                                 {{ $fuelSite->city?->name ?? '' }}{{ $fuelSite->state ? ' · ' . ucwords(strtolower($fuelSite->state->name)) : '' }}
                             </span>
                         </div>
@@ -92,11 +92,13 @@
                     <div class="flex-shrink-0 flex flex-col items-end gap-2">
                         @if($unleaded)
                             <span class="inline-flex items-center bg-emerald-50 text-emerald-700 border border-emerald-100
+                                         dark:bg-emerald-950 dark:text-emerald-400 dark:border-emerald-900
                                          text-xs font-bold px-2.5 py-1 rounded-full leading-none">
                                 ${{ number_format($unleaded->price / 100, 3) }}
                             </span>
                         @else
                             <span class="inline-flex items-center bg-gray-50 text-gray-400 border border-gray-100
+                                         dark:bg-slate-800 dark:text-slate-500 dark:border-slate-700
                                          text-xs font-medium px-2.5 py-1 rounded-full leading-none">
                                 No price
                             </span>

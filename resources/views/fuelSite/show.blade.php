@@ -86,24 +86,24 @@
                         {{ $fuelSite->address }}{{ $fuelSite->suburb ? ', ' . $fuelSite->suburb->name : '' }}, QLD {{ $fuelSite->postcode }}
                     </p>
                     <div class="flex flex-wrap items-center gap-4 mt-3">
-                        <div class="flex items-center gap-1.5 text-xs text-slate-500">
-                            <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                            <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                             </svg>
                             {{ $fuelSite->city?->name ?? '' }}{{ $fuelSite->state ? ' · ' . ucwords(strtolower($fuelSite->state->name)) : '' }}
                         </div>
                         @if(isset($timeAgoStr))
-                            <div class="flex items-center gap-1.5 text-xs text-slate-500">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+                                <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2m6-2a10 10 0 11-20 0 10 10 0 0120 0z"/>
                                 </svg>
                                 Updated {{ $timeAgoStr }}
                             </div>
                         @endif
                         @if($fuelSite->latitude && $fuelSite->longitude)
-                            <div class="flex items-center gap-1.5 text-xs text-slate-500 font-mono">
-                                <svg class="w-3.5 h-3.5 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <div class="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400 font-mono">
+                                <svg class="w-3.5 h-3.5 text-slate-400 dark:text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
                                 </svg>
                                 {{ number_format((float)$fuelSite->latitude, 5) }}, {{ number_format((float)$fuelSite->longitude, 5) }}
@@ -170,12 +170,12 @@
             </div>
         @else
             <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm px-6 py-8 text-center">
-                <p class="text-sm text-gray-400">No current price data available for this station.</p>
+                <p class="text-sm text-gray-400 dark:text-slate-500">No current price data available for this station.</p>
             </div>
         @endif
 
         {{-- ── Map ─────────────────────────────────────────────── --}}
-        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm overflow-hidden">
             <iframe
                 width="100%"
                 height="400"
