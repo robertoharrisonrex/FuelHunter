@@ -92,6 +92,7 @@ class Dashboard extends Component
                     ->where('prices.fuel_id', $primaryId)
                     ->where('prices.price', '>', 50)
                     ->selectRaw('fuel_types.name as fuel_type_name, round(avg(prices.price)::numeric, 1) as avg_price, count(distinct prices.site_id) as site_count')
+                    ->groupBy('fuel_types.name')
                     ->first();
 
                 if ($row) {

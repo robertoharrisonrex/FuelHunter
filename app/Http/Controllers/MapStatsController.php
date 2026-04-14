@@ -16,6 +16,7 @@ class MapStatsController extends Controller
                 ->where('prices.fuel_id', $fuelTypeId)
                 ->where('prices.price', '>', 50)
                 ->selectRaw('fuel_types.name as fuel_type_name, MIN(prices.price) as min_price, MAX(prices.price) as max_price, COUNT(DISTINCT prices.site_id) as site_count')
+                ->groupBy('fuel_types.name')
                 ->first();
 
             if (! $row) {
