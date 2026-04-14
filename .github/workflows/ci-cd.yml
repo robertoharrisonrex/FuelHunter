@@ -26,9 +26,6 @@ jobs:
           cp .env.example .env
           php artisan key:generate
 
-      - name: Run migrations
-        run: php artisan migrate --force
-
       - name: Run tests
         run: ./vendor/bin/pest
 
