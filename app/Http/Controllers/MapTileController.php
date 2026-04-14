@@ -28,7 +28,7 @@ class MapTileController extends Controller
             $bounds = static::tileBounds($latTile, $lngTile);
 
             $rows = DB::table('fuel_sites')
-                ->join('prices', function ($join) use ($fuelTypeId) {
+                ->leftJoin('prices', function ($join) use ($fuelTypeId) {
                     $join->on('prices.site_id', '=', 'fuel_sites.id')
                          ->where('prices.fuel_id', '=', $fuelTypeId)
                          ->where('prices.price', '>', 50);

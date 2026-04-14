@@ -307,6 +307,28 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
     // ── Custom price pin element ──────────────────────────────
     function makePinEl(price, min, max, brandName, highlight = null) {
+        // No-price pin for sites without data for the selected fuel type
+        if (price === null || price === undefined) {
+            const el = document.createElement('div');
+            el.style.cssText = `
+                display:flex;align-items:center;
+                background:#f8fafc;
+                padding:3px 6px 3px 3px;
+                border-radius:10px;
+                border:1px solid #e2e8f0;
+                border-left:3px solid #cbd5e1;
+                box-shadow:0 1px 3px rgba(0,0,0,0.07);
+                opacity:0.7;
+                cursor:pointer;
+                white-space:nowrap;
+            `;
+            el.appendChild(makeLogoEl(brandName, '#94a3b8', 20));
+            el.classList.add('fuel-pin');
+            el.style.setProperty('--scale-h', 'scale(1.10)');
+            el.style.setProperty('--shadow-h', '0 3px 10px rgba(0,0,0,0.12)');
+            return el;
+        }
+
         const color    = priceColor(price, min, max);
         const pinColor = highlight ? color : '#1e40af';
 
@@ -417,7 +439,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
         m.zIndex     = 2000;
         activeMarker = m;
 
-        const color    = priceColor(site.price, min, max);
+        const color    = site.price ? priceColor(site.price, min, max) : '#94a3b8';
         const logoUrl  = BRAND_LOGOS[site.brand];
         const logoHtml = logoUrl
             ? `<img src="${logoUrl}" style="width:36px;height:36px;flex-shrink:0;object-fit:contain;border-radius:8px;border:1px solid #e2e8f0;padding:3px;background:#fff;" onerror="this.style.display='none'">`
@@ -425,6 +447,17 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
         const fullAddr = [site.addr, `${site.suburb} QLD ${site.postcode}`]
             .filter(Boolean).join(', ');
+
+        const priceSection = site.price
+            ? `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+                   <span style="font-size:9px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;background:#eef2ff;padding:2px 8px;border-radius:6px">${currentFuelTypeName}</span>
+                   <span style="font-size:10px;color:#94a3b8">Updated ${formatUpdated(site.updated)}</span>
+               </div>
+               <div style="display:flex;align-items:baseline;gap:3px">
+                   <span style="font-size:36px;font-weight:900;color:${color};line-height:1;letter-spacing:-1px">${(site.price * 100).toFixed(1)}</span>
+                   <span style="font-size:13px;color:#94a3b8;font-weight:600">/L</span>
+               </div>`
+            : `<div style="font-size:13px;color:#94a3b8;font-style:italic;padding:4px 0">No ${currentFuelTypeName} price available</div>`;
 
         const iw = new google.maps.InfoWindow({
             maxWidth: 290,
@@ -442,14 +475,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 </div>
                 <div style="height:1px;background:#f1f5f9"></div>
                 <div style="padding:12px 16px 10px;background:#fff;">
-                    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
-                        <span style="font-size:9px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;background:#eef2ff;padding:2px 8px;border-radius:6px">${currentFuelTypeName}</span>
-                        <span style="font-size:10px;color:#94a3b8">Updated ${formatUpdated(site.updated)}</span>
-                    </div>
-                    <div style="display:flex;align-items:baseline;gap:3px">
-                        <span style="font-size:36px;font-weight:900;color:${color};line-height:1;letter-spacing:-1px">${(site.price * 100).toFixed(1)}</span>
-                        <span style="font-size:13px;color:#94a3b8;font-weight:600">/L</span>
-                    </div>
+                    ${priceSection}
                 </div>
                 <div style="height:1px;background:#f1f5f9"></div>
                 <div style="display:flex;gap:4px;padding:10px 12px;background:#fff;">
@@ -475,6 +501,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
         Object.values(markerRegistry[currentFuelTypeId]).forEach(m => {
             if (!m.map) return;
+            if (!m._site.price) return; // skip sites without price for this fuel type
             if (bounds.contains(m.position)) {
                 if (m._site.price < minPrice) { minPrice = m._site.price; minMarker = m; }
                 if (m._site.price > maxPrice) { maxPrice = m._site.price; maxMarker = m; }
@@ -608,7 +635,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 const m = new google.maps.marker.AdvancedMarkerElement({
                     position: { lat: site.lat, lng: site.lng },
                     map,
-                    title:   `${site.name} — ${(site.price * 100).toFixed(1)}/L`,
+                    title:   site.price ? `${site.name} — ${(site.price * 100).toFixed(1)}/L` : site.name,
                     content: makePinEl(site.price, globalMin, globalMax, site.brand),
                 });
                 m._site    = site;
