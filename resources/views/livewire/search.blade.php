@@ -12,6 +12,7 @@
                placeholder="Search stations, addresses, suburbs…"
                class="w-full pl-11 pr-12 py-3.5 bg-white border border-gray-200 rounded-2xl shadow-sm
                       text-sm text-gray-900 placeholder-gray-400
+                      dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-500
                       focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                       transition-shadow duration-150">
         <div wire:loading class="absolute inset-y-0 right-0 flex items-center pr-4">
@@ -24,8 +25,8 @@
 
     {{-- ── Meta row ──────────────────────────────────────────────── --}}
     <div class="flex items-center justify-between px-0.5">
-        <p class="text-sm text-gray-500">
-            <span class="font-semibold text-gray-900">{{ number_format($fuelSites->total()) }}</span>
+        <p class="text-sm text-gray-500 dark:text-slate-400">
+            <span class="font-semibold text-gray-900 dark:text-slate-100">{{ number_format($fuelSites->total()) }}</span>
             stations in Queensland
         </p>
         @if($fuelSites->total() > 0)
@@ -38,13 +39,13 @@
     {{-- ── Cards grid ────────────────────────────────────────────── --}}
     @if($fuelSites->isEmpty())
         <div class="py-16 text-center">
-            <div class="w-14 h-14 rounded-2xl bg-gray-100 flex items-center justify-center mx-auto mb-4">
-                <svg class="w-7 h-7 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+            <div class="w-14 h-14 rounded-2xl bg-gray-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
+                <svg class="w-7 h-7 text-gray-300 dark:text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-4.35-4.35M17 11A6 6 0 105 11a6 6 0 0012 0z"/>
                 </svg>
             </div>
-            <p class="text-sm font-semibold text-gray-900 mb-1">No stations found</p>
-            <p class="text-xs text-gray-400">Try a different name or address</p>
+            <p class="text-sm font-semibold text-gray-900 dark:text-slate-100 mb-1">No stations found</p>
+            <p class="text-xs text-gray-400 dark:text-slate-500">Try a different name or address</p>
         </div>
     @else
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -58,7 +59,7 @@
                 @endphp
 
                 <a href="/fuel/{{ $fuelSite->id }}"
-                   class="group flex items-center gap-4 bg-white rounded-2xl border border-gray-100 shadow-sm p-4
+                   class="group flex items-center gap-4 bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-4
                           hover:border-indigo-200 hover:shadow-md hover:-translate-y-px
                           transition-all duration-200 cursor-pointer">
 
@@ -70,10 +71,10 @@
 
                     {{-- Station info --}}
                     <div class="min-w-0 flex-1">
-                        <p class="text-sm font-bold text-gray-900 truncate group-hover:text-indigo-600 transition-colors duration-150">
+                        <p class="text-sm font-bold text-gray-900 dark:text-slate-100 truncate group-hover:text-indigo-600 transition-colors duration-150">
                             {{ $fuelSite->name }}
                         </p>
-                        <p class="text-xs text-gray-400 truncate mt-0.5">
+                        <p class="text-xs text-gray-400 dark:text-slate-500 truncate mt-0.5">
                             {{ $fuelSite->address }}{{ $fuelSite->suburb ? ', ' . $fuelSite->suburb->name : '' }}, {{ $fuelSite->postcode }}
                         </p>
                         <div class="flex items-center gap-1 mt-1">
