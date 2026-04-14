@@ -4,6 +4,7 @@ use App\Http\Controllers\FuelSiteController;
 use App\Http\Controllers\MapDataController;
 use App\Http\Controllers\MapStatsController;
 use App\Http\Controllers\MapTileController;
+use App\Http\Controllers\OilPriceController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SessionController;
@@ -17,6 +18,7 @@ Route::view('/dashboard', 'dashboard.index');
 Route::get('/map-data/{fuelTypeId}', [MapDataController::class, 'show']);
 Route::get('/map-stats/{fuelTypeId}', [MapStatsController::class, 'show']);
 Route::get('/map-tiles/{fuelTypeId}/{latTile}/{lngTile}', [MapTileController::class, 'show'])->where(['latTile' => '-?\d+', 'lngTile' => '-?\d+']);
+Route::get('/oil-prices', [OilPriceController::class, 'index']);
 
 Route::controller(FuelSiteController::class)->group(function() {
     Route::get('/fuel', 'index');
