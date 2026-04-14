@@ -119,14 +119,14 @@ $activePreset = match($dateFrom) {
                             @endforeach
                         </div>
 
-                        <span class="text-gray-200 hidden sm:block">|</span>
+                        <span class="text-gray-200 dark:text-slate-600 hidden sm:block">|</span>
 
                         <input type="date" wire:model="dateFrom"
                                class="border border-gray-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm bg-gray-50 dark:bg-slate-800
                                       text-gray-900 dark:text-slate-100
                                       focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                                       transition-shadow duration-150">
-                        <span class="text-gray-300 text-sm">→</span>
+                        <span class="text-gray-300 dark:text-slate-600 text-sm">→</span>
                         <input type="date" wire:model="dateTo"
                                class="border border-gray-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm bg-gray-50 dark:bg-slate-800
                                       text-gray-900 dark:text-slate-100
@@ -208,7 +208,7 @@ $activePreset = match($dateFrom) {
             </div>
 
             @if(empty($chartData['datasets']))
-                <p class="text-center text-sm text-slate-400 mt-4">
+                <p class="text-center text-sm text-slate-400 dark:text-slate-500 mt-4">
                     Select at least one fuel type above to display the chart.
                 </p>
             @endif
@@ -232,7 +232,7 @@ $activePreset = match($dateFrom) {
                 <div id="brandShareLegend" class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600"></div>
             </div>
             @if(empty($brandShare['labels']))
-                <p class="text-center text-sm text-slate-400 mt-4">No brand data available.</p>
+                <p class="text-center text-sm text-slate-400 dark:text-slate-500 mt-4">No brand data available.</p>
             @endif
         </div>
     </div>
