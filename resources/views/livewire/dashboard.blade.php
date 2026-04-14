@@ -235,6 +235,33 @@ $activePreset = match($dateFrom) {
         </div>
     </div>
 
+    {{-- ── Global Oil Prices ──────────────────────────────────────── --}}
+    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-6">
+            <div class="flex items-start justify-between mb-4">
+                <div>
+                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Global Oil Prices</h2>
+                    <p class="text-slate-500 text-sm mt-0.5">Daily average USD — last 30 days</p>
+                </div>
+            </div>
+
+            {{-- Series toggles --}}
+            <div class="flex flex-wrap gap-2 mb-4" id="oilToggles">
+                <button data-code="WTI_USD"          class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">WTI Crude</button>
+                <button data-code="BRENT_CRUDE_USD"  class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Brent Crude</button>
+                <button data-code="NATURAL_GAS_USD"  class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Natural Gas</button>
+                <button data-code="GASOLINE_USD"     class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Gasoline</button>
+            </div>
+
+            <div wire:ignore class="relative h-[200px] sm:h-[300px]">
+                <canvas id="chartOilPrices"></canvas>
+            </div>
+            <p id="oilPricesEmpty" class="hidden text-center text-sm text-slate-400 mt-4">
+                No oil price data available yet — check back after the ETL has run.
+            </p>
+        </div>
+    </div>
+
 </div>
 
 @script
@@ -458,5 +485,122 @@ $activePreset = match($dateFrom) {
         brandShareChart.update();
         buildLegend(labels, values, counts);
     });
+
+    // ── Global Oil Prices chart ───────────────────────────────────
+    let OIL_COLOURS = {
+        WTI_USD:         '#f59e0b',
+        BRENT_CRUDE_USD: '#3b82f6',
+        NATURAL_GAS_USD: '#10b981',
+        GASOLINE_USD:    '#8b5cf6',
+    };
+    let OIL_LABELS = {
+        WTI_USD:         'WTI Crude',
+        BRENT_CRUDE_USD: 'Brent Crude',
+        NATURAL_GAS_USD: 'Natural Gas',
+        GASOLINE_USD:    'Gasoline',
+    };
+    let OIL_DEFAULT_VISIBLE = new Set(['WTI_USD']);
+
+    function buildOilDatasets(series) {
+        return Object.entries(series).map(([code, values]) => ({
+            label:           OIL_LABELS[code] ?? code,
+            data:            values,
+            borderColor:     OIL_COLOURS[code],
+            backgroundColor: OIL_COLOURS[code] + '1a',
+            borderWidth:     2,
+            pointRadius:     0,
+            tension:         0.3,
+            fill:            false,
+            hidden:          !OIL_DEFAULT_VISIBLE.has(code),
+        }));
+    }
+
+    async function initOilChart() {
+        let data;
+        try {
+            const resp = await fetch('/oil-prices');
+            data = await resp.json();
+        } catch (e) {
+            document.getElementById('chartOilPrices').closest('.relative').classList.add('hidden');
+            document.getElementById('oilPricesEmpty').classList.remove('hidden');
+            return;
+        }
+
+        if (!data.dates || data.dates.length === 0) {
+            document.getElementById('chartOilPrices').closest('.relative').classList.add('hidden');
+            document.getElementById('oilPricesEmpty').classList.remove('hidden');
+            return;
+        }
+
+        const canvas = document.getElementById('chartOilPrices');
+        const ctx    = canvas.getContext('2d');
+
+        const oilChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels:   data.dates,
+                datasets: buildOilDatasets(data.series),
+            },
+            options: {
+                responsive:          true,
+                maintainAspectRatio: false,
+                animation:           { duration: 600 },
+                interaction:         { mode: 'index', intersect: false },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(2,6,23,0.94)',
+                        titleColor:      '#e2e8f0',
+                        bodyColor:       '#94a3b8',
+                        borderColor:     'rgba(99,102,241,0.35)',
+                        borderWidth:     1,
+                        padding:         14,
+                        cornerRadius:    12,
+                        callbacks: {
+                            label: c => ` ${c.dataset.label}: $${c.parsed.y !== null ? c.parsed.y.toFixed(2) : '—'}`,
+                        },
+                    },
+                },
+                scales: {
+                    x: {
+                        ticks: { maxTicksLimit: 8, color: '#94a3b8', font: { size: 11 } },
+                        grid:  { display: false },
+                    },
+                    y: {
+                        ticks: {
+                            color: '#94a3b8',
+                            font:  { size: 11 },
+                            callback: v => `$${v}`,
+                        },
+                        grid: { color: '#f1f5f9' },
+                    },
+                },
+            },
+        });
+
+        document.querySelectorAll('#oilToggles .oil-toggle').forEach(btn => {
+            const code   = btn.dataset.code;
+            const colour = OIL_COLOURS[code];
+            const label  = OIL_LABELS[code] ?? code;
+
+            function applyStyle(active) {
+                btn.style.cssText = active
+                    ? `background:${colour}1a;border-color:${colour};color:${colour}`
+                    : 'background:#f8fafc;border-color:#e2e8f0;color:#94a3b8';
+            }
+
+            applyStyle(OIL_DEFAULT_VISIBLE.has(code));
+
+            btn.addEventListener('click', () => {
+                const dataset = oilChart.data.datasets.find(d => d.label === label);
+                if (!dataset) return;
+                dataset.hidden = !dataset.hidden;
+                oilChart.update();
+                applyStyle(!dataset.hidden);
+            });
+        });
+    }
+
+    initOilChart();
 </script>
 @endscript
