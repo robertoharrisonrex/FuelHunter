@@ -241,7 +241,7 @@ $activePreset = match($dateFrom) {
             <div class="flex items-start justify-between mb-4">
                 <div>
                     <h2 class="text-slate-900 text-xl font-bold tracking-tight">Global Oil Prices</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Daily average USD — last 30 days</p>
+                    <p class="text-slate-500 text-sm mt-0.5">USD — last 30 days</p>
                 </div>
             </div>
 
@@ -563,8 +563,17 @@ $activePreset = match($dateFrom) {
                 },
                 scales: {
                     x: {
-                        ticks: { maxTicksLimit: 8, color: '#94a3b8', font: { size: 11 } },
-                        grid:  { display: false },
+                        ticks: {
+                            maxTicksLimit: 8,
+                            color: '#94a3b8',
+                            font: { size: 11 },
+                            callback: function(v) {
+                                const label = this.getLabelForValue(v);
+                                const d = new Date(label);
+                                return isNaN(d.getTime()) ? label : d.toLocaleString('en-AU', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false });
+                            },
+                        },
+                        grid: { display: false },
                     },
                     y: {
                         ticks: {

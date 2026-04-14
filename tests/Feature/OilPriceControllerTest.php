@@ -7,7 +7,7 @@ test('oil prices endpoint returns correct json structure', function () {
     Cache::shouldReceive('remember')
         ->once()
         ->andReturn([
-            'dates'  => ['2026-04-01', '2026-04-02'],
+            'dates'  => ['2026-04-01 00:00:00', '2026-04-01 00:20:00'],
             'series' => [
                 'WTI_USD'          => [74.52, 75.10],
                 'BRENT_CRUDE_USD'  => [78.30, 79.05],
