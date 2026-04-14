@@ -2,6 +2,7 @@
 
 use App\Livewire\Dashboard;
 use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\DB;
 use Livewire\Livewire;
 
 test('mount restores date range from cookies', function () {
@@ -14,7 +15,15 @@ test('mount restores date range from cookies', function () {
 });
 
 test('mount restores fuel types from cookie', function () {
-    // IDs 2 (Unleaded) and 3 (Diesel) are both in the top-5 by site count
+    DB::table('fuel_types')->insert([
+        ['id' => 2, 'name' => 'Unleaded', 'created_at' => now(), 'updated_at' => now()],
+        ['id' => 3, 'name' => 'Diesel',   'created_at' => now(), 'updated_at' => now()],
+    ]);
+    DB::table('prices')->insert([
+        ['site_id' => 1, 'fuel_id' => 2, 'collection_method' => 'T', 'transaction_date_utc' => now(), 'price' => 1800, 'created_at' => now(), 'updated_at' => now()],
+        ['site_id' => 1, 'fuel_id' => 3, 'collection_method' => 'T', 'transaction_date_utc' => now(), 'price' => 2000, 'created_at' => now(), 'updated_at' => now()],
+    ]);
+
     Livewire::withCookies([
         'dash_fuel_types' => json_encode(['2', '3']),
     ])->test(Dashboard::class)

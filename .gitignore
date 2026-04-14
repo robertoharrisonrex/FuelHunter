@@ -17,6 +17,7 @@ npm-debug.log
 yarn-error.log
 /airflow/logs
 /airflow/.env
+/deploy/run.sh
 /.fleet
 /.idea
 /.vscode
