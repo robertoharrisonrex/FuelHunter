@@ -336,6 +336,7 @@ $activePreset = match($dateFrom) {
     const canvas  = document.getElementById('chartFuelTrends');
     const ctx     = canvas.getContext('2d');
 
+    const t = getChartTheme();
     const chart = new Chart(canvas, {
         type: 'line',
         data: { labels: initial.labels, datasets: [] },
@@ -351,7 +352,7 @@ $activePreset = match($dateFrom) {
                 legend: {
                     position: 'top',
                     labels: {
-                        color:         '#64748b',
+                        color:         t.legendColor,
                         usePointStyle: true,
                         pointStyle:    'circle',
                         padding:       22,
@@ -359,9 +360,9 @@ $activePreset = match($dateFrom) {
                     },
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(2,6,23,0.94)',
-                    titleColor:      '#e2e8f0',
-                    bodyColor:       '#94a3b8',
+                    backgroundColor: t.tooltipBg,
+                    titleColor:      t.tooltipTitle,
+                    bodyColor:       t.tooltipBody,
                     borderColor:     'rgba(99,102,241,0.35)',
                     borderWidth:     1,
                     padding:         14,
@@ -374,25 +375,25 @@ $activePreset = match($dateFrom) {
             scales: {
                 x: {
                     ticks: {
-                        color:         '#475569',
+                        color:         t.tickColor,
                         maxTicksLimit: 9,
                         font: { size: 11 },
                     },
-                    grid:   { color: 'rgba(15,23,42,0.05)' },
+                    grid:   { color: t.gridColor },
                     border: { display: false },
                 },
                 y: {
                     ticks: {
-                        color: '#475569',
+                        color: t.tickColor,
                         font:  { size: 11 },
                         callback: v => v + ' ¢',
                     },
-                    grid:   { color: 'rgba(15,23,42,0.05)' },
+                    grid:   { color: t.gridColor },
                     border: { display: false },
                     title: {
                         display: true,
                         text:    'Avg Price (¢/L)',
-                        color:   '#334155',
+                        color:   t.yTitleColor,
                         font:    { size: 11 },
                     },
                 },
@@ -425,13 +426,14 @@ $activePreset = match($dateFrom) {
     const shareLegendEl = document.getElementById('brandShareLegend');
 
     function buildLegend(labels, values, counts) {
+        const t = getChartTheme();
         shareLegendEl.innerHTML = labels.map((label, i) => `
             <div class="flex items-center gap-1.5 whitespace-nowrap">
                 <span class="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
                       style="background:${PIE_PALETTE[i % PIE_PALETTE.length]}"></span>
-                <span class="font-semibold text-slate-700">${label}</span>
-                <span class="text-slate-400">${values[i]}%</span>
-                <span class="text-slate-300 text-xs">(${counts[i]})</span>
+                <span style="font-weight:600;color:${t.legendText}">${label}</span>
+                <span style="color:${t.legendMuted}">${values[i]}%</span>
+                <span style="color:${t.legendCount};font-size:0.75rem">(${counts[i]})</span>
             </div>
         `).join('');
     }
@@ -443,7 +445,7 @@ $activePreset = match($dateFrom) {
             datasets: [{
                 data:            shareInitial.values,
                 backgroundColor: shareInitial.labels.map((_, i) => PIE_PALETTE[i % PIE_PALETTE.length]),
-                borderColor:     '#ffffff',
+                borderColor:     getChartTheme().pieBorder,
                 borderWidth:     2,
                 hoverOffset:     8,
             }],
@@ -456,9 +458,9 @@ $activePreset = match($dateFrom) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: 'rgba(2,6,23,0.94)',
-                    titleColor:      '#e2e8f0',
-                    bodyColor:       '#94a3b8',
+                    backgroundColor: getChartTheme().tooltipBg,
+                    titleColor:      getChartTheme().tooltipTitle,
+                    bodyColor:       getChartTheme().tooltipBody,
                     borderColor:     'rgba(99,102,241,0.35)',
                     borderWidth:     1,
                     padding:         14,
@@ -503,6 +505,36 @@ $activePreset = match($dateFrom) {
     };
     let OIL_ACTIVE_CODE = 'WTI_USD';
 
+    function getChartTheme() {
+        const dark = document.documentElement.classList.contains('dark');
+        return {
+            gridColor:    dark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.05)',
+            tickColor:    dark ? '#475569' : '#475569',
+            legendColor:  dark ? '#94a3b8' : '#64748b',
+            yTitleColor:  dark ? '#94a3b8' : '#334155',
+            tooltipBg:    'rgba(2,6,23,0.94)',
+            tooltipTitle: '#e2e8f0',
+            tooltipBody:  '#94a3b8',
+            pieBorder:    dark ? '#0f172a' : '#ffffff',
+            legendText:   dark ? '#94a3b8' : '#64748b',
+            legendMuted:  dark ? '#475569' : '#94a3b8',
+            legendCount:  dark ? '#334155' : '#cbd5e1',
+        };
+    }
+
+    let oilChartRef   = null;
+    let oilToggleBtns = null;
+
+    function applyOilToggleStyle(btn, active) {
+        const colour = OIL_COLOURS[btn.dataset.code];
+        const dark   = document.documentElement.classList.contains('dark');
+        btn.style.cssText = active
+            ? `background:${colour}1a;border-color:${colour};color:${colour}`
+            : dark
+                ? 'background:#1e293b;border-color:#334155;color:#64748b'
+                : 'background:#f8fafc;border-color:#e2e8f0;color:#94a3b8';
+    }
+
     function buildOilDatasets(series) {
         return Object.entries(series).map(([code, values]) => ({
             label:           OIL_LABELS[code] ?? code,
@@ -537,7 +569,8 @@ $activePreset = match($dateFrom) {
         const canvas = document.getElementById('chartOilPrices');
         const ctx    = canvas.getContext('2d');
 
-        const oilChart = new Chart(ctx, {
+        const t = getChartTheme();
+        oilChartRef = new Chart(ctx, {
             type: 'line',
             data: {
                 labels:   data.dates,
@@ -551,9 +584,9 @@ $activePreset = match($dateFrom) {
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: 'rgba(2,6,23,0.94)',
-                        titleColor:      '#e2e8f0',
-                        bodyColor:       '#94a3b8',
+                        backgroundColor: t.tooltipBg,
+                        titleColor:      t.tooltipTitle,
+                        bodyColor:       t.tooltipBody,
                         borderColor:     'rgba(99,102,241,0.35)',
                         borderWidth:     1,
                         padding:         14,
@@ -567,7 +600,7 @@ $activePreset = match($dateFrom) {
                     x: {
                         ticks: {
                             maxTicksLimit: 8,
-                            color: '#94a3b8',
+                            color: t.tickColor,
                             font: { size: 11 },
                             callback: function(v) {
                                 const label = this.getLabelForValue(v);
@@ -579,24 +612,17 @@ $activePreset = match($dateFrom) {
                     },
                     y: {
                         ticks: {
-                            color: '#94a3b8',
+                            color: t.tickColor,
                             font:  { size: 11 },
                             callback: v => `$${(+v).toFixed(2)}`,
                         },
-                        grid: { color: '#f1f5f9' },
+                        grid: { color: t.gridColor },
                     },
                 },
             },
         });
 
-        function applyOilToggleStyle(btn, active) {
-            const colour = OIL_COLOURS[btn.dataset.code];
-            btn.style.cssText = active
-                ? `background:${colour}1a;border-color:${colour};color:${colour}`
-                : 'background:#f8fafc;border-color:#e2e8f0;color:#94a3b8';
-        }
-
-        const oilToggleBtns = document.querySelectorAll('#oilToggles .oil-toggle');
+        oilToggleBtns = document.querySelectorAll('#oilToggles .oil-toggle');
         oilToggleBtns.forEach(btn => {
             applyOilToggleStyle(btn, btn.dataset.code === OIL_ACTIVE_CODE);
 
@@ -604,13 +630,53 @@ $activePreset = match($dateFrom) {
                 if (OIL_ACTIVE_CODE === btn.dataset.code) return;
                 OIL_ACTIVE_CODE = btn.dataset.code;
                 const activeLabel = OIL_LABELS[OIL_ACTIVE_CODE] ?? OIL_ACTIVE_CODE;
-                oilChart.data.datasets.forEach(d => { d.hidden = d.label !== activeLabel; });
-                oilChart.update();
+                oilChartRef.data.datasets.forEach(d => { d.hidden = d.label !== activeLabel; });
+                oilChartRef.update();
                 oilToggleBtns.forEach(b => applyOilToggleStyle(b, b.dataset.code === OIL_ACTIVE_CODE));
             });
         });
     }
 
     initOilChart();
+
+    new MutationObserver(() => {
+        const t = getChartTheme();
+
+        // Fuel trends chart
+        chart.options.plugins.legend.labels.color             = t.legendColor;
+        chart.options.plugins.tooltip.backgroundColor         = t.tooltipBg;
+        chart.options.plugins.tooltip.titleColor              = t.tooltipTitle;
+        chart.options.plugins.tooltip.bodyColor               = t.tooltipBody;
+        chart.options.scales.x.ticks.color                   = t.tickColor;
+        chart.options.scales.x.grid.color                    = t.gridColor;
+        chart.options.scales.y.ticks.color                   = t.tickColor;
+        chart.options.scales.y.grid.color                    = t.gridColor;
+        chart.options.scales.y.title.color                   = t.yTitleColor;
+        chart.update('none');
+
+        // Brand share chart
+        brandShareChart.data.datasets[0].borderColor          = t.pieBorder;
+        brandShareChart.options.plugins.tooltip.backgroundColor = t.tooltipBg;
+        brandShareChart.update('none');
+        buildLegend(
+            brandShareChart.data.labels,
+            brandShareChart.data.datasets[0].data,
+            shareInitial.counts
+        );
+
+        // Oil chart (may not be initialised yet)
+        if (oilChartRef) {
+            oilChartRef.options.scales.x.ticks.color         = t.tickColor;
+            oilChartRef.options.scales.y.ticks.color         = t.tickColor;
+            oilChartRef.options.scales.y.grid.color          = t.gridColor;
+            oilChartRef.options.plugins.tooltip.backgroundColor = t.tooltipBg;
+            oilChartRef.update('none');
+        }
+
+        // Oil toggle buttons
+        if (oilToggleBtns) {
+            oilToggleBtns.forEach(b => applyOilToggleStyle(b, b.dataset.code === OIL_ACTIVE_CODE));
+        }
+    }).observe(document.documentElement, { attributeFilter: ['class'] });
 </script>
 @endscript
