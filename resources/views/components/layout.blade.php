@@ -5,9 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>FuelHunter</title>
+    {{-- FOUC prevention: set dark class synchronously before any paint --}}
+    <script>
+        if (localStorage.getItem('theme') === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     @vite('resources/css/app.css')
+    {{-- Alpine theme store (Alpine is bundled with Livewire 3) --}}
+    <script>
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('theme', {
+                dark: localStorage.getItem('theme') === 'dark',
+                toggle() {
+                    this.dark = !this.dark;
+                    localStorage.setItem('theme', this.dark ? 'dark' : 'light');
+                    document.documentElement.classList.toggle('dark', this.dark);
+                }
+            });
+        });
+    </script>
 </head>
-<body class="h-full bg-slate-50">
+<body class="h-full bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
 
 {{-- ── Navigation ──────────────────────────────────────────────────────── --}}
 <nav class="bg-white/80 backdrop-blur-md border-b border-slate-900/[0.07] sticky top-0 z-50">
