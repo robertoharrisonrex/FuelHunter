@@ -71,6 +71,13 @@ class Dashboard extends Component
         );
     }
 
+    private function roundAvg(string $col, int $decimals): string
+    {
+        return DB::connection()->getDriverName() === 'pgsql'
+            ? "round(avg({$col})::numeric, {$decimals})"
+            : "round(avg({$col}), {$decimals})";
+    }
+
     private function summaryStats(): array
     {
         return Cache::store('file')->remember($this->cacheKey('dash_stats'), 300, function () {
@@ -84,7 +91,7 @@ class Dashboard extends Component
                     ->join('fuel_types', 'fuel_types.id', '=', 'prices.fuel_id')
                     ->where('prices.fuel_id', $primaryId)
                     ->where('prices.price', '>', 50)
-                    ->selectRaw('fuel_types.name as fuel_type_name, round(avg(prices.price)::numeric, 1) as avg_price, count(distinct prices.site_id) as site_count')
+                    ->selectRaw('fuel_types.name as fuel_type_name, ' . $this->roundAvg('prices.price', 1) . ' as avg_price, count(distinct prices.site_id) as site_count')
                     ->groupBy('fuel_types.name')
                     ->first();
 
@@ -158,7 +165,7 @@ class Dashboard extends Component
                         ->unionAll($historical),
                     'combined'
                 )
-                ->selectRaw('fuel_id, date, round(avg(price)::numeric, 2) as avg_price')
+                ->selectRaw('fuel_id, date, ' . $this->roundAvg('price', 2) . ' as avg_price')
                 ->groupBy('fuel_id', 'date')
                 ->orderBy('date')
                 ->get();
