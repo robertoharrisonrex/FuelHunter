@@ -44,7 +44,7 @@
                               d="M3 10h2l1 2h13l1-4H6M7 16a1 1 0 100 2 1 1 0 000-2zm10 0a1 1 0 100 2 1 1 0 000-2z"/>
                     </svg>
                 </div>
-                <span class="text-slate-900 font-bold text-[15px] tracking-tight">
+                <span class="text-slate-900 dark:text-slate-100 font-bold text-[15px] tracking-tight">
                     Fuel<span class="text-indigo-600">Hunter</span>
                 </span>
             </a>
