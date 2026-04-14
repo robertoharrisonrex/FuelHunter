@@ -7,8 +7,8 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
                 </svg>
             </div>
-            <h3 class="text-lg font-bold text-gray-900 mb-1">Thanks for your feedback!</h3>
-            <p class="text-sm text-gray-500 mb-6">We appreciate you taking the time to share your thoughts.</p>
+            <h3 class="text-lg font-bold text-gray-900 dark:text-slate-100 mb-1">Thanks for your feedback!</h3>
+            <p class="text-sm text-gray-500 dark:text-slate-400 mb-6">We appreciate you taking the time to share your thoughts.</p>
             <button wire:click="$set('submitted', false)"
                     class="text-sm text-indigo-600 hover:text-indigo-500 font-semibold transition-colors">
                 Send another message
@@ -20,16 +20,17 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                 {{-- Name --}}
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                    <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
                         Your Name
                     </label>
                     <input type="text"
                            wire:model="name"
                            placeholder="Jane Smith"
                            class="w-full border rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-300
+                                  dark:text-slate-100 dark:placeholder-slate-500
                                   focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                                   transition-shadow duration-150
-                                  @error('name') border-red-400 bg-red-50 @else border-gray-200 bg-gray-50 @enderror">
+                                  @error('name') border-red-400 bg-red-50 @else border-gray-200 bg-gray-50 dark:bg-slate-800 dark:border-slate-600 @enderror">
                     @error('name')
                         <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                     @enderror
@@ -37,16 +38,17 @@
 
                 {{-- Email --}}
                 <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                    <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
                         Email Address
                     </label>
                     <input type="email"
                            wire:model="email"
                            placeholder="jane@example.com"
                            class="w-full border rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-300
+                                  dark:text-slate-100 dark:placeholder-slate-500
                                   focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                                   transition-shadow duration-150
-                                  @error('email') border-red-400 bg-red-50 @else border-gray-200 bg-gray-50 @enderror">
+                                  @error('email') border-red-400 bg-red-50 @else border-gray-200 bg-gray-50 dark:bg-slate-800 dark:border-slate-600 @enderror">
                     @error('email')
                         <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
                     @enderror
@@ -55,16 +57,17 @@
 
             {{-- Message --}}
             <div>
-                <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-1.5">
+                <label class="block text-xs font-bold text-gray-500 dark:text-slate-400 uppercase tracking-wider mb-1.5">
                     Message
                 </label>
                 <textarea wire:model="message"
                           rows="5"
                           placeholder="Tell us what you think, report a bug, or suggest a feature…"
                           class="w-full border rounded-xl px-3.5 py-2.5 text-sm text-gray-900 placeholder-gray-300
+                                 dark:text-slate-100 dark:placeholder-slate-500
                                  focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                                  transition-shadow duration-150 resize-none
-                                 @error('message') border-red-400 bg-red-50 @else border-gray-200 bg-gray-50 @enderror">
+                                 @error('message') border-red-400 bg-red-50 @else border-gray-200 bg-gray-50 dark:bg-slate-800 dark:border-slate-600 @enderror">
                 </textarea>
                 @error('message')
                     <p class="mt-1 text-xs text-red-500">{{ $message }}</p>
@@ -72,7 +75,7 @@
             </div>
 
             <div class="flex items-center justify-between">
-                <p class="text-xs text-gray-400">Your feedback is genuinely appreciated — thank you for taking the time.</p>
+                <p class="text-xs text-gray-400 dark:text-slate-500">Your feedback is genuinely appreciated — thank you for taking the time.</p>
                 <button type="submit"
                         class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95
                                text-white rounded-xl px-6 py-2.5 text-sm font-bold
