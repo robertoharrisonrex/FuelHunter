@@ -39,7 +39,7 @@ def fetch_and_store_oil_prices():
             ON CONFLICT (code, recorded_at) DO NOTHING
         """
 
-    with engine.connect() as conn:
+    with engine.begin() as conn:
         for code in COMMODITY_CODES:
             try:
                 resp = requests.get(
@@ -58,8 +58,6 @@ def fetch_and_store_oil_prices():
                 })
             except Exception as e:
                 logging.warning('oilprice_etl: failed to fetch %s: %s', code, e)
-
-        conn.commit()
 
 
 dag = DAG(
