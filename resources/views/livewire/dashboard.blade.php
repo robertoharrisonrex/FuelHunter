@@ -287,9 +287,10 @@ $activePreset = match($dateFrom) {
         const dark = document.documentElement.classList.contains('dark');
         return {
             gridColor:    dark ? 'rgba(255,255,255,0.06)' : 'rgba(15,23,42,0.05)',
-            tickColor:    dark ? '#475569' : '#475569',
+            tickColor:    dark ? '#94a3b8' : '#475569',
             legendColor:  dark ? '#94a3b8' : '#64748b',
             yTitleColor:  dark ? '#94a3b8' : '#334155',
+            // Tooltip uses a fixed dark-glass style on both modes
             tooltipBg:    'rgba(2,6,23,0.94)',
             tooltipTitle: '#e2e8f0',
             tooltipBody:  '#94a3b8',
@@ -455,6 +456,7 @@ $activePreset = match($dateFrom) {
         `).join('');
     }
 
+    const t = getChartTheme();
     const brandShareChart = new Chart(shareCanvas, {
         type: 'doughnut',
         data: {
@@ -462,7 +464,7 @@ $activePreset = match($dateFrom) {
             datasets: [{
                 data:            shareInitial.values,
                 backgroundColor: shareInitial.labels.map((_, i) => PIE_PALETTE[i % PIE_PALETTE.length]),
-                borderColor:     getChartTheme().pieBorder,
+                borderColor:     t.pieBorder,
                 borderWidth:     2,
                 hoverOffset:     8,
             }],
@@ -475,9 +477,9 @@ $activePreset = match($dateFrom) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: getChartTheme().tooltipBg,
-                    titleColor:      getChartTheme().tooltipTitle,
-                    bodyColor:       getChartTheme().tooltipBody,
+                    backgroundColor: t.tooltipBg,
+                    titleColor:      t.tooltipTitle,
+                    bodyColor:       t.tooltipBody,
                     borderColor:     'rgba(99,102,241,0.35)',
                     borderWidth:     1,
                     padding:         14,
@@ -668,10 +670,12 @@ $activePreset = match($dateFrom) {
 
         // Oil chart (may not be initialised yet)
         if (oilChartRef) {
-            oilChartRef.options.scales.x.ticks.color         = t.tickColor;
-            oilChartRef.options.scales.y.ticks.color         = t.tickColor;
-            oilChartRef.options.scales.y.grid.color          = t.gridColor;
-            oilChartRef.options.plugins.tooltip.backgroundColor = t.tooltipBg;
+            oilChartRef.options.scales.x.ticks.color             = t.tickColor;
+            oilChartRef.options.scales.y.ticks.color             = t.tickColor;
+            oilChartRef.options.scales.y.grid.color              = t.gridColor;
+            oilChartRef.options.plugins.tooltip.backgroundColor  = t.tooltipBg;
+            oilChartRef.options.plugins.tooltip.titleColor       = t.tooltipTitle;
+            oilChartRef.options.plugins.tooltip.bodyColor        = t.tooltipBody;
             oilChartRef.update('none');
         }
 
