@@ -15,7 +15,7 @@ def _engine():
         'FUELDB_URL',
         'sqlite:////opt/airflow/database/database.sqlite'
     )
-    return create_engine(url)
+    return create_engine(url, connect_args={'timeout': 30})
 
 
 #  ------------------   BRANDS
