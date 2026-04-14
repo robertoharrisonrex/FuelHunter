@@ -75,7 +75,7 @@ class MapTileController extends Controller
                 'addr'     => $r->address,
                 'suburb'   => $r->suburb_name ?? '',
                 'postcode' => $r->postcode,
-                'price'    => round($r->price / 100, 3),
+                'price'    => $r->price ? round($r->price / 100, 3) : null,
                 'updated'  => $r->transaction_date_utc,
                 'brand'    => $r->brand_name ?? '',
                 'price_ul' => $r->price_ul ? round($r->price_ul / 100, 3) : null,

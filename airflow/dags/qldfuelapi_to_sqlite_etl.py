@@ -15,7 +15,9 @@ def _engine():
         'FUELDB_URL',
         'sqlite:////opt/airflow/database/database.sqlite'
     )
-    return create_engine(url, connect_args={'timeout': 30})
+    # SQLite uses `timeout`; PostgreSQL (psycopg2) uses `connect_timeout`
+    connect_args = {'timeout': 30} if url.startswith('sqlite') else {'connect_timeout': 30}
+    return create_engine(url, connect_args=connect_args)
 
 
 #  ------------------   BRANDS
