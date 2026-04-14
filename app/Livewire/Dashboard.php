@@ -21,12 +21,25 @@ class Dashboard extends Component
     {
         $this->dateFrom  = Cookie::get('dash_date_from') ?? now()->subDays(29)->format('Y-m-d');
         $this->dateTo    = Cookie::get('dash_date_to')   ?? now()->format('Y-m-d');
-        $this->fuelTypes = FuelType::orderBy('name')->get();
+        $orderedIds = [2, 14, 3, 5, 8, 12, 4]; // Unleaded, Premium Diesel, Diesel, Premium 95, Premium 98, e10, LPG
+
+        $this->fuelTypes = FuelType::select('fuel_types.*')
+            ->join('prices', 'prices.fuel_id', '=', 'fuel_types.id')
+            ->whereIn('fuel_types.id', $orderedIds)
+            ->groupBy('fuel_types.id', 'fuel_types.name')
+            ->get()
+            ->sortBy(fn($ft) => array_search($ft->id, $orderedIds))
+            ->values();
+
+        $validIds = $this->fuelTypes->pluck('id')->map(fn($id) => (string) $id)->all();
 
         $savedFuelTypes = Cookie::get('dash_fuel_types');
         if ($savedFuelTypes !== null) {
-            $this->selectedFuelTypes = json_decode($savedFuelTypes, true) ?? [];
-        } else {
+            $decoded = json_decode($savedFuelTypes, true) ?? [];
+            $this->selectedFuelTypes = array_values(array_filter($decoded, fn($id) => in_array($id, $validIds)));
+        }
+
+        if (empty($this->selectedFuelTypes)) {
             $unleaded = $this->fuelTypes->first(fn($t) => strtolower($t->name) === 'unleaded')
                 ?? $this->fuelTypes->first(fn($t) => stripos($t->name, 'unleaded') !== false);
             $this->selectedFuelTypes = $unleaded ? [(string) $unleaded->id] : [];

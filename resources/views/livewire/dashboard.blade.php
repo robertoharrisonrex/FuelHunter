@@ -499,7 +499,7 @@ $activePreset = match($dateFrom) {
         NATURAL_GAS_USD: 'Natural Gas',
         GASOLINE_USD:    'Gasoline',
     };
-    let OIL_DEFAULT_VISIBLE = new Set(['WTI_USD']);
+    let OIL_ACTIVE_CODE = 'WTI_USD';
 
     function buildOilDatasets(series) {
         return Object.entries(series).map(([code, values]) => ({
@@ -511,7 +511,7 @@ $activePreset = match($dateFrom) {
             pointRadius:     0,
             tension:         0.3,
             fill:            false,
-            hidden:          !OIL_DEFAULT_VISIBLE.has(code),
+            hidden:          code !== OIL_ACTIVE_CODE,
         }));
     }
 
@@ -570,7 +570,7 @@ $activePreset = match($dateFrom) {
                         ticks: {
                             color: '#94a3b8',
                             font:  { size: 11 },
-                            callback: v => `$${v}`,
+                            callback: v => `$${(+v).toFixed(2)}`,
                         },
                         grid: { color: '#f1f5f9' },
                     },
@@ -578,25 +578,24 @@ $activePreset = match($dateFrom) {
             },
         });
 
-        document.querySelectorAll('#oilToggles .oil-toggle').forEach(btn => {
-            const code   = btn.dataset.code;
-            const colour = OIL_COLOURS[code];
-            const label  = OIL_LABELS[code] ?? code;
+        function applyOilToggleStyle(btn, active) {
+            const colour = OIL_COLOURS[btn.dataset.code];
+            btn.style.cssText = active
+                ? `background:${colour}1a;border-color:${colour};color:${colour}`
+                : 'background:#f8fafc;border-color:#e2e8f0;color:#94a3b8';
+        }
 
-            function applyStyle(active) {
-                btn.style.cssText = active
-                    ? `background:${colour}1a;border-color:${colour};color:${colour}`
-                    : 'background:#f8fafc;border-color:#e2e8f0;color:#94a3b8';
-            }
-
-            applyStyle(OIL_DEFAULT_VISIBLE.has(code));
+        const oilToggleBtns = document.querySelectorAll('#oilToggles .oil-toggle');
+        oilToggleBtns.forEach(btn => {
+            applyOilToggleStyle(btn, btn.dataset.code === OIL_ACTIVE_CODE);
 
             btn.addEventListener('click', () => {
-                const dataset = oilChart.data.datasets.find(d => d.label === label);
-                if (!dataset) return;
-                dataset.hidden = !dataset.hidden;
+                if (OIL_ACTIVE_CODE === btn.dataset.code) return;
+                OIL_ACTIVE_CODE = btn.dataset.code;
+                const activeLabel = OIL_LABELS[OIL_ACTIVE_CODE] ?? OIL_ACTIVE_CODE;
+                oilChart.data.datasets.forEach(d => { d.hidden = d.label !== activeLabel; });
                 oilChart.update();
-                applyStyle(!dataset.hidden);
+                oilToggleBtns.forEach(b => applyOilToggleStyle(b, b.dataset.code === OIL_ACTIVE_CODE));
             });
         });
     }

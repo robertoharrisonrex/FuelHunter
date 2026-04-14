@@ -14,10 +14,11 @@ test('mount restores date range from cookies', function () {
 });
 
 test('mount restores fuel types from cookie', function () {
+    // IDs 2 (Unleaded) and 3 (Diesel) are both in the top-5 by site count
     Livewire::withCookies([
-        'dash_fuel_types' => json_encode(['3', '5']),
+        'dash_fuel_types' => json_encode(['2', '3']),
     ])->test(Dashboard::class)
-        ->assertSet('selectedFuelTypes', ['3', '5']);
+        ->assertSet('selectedFuelTypes', ['2', '3']);
 });
 
 test('mount falls back to defaults when no cookies exist', function () {

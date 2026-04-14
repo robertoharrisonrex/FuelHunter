@@ -140,7 +140,7 @@
 
 
     {{-- ── Zoom overlay ──────────────────────────────────────── --}}
-    <div id="zoomOverlay" class="hidden absolute inset-0 z-20 flex items-center justify-center">
+    <div id="zoomOverlay" class="hidden absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
         <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 p-8 text-center max-w-xs mx-4">
             <div class="w-14 h-14 rounded-2xl bg-indigo-50 flex items-center justify-center mx-auto mb-4">
                 <svg class="w-7 h-7 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
