@@ -15,12 +15,12 @@ class OilPriceController extends Controller
 
             $isPgsql  = DB::connection()->getDriverName() === 'pgsql';
             $bucket   = $isPgsql
-                ? "to_char(to_timestamp(floor(extract(epoch from recorded_at) / 1800) * 1800), 'YYYY-MM-DD HH24:MI')"
-                : "strftime('%Y-%m-%d %H:', recorded_at) || printf('%02d', (cast(strftime('%M', recorded_at) as integer) / 30) * 30)";
+                ? "to_char(date_trunc('hour', (recorded_at AT TIME ZONE 'UTC') AT TIME ZONE 'Australia/Brisbane') + floor(date_part('minute', (recorded_at AT TIME ZONE 'UTC') AT TIME ZONE 'Australia/Brisbane') / 30) * interval '30 min', 'YYYY-MM-DD HH24:MI')"
+                : "strftime('%Y-%m-%d %H:', datetime(recorded_at, '+10 hours')) || printf('%02d', (cast(strftime('%M', datetime(recorded_at, '+10 hours')) as integer) / 30) * 30)";
 
             $rows = DB::table('oil_prices')
                 ->whereIn('code', $codes)
-                ->whereRaw('recorded_at >= ?', [now()->subHours(72)])
+                ->whereRaw('recorded_at >= ?', [now()->utc()->subHours(72)])
                 ->selectRaw("code, {$bucket} as bucket, ROUND(AVG(price), 2) as avg_price")
                 ->groupBy('code', DB::raw($bucket))
                 ->orderBy('bucket')
