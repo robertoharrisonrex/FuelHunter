@@ -158,7 +158,7 @@ class Dashboard extends Component
                 return ['labels' => [], 'datasets' => []];
             }
 
-            $dateFrom = $this->dateFrom ?: now()->subDays(29)->format('Y-m-d');
+            $dateFrom = max($this->dateFrom ?: now()->subDays(29)->format('Y-m-d'), '2026-04-06');
             $dateTo   = $this->dateTo   ?: now()->format('Y-m-d');
             $ids      = $this->selectedFuelTypes;
 

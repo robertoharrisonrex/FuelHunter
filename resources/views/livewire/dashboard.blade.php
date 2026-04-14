@@ -241,7 +241,7 @@ $activePreset = match($dateFrom) {
             <div class="flex items-start justify-between mb-4">
                 <div>
                     <h2 class="text-slate-900 text-xl font-bold tracking-tight">Global Oil Prices</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">USD — last 30 days</p>
+                    <p class="text-slate-500 text-sm mt-0.5">USD — last 72 hours</p>
                 </div>
             </div>
 
@@ -509,7 +509,7 @@ $activePreset = match($dateFrom) {
             backgroundColor: OIL_COLOURS[code] + '1a',
             borderWidth:     2,
             pointRadius:     0,
-            tension:         0.3,
+            tension:         0,
             fill:            false,
             hidden:          code !== OIL_ACTIVE_CODE,
         }));

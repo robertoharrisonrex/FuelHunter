@@ -20,7 +20,7 @@ class OilPriceController extends Controller
 
             $rows = DB::table('oil_prices')
                 ->whereIn('code', $codes)
-                ->whereRaw('recorded_at >= ?', [now()->subDays(30)])
+                ->whereRaw('recorded_at >= ?', [now()->subHours(72)])
                 ->selectRaw("code, {$bucket} as bucket, ROUND(AVG(price), 2) as avg_price")
                 ->groupBy('code', DB::raw($bucket))
                 ->orderBy('bucket')
