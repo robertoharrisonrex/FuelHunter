@@ -31,7 +31,7 @@
     <div class="px-6 py-3 border-t border-slate-100 flex items-center justify-between gap-4">
         <button id="heatmapBackBtn"
                 onclick="heatmapBackToCities()"
-                class="flex hidden items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
+                class="hidden items-center gap-1.5 text-xs font-semibold text-indigo-600 hover:text-indigo-500 transition-colors">
             ← Back to cities
         </button>
         <div class="flex items-center gap-2 text-xs text-slate-500">
@@ -53,6 +53,16 @@ let heatmapMarkers = [];
 let activeInfoWin  = null;
 let activeCityId   = null;
 let currentFuelId  = $wire.selectedFuelTypeId;
+let heatmapAbortCtrl = null;
+
+function heatmapEscapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
 function heatmapClearMarkers() {
     heatmapMarkers.forEach(m => m.setMap(null));
@@ -111,11 +121,11 @@ function heatmapCreateCircle(item, deviations, isSuburb) {
 
     const infoContent = `
         <div style="font-family:system-ui,sans-serif;padding:14px 16px;min-width:180px">
-            <p style="font-weight:700;font-size:14px;color:#0f172a;margin:0 0 8px">${name}</p>
+            <p style="font-weight:700;font-size:14px;color:#0f172a;margin:0 0 8px">${heatmapEscapeHtml(name)}</p>
             <p style="font-size:12px;color:#475569;margin:0 0 3px">Avg price: <b>${priceC} ¢/L</b></p>
             <p style="font-size:12px;color:#475569;margin:0 0 3px">${vsLabel}: ${devLabel}</p>
             <p style="font-size:12px;color:#475569;margin:0 0 ${isSuburb ? 0 : 10}px">Sites: <b>${item.site_count}</b></p>
-            ${!isSuburb ? `<a href="#" data-city-id="${id}" data-city-name="${name}"
+            ${!isSuburb ? `<a href="#" data-city-id="${id}" data-city-name="${heatmapEscapeHtml(name)}"
                style="font-size:12px;color:#4f46e5;font-weight:600;text-decoration:none"
                class="heatmap-drill">See suburbs →</a>` : ''}
         </div>`;
@@ -147,38 +157,57 @@ function heatmapCreateCircle(item, deviations, isSuburb) {
 }
 
 async function heatmapFetchCities(fuelId) {
-    const res  = await fetch(`/map-heatmap/${fuelId}`);
-    const data = await res.json();
-    heatmapClearMarkers();
-    activeCityId = null;
-    document.getElementById('heatmapBackBtn').classList.add('hidden');
-    document.getElementById('heatmapSubtitle').textContent = 'Click a circle to see suburbs';
-
-    if (!data.length) return;
-    const devs = data.map(d => d.deviation);
-    data.forEach(item => heatmapCreateCircle(item, devs, false));
+    if (heatmapAbortCtrl) heatmapAbortCtrl.abort();
+    heatmapAbortCtrl = new AbortController();
+    try {
+        const res  = await fetch(`/map-heatmap/${fuelId}`, { signal: heatmapAbortCtrl.signal });
+        if (!res.ok) return;
+        const data = await res.json();
+        heatmapClearMarkers();
+        activeCityId = null;
+        document.getElementById('heatmapBackBtn').classList.add('hidden');
+        document.getElementById('heatmapBackBtn').style.display = '';
+        document.getElementById('heatmapSubtitle').textContent = 'Click a circle to see suburbs';
+        if (!data.length) return;
+        const devs = data.map(d => d.deviation);
+        data.forEach(item => heatmapCreateCircle(item, devs, false));
+    } catch (e) {
+        if (e.name !== 'AbortError') throw e;
+    }
 }
 
 async function heatmapDrillDown(cityId, cityName) {
-    const res  = await fetch(`/map-heatmap/${currentFuelId}/city/${cityId}`);
-    const data = await res.json();
-    heatmapClearMarkers();
-    activeCityId = cityId;
-
-    document.getElementById('heatmapBackBtn').classList.remove('hidden');
-    document.getElementById('heatmapSubtitle').textContent = cityName;
-
-    if (!data.length) return;
-    const devs = data.map(d => d.deviation);
-    data.forEach(item => heatmapCreateCircle(item, devs, true));
-
-    const bounds = new google.maps.LatLngBounds();
-    data.forEach(d => bounds.extend({ lat: d.lat, lng: d.lng }));
-    heatmapMap.fitBounds(bounds);
+    if (heatmapAbortCtrl) heatmapAbortCtrl.abort();
+    heatmapAbortCtrl = new AbortController();
+    try {
+        const res  = await fetch(`/map-heatmap/${currentFuelId}/city/${cityId}`, { signal: heatmapAbortCtrl.signal });
+        if (!res.ok) return;
+        const data = await res.json();
+        heatmapClearMarkers();
+        activeCityId = cityId;
+        if (!data.length) {
+            document.getElementById('heatmapBackBtn').style.display = 'flex';
+            document.getElementById('heatmapBackBtn').classList.remove('hidden');
+            document.getElementById('heatmapSubtitle').textContent = `${heatmapEscapeHtml(cityName)} — no suburb data`;
+            return;
+        }
+        document.getElementById('heatmapBackBtn').style.display = 'flex';
+        document.getElementById('heatmapBackBtn').classList.remove('hidden');
+        document.getElementById('heatmapSubtitle').textContent = heatmapEscapeHtml(cityName);
+        const devs = data.map(d => d.deviation);
+        data.forEach(item => heatmapCreateCircle(item, devs, true));
+        const bounds = new google.maps.LatLngBounds();
+        data.forEach(d => bounds.extend({ lat: d.lat, lng: d.lng }));
+        heatmapMap.fitBounds(bounds);
+    } catch (e) {
+        if (e.name !== 'AbortError') throw e;
+    }
 }
 
 window.heatmapBackToCities = function () {
     activeCityId = null;
+    document.getElementById('heatmapBackBtn').style.display = '';
+    document.getElementById('heatmapBackBtn').classList.add('hidden');
     heatmapMap.setCenter({ lat: -22.0, lng: 144.0 });
     heatmapMap.setZoom(5);
     heatmapFetchCities(currentFuelId);
