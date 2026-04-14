@@ -29,7 +29,7 @@
 <body class="h-full bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
 
 {{-- ── Navigation ──────────────────────────────────────────────────────── --}}
-<nav class="bg-white/80 backdrop-blur-md border-b border-slate-900/[0.07] sticky top-0 z-50">
+<nav class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-900/[0.07] dark:border-slate-700/50 sticky top-0 z-50">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="relative flex h-14 items-center">
 
@@ -56,6 +56,23 @@
                     <x-nav-link href="/fuel"      :active="request()->is('fuel*')">Fuel Sites</x-nav-link>
                     <x-nav-link href="/dashboard" :active="request()->is('dashboard')">Statistics</x-nav-link>
                     <x-nav-link href="/about"     :active="request()->is('about')">About</x-nav-link>
+                    <button @click="$store.theme.toggle()"
+                            class="w-8 h-8 rounded-lg border flex items-center justify-center ml-1
+                                   transition-colors duration-150
+                                   border-slate-200 bg-slate-50 hover:bg-slate-100
+                                   dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700">
+                        {{-- Sun: shown in light mode --}}
+                        <svg x-show="!$store.theme.dark" class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                            <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                        </svg>
+                        {{-- Moon: shown in dark mode --}}
+                        <svg x-show="$store.theme.dark" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                        </svg>
+                    </button>
                 </div>
             </div>
 
@@ -68,9 +85,9 @@
 
 {{-- ── Page heading ──────────────────────────────────────────────────────── --}}
 @if(trim($heading))
-<header class="bg-white border-b border-gray-100 shadow-sm">
+<header class="bg-white dark:bg-slate-900 border-b border-gray-100 dark:border-slate-700 shadow-sm">
     <div class="mx-auto max-w-7xl px-4 py-3 sm:py-5 sm:px-6 lg:px-8">
-        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">{{ $heading }}</h1>
+        <h1 class="text-xl sm:text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-100">{{ $heading }}</h1>
     </div>
 </header>
 @endif
@@ -88,7 +105,7 @@
 
 {{-- ── Mobile bottom tab bar ────────────────────────────────────────────── --}}
 <nav x-data="{ moreOpen: false }"
-     class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/90 backdrop-blur-md border-t border-slate-900/[0.07]"
+     class="md:hidden fixed bottom-0 inset-x-0 z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-900/[0.07] dark:border-slate-700/50"
      style="padding-bottom: env(safe-area-inset-bottom, 0px)">
 
     <div class="flex items-center justify-around h-16">
@@ -164,12 +181,37 @@
          x-transition:leave-start="opacity-100 translate-y-0"
          x-transition:leave-end="opacity-0 translate-y-2"
          @click.away="moreOpen = false"
-         class="absolute bottom-full right-0 mb-1 mr-2 bg-white border border-slate-200 rounded-2xl shadow-xl overflow-hidden w-44"
+         class="absolute bottom-full right-0 mb-1 mr-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-xl overflow-hidden w-52"
          style="display: none;">
+
+        {{-- Dark mode toggle --}}
+        <button @click="$store.theme.toggle()"
+                class="flex items-center justify-between w-full px-4 py-3 border-b border-slate-100 dark:border-slate-700
+                       text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors duration-150">
+            <div class="flex items-center gap-3">
+                <svg x-show="!$store.theme.dark" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                    <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+                </svg>
+                <svg x-show="$store.theme.dark" class="w-4 h-4 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
+                </svg>
+                <span class="text-sm font-medium">Dark mode</span>
+            </div>
+            {{-- Pill toggle --}}
+            <div :class="$store.theme.dark ? 'bg-indigo-600' : 'bg-slate-200'"
+                 class="w-9 h-5 rounded-full relative transition-colors duration-200 flex-shrink-0">
+                <div :class="$store.theme.dark ? 'translate-x-4' : 'translate-x-0'"
+                     class="w-4 h-4 bg-white rounded-full absolute top-0.5 left-0.5 transition-transform duration-200 shadow-sm"></div>
+            </div>
+        </button>
+
         <a href="/about"
            @click="moreOpen = false"
            class="flex items-center gap-3 px-4 py-3 text-sm font-medium
-                  {{ request()->is('about') ? 'text-indigo-600 bg-indigo-50' : 'text-slate-700 hover:bg-slate-50' }}
+                  {{ request()->is('about') ? 'text-indigo-600 bg-indigo-50 dark:bg-indigo-950 dark:text-indigo-400' : 'text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-800' }}
                   transition-colors duration-150">
             <svg class="w-4 h-4 {{ request()->is('about') ? 'text-indigo-500' : 'text-slate-400' }}"
                  fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
