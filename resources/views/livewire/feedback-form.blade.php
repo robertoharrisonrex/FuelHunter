@@ -72,7 +72,7 @@
             </div>
 
             <div class="flex items-center justify-between">
-                <p class="text-xs text-gray-400">We'll get back to you within 48 hours.</p>
+                <p class="text-xs text-gray-400">Your feedback is genuinely appreciated — thank you for taking the time.</p>
                 <button type="submit"
                         class="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-500 active:scale-95
                                text-white rounded-xl px-6 py-2.5 text-sm font-bold

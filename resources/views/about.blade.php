@@ -64,17 +64,30 @@
             </div>
         </div>
 
-        {{-- ── Data Source ───────────────────────────────────── --}}
-        <div class="bg-amber-50 border border-amber-100 rounded-2xl px-6 py-4 flex gap-4 items-start">
-            <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <p class="text-xs text-amber-800 leading-relaxed">
-                <span class="font-bold">Data source:</span>
-                Price data is sourced from the Queensland Government's Fuel Price Reporting Scheme API under
-                the Queensland Government's open data licence. FuelHunter is an independent tool and is not
-                affiliated with or endorsed by the Queensland Government.
-            </p>
+        {{-- ── Data Sources ──────────────────────────────────── --}}
+        <div class="space-y-3">
+            <div class="bg-amber-50 border border-amber-100 rounded-2xl px-6 py-4 flex gap-4 items-start">
+                <svg class="w-5 h-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <p class="text-xs text-amber-800 leading-relaxed">
+                    <span class="font-bold">Fuel price data:</span>
+                    Sourced from the Queensland Government's Fuel Price Reporting Scheme API under
+                    the Queensland Government's open data licence. FuelHunter is an independent tool and is not
+                    affiliated with or endorsed by the Queensland Government.
+                </p>
+            </div>
+            <div class="bg-blue-50 border border-blue-100 rounded-2xl px-6 py-4 flex gap-4 items-start">
+                <svg class="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                </svg>
+                <p class="text-xs text-blue-800 leading-relaxed">
+                    <span class="font-bold">Global oil price data:</span>
+                    WTI Crude, Brent Crude, Natural Gas, and Gasoline commodity prices are sourced from the
+                    <span class="font-medium">OilPrice API</span> (oilpriceapi.com), updated every 20 minutes.
+                    FuelHunter is not affiliated with OilPrice API.
+                </p>
+            </div>
         </div>
 
         {{-- ── Developer + Feedback (two-column) ───────────────── --}}
