@@ -235,9 +235,6 @@ $activePreset = match($dateFrom) {
         </div>
     </div>
 
-    {{-- ── Regional Heat Map ──────────────────────────────────── --}}
-    <livewire:regional-heatmap />
-
 </div>
 
 @script
