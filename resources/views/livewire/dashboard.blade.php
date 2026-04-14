@@ -214,74 +214,23 @@ $activePreset = match($dateFrom) {
         </div>
     </div>
 
-    {{-- ── Chart A: Brand Price Comparison ─────────────────────── --}}
+    {{-- ── Brand Market Share ──────────────────────────────────────── --}}
     <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="p-6">
             <div class="flex items-start justify-between mb-6">
                 <div>
-                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Brand Price Comparison</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Average price by brand · current prices</p>
+                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Brand Market Share</h2>
+                    <p class="text-slate-500 text-sm mt-0.5">Share of total Queensland fuel sites by brand</p>
                 </div>
             </div>
-            <div wire:ignore class="relative h-[320px] sm:h-[420px]">
-                <canvas id="chartBrands"></canvas>
-            </div>
-            @if(empty($brandsChart['labels']))
-                <p class="text-center text-sm text-slate-400 mt-4">Select a fuel type to display brand comparison.</p>
-            @endif
-        </div>
-    </div>
-
-    {{-- ── Chart B: Price by Region ──────────────────────────────── --}}
-    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-6">
-            <div class="flex items-start justify-between mb-6">
-                <div>
-                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Price by City</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Average price by city · current prices</p>
+            <div wire:ignore class="flex flex-col sm:flex-row items-center gap-6">
+                <div class="relative w-[280px] h-[280px] flex-shrink-0">
+                    <canvas id="chartBrandShare"></canvas>
                 </div>
+                <div id="brandShareLegend" class="flex flex-wrap gap-x-5 gap-y-2 text-sm text-slate-600"></div>
             </div>
-            <div wire:ignore class="relative h-[380px] sm:h-[500px]">
-                <canvas id="chartRegions"></canvas>
-            </div>
-            @if(empty($regionsChart['labels']))
-                <p class="text-center text-sm text-slate-400 mt-4">Select a fuel type to display regional comparison.</p>
-            @endif
-        </div>
-    </div>
-
-    {{-- ── Chart C: Weekly Price Pattern ─────────────────────────── --}}
-    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-6">
-            <div class="flex items-start justify-between mb-6">
-                <div>
-                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Weekly Price Pattern</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Average price by day of week · selected date range</p>
-                </div>
-            </div>
-            <div wire:ignore class="relative h-[260px] sm:h-[360px]">
-                <canvas id="chartWeekly"></canvas>
-            </div>
-            @if(empty($weeklyChart['datasets']))
-                <p class="text-center text-sm text-slate-400 mt-4">Select at least one fuel type to display the weekly pattern.</p>
-            @endif
-        </div>
-    </div>
-
-    {{-- ── Chart D: Fuel Type Availability ─────────────────────────── --}}
-    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div class="p-6">
-            <div class="flex items-start justify-between mb-6">
-                <div>
-                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Fuel Type Availability</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Active stations without each fuel type per day</p>
-                </div>
-            </div>
-            <div wire:ignore class="relative h-[260px] sm:h-[420px]">
-                <canvas id="chartAvailability"></canvas>
-            </div>
-            @if(empty($availabilityChart['datasets']))
-                <p class="text-center text-sm text-slate-400 mt-4">Select at least one fuel type to display availability trends.</p>
+            @if(empty($brandShare['labels']))
+                <p class="text-center text-sm text-slate-400 mt-4">No brand data available.</p>
             @endif
         </div>
     </div>
@@ -435,267 +384,79 @@ $activePreset = match($dateFrom) {
 
     $wire.on('chartUpdated', ({ labels, datasets }) => hydrate(labels, datasets));
 
-    // ── Chart A: Brand Price Comparison ───────────────────────────
-    const brandsInitial = @json($brandsChart);
-    const brandsCanvas  = document.getElementById('chartBrands');
+    // ── Brand Market Share (pie) ───────────────────────────────────
+    const PIE_PALETTE = [
+        '#6366f1', '#14b8a6', '#f59e0b', '#ef4444',
+        '#a855f7', '#22c55e', '#f97316', '#ec4899',
+        '#06b6d4', '#84cc16', '#8b5cf6', '#f43f5e',
+    ];
 
-    const barOptions = (axisTitle) => ({
-        responsive:          true,
-        maintainAspectRatio: false,
-        animation:           { duration: 600, easing: 'easeInOutQuart' },
-        plugins: {
-            legend: { display: false },
-            tooltip: {
-                backgroundColor: 'rgba(2,6,23,0.94)',
-                titleColor:      '#e2e8f0',
-                bodyColor:       '#94a3b8',
-                borderColor:     'rgba(99,102,241,0.35)',
-                borderWidth:     1,
-                padding:         14,
-                cornerRadius:    12,
-                callbacks: {
-                    label: c => ` ${c.parsed.y !== null ? c.parsed.y.toFixed(1) + ' ¢/L' : 'N/A'}`,
-                },
-            },
+    const shareInitial  = @json($brandShare);
+    const shareCanvas   = document.getElementById('chartBrandShare');
+    const shareLegendEl = document.getElementById('brandShareLegend');
+
+    function buildLegend(labels, values, counts) {
+        shareLegendEl.innerHTML = labels.map((label, i) => `
+            <div class="flex items-center gap-1.5 whitespace-nowrap">
+                <span class="inline-block w-2.5 h-2.5 rounded-full flex-shrink-0"
+                      style="background:${PIE_PALETTE[i % PIE_PALETTE.length]}"></span>
+                <span class="font-semibold text-slate-700">${label}</span>
+                <span class="text-slate-400">${values[i]}%</span>
+                <span class="text-slate-300 text-xs">(${counts[i]})</span>
+            </div>
+        `).join('');
+    }
+
+    const brandShareChart = new Chart(shareCanvas, {
+        type: 'doughnut',
+        data: {
+            labels:   shareInitial.labels,
+            datasets: [{
+                data:            shareInitial.values,
+                backgroundColor: shareInitial.labels.map((_, i) => PIE_PALETTE[i % PIE_PALETTE.length]),
+                borderColor:     '#ffffff',
+                borderWidth:     2,
+                hoverOffset:     8,
+            }],
         },
-        scales: {
-            x: {
-                ticks:  { color: '#475569', font: { size: 11 } },
-                grid:   { display: false },
-                border: { display: false },
-            },
-            y: {
-                ticks:  { color: '#475569', font: { size: 11 }, callback: v => v + ' ¢' },
-                grid:   { color: 'rgba(15,23,42,0.05)' },
-                border: { display: false },
-                title:  { display: true, text: axisTitle, color: '#334155', font: { size: 11 } },
+        options: {
+            responsive:          true,
+            maintainAspectRatio: false,
+            cutout:              '62%',
+            animation:           { duration: 800, easing: 'easeInOutQuart' },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: 'rgba(2,6,23,0.94)',
+                    titleColor:      '#e2e8f0',
+                    bodyColor:       '#94a3b8',
+                    borderColor:     'rgba(99,102,241,0.35)',
+                    borderWidth:     1,
+                    padding:         14,
+                    cornerRadius:    12,
+                    callbacks: {
+                        label: c => {
+                            const count = shareInitial.counts[c.dataIndex] ?? '';
+                            return ` ${c.label}: ${c.parsed}% (${count} sites)`;
+                        },
+                    },
+                },
             },
         },
     });
 
-    function buildBarDataset(labels, values) {
-        const c = { r: 99, g: 102, b: 241 };
-        return {
-            labels,
-            datasets: [
-                {
-                    type:            'bar',
-                    data:            values,
-                    backgroundColor: rgba(c, 0.65),
-                    borderColor:     rgba(c, 1),
-                    borderWidth:     1.5,
-                    borderRadius:    4,
-                },
-                {
-                    type:                 'line',
-                    data:                 values,
-                    borderColor:          rgba(c, 1),
-                    backgroundColor:      'transparent',
-                    borderWidth:          2.5,
-                    tension:              0.3,
-                    pointRadius:          4,
-                    pointBackgroundColor: rgba(c, 1),
-                    pointBorderColor:     '#ffffff',
-                    pointBorderWidth:     2,
-                    fill:                 false,
-                },
-            ],
+    buildLegend(shareInitial.labels, shareInitial.values, shareInitial.counts);
+
+    $wire.on('brandShareUpdated', ({ labels, values, counts }) => {
+        brandShareChart.data.labels              = labels;
+        brandShareChart.data.datasets[0].data    = values;
+        brandShareChart.data.datasets[0].backgroundColor = labels.map((_, i) => PIE_PALETTE[i % PIE_PALETTE.length]);
+        brandShareChart.options.plugins.tooltip.callbacks.label = c => {
+            const count = counts[c.dataIndex] ?? '';
+            return ` ${c.label}: ${c.parsed}% (${count} sites)`;
         };
-    }
-
-    const brandsChart = new Chart(brandsCanvas, {
-        type: 'bar',
-        data: buildBarDataset(brandsInitial.labels, brandsInitial.values),
-        options: barOptions('Avg Price (¢/L)'),
+        brandShareChart.update();
+        buildLegend(labels, values, counts);
     });
-
-    $wire.on('brandsChartUpdated', ({ labels, values }) => {
-        const d = buildBarDataset(labels, values);
-        brandsChart.data.labels   = d.labels;
-        brandsChart.data.datasets = d.datasets;
-        brandsChart.update();
-    });
-
-    // ── Chart B: Price by Region ───────────────────────────────────
-    const regionsInitial = @json($regionsChart);
-    const regionsCanvas  = document.getElementById('chartRegions');
-
-    const regionsChart = new Chart(regionsCanvas, {
-        type: 'bar',
-        data: buildBarDataset(regionsInitial.labels, regionsInitial.values),
-        options: barOptions('Avg Price (¢/L)'),
-    });
-
-    $wire.on('regionsChartUpdated', ({ labels, values }) => {
-        const d = buildBarDataset(labels, values);
-        regionsChart.data.labels   = d.labels;
-        regionsChart.data.datasets = d.datasets;
-        regionsChart.update();
-    });
-
-    // ── Chart C: Weekly Price Pattern ─────────────────────────────
-    const weeklyInitial  = @json($weeklyChart);
-    const weeklyCanvas   = document.getElementById('chartWeekly');
-    const DAY_LABELS     = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-
-    function buildWeeklyDatasets(rawDatasets) {
-        const result = [];
-        rawDatasets.forEach((ds, i) => {
-            const c = PALETTE[i % PALETTE.length];
-            result.push({
-                type:            'bar',
-                label:           ds.label,
-                data:            ds.data,
-                backgroundColor: rgba(c, 0.65),
-                borderColor:     rgba(c, 1),
-                borderWidth:     1.5,
-                borderRadius:    4,
-            });
-            result.push({
-                type:                 'line',
-                label:                '',
-                data:                 ds.data,
-                borderColor:          rgba(c, 1),
-                backgroundColor:      'transparent',
-                borderWidth:          2.5,
-                tension:              0.3,
-                pointRadius:          4,
-                pointBackgroundColor: rgba(c, 1),
-                pointBorderColor:     '#ffffff',
-                pointBorderWidth:     2,
-                fill:                 false,
-            });
-        });
-        return result;
-    }
-
-    const weeklyChart = new Chart(weeklyCanvas, {
-        type: 'bar',
-        data: { labels: DAY_LABELS, datasets: buildWeeklyDatasets(weeklyInitial.datasets) },
-        options: {
-            responsive:          true,
-            maintainAspectRatio: false,
-            animation:           { duration: 600, easing: 'easeInOutQuart' },
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color:         '#64748b',
-                        usePointStyle: true,
-                        pointStyle:    'circle',
-                        padding:       22,
-                        font: { size: 12, weight: '600', family: 'system-ui, sans-serif' },
-                        filter:        (item) => item.text !== '',
-                    },
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(2,6,23,0.94)',
-                    titleColor:      '#e2e8f0',
-                    bodyColor:       '#94a3b8',
-                    borderColor:     'rgba(99,102,241,0.35)',
-                    borderWidth:     1,
-                    padding:         14,
-                    cornerRadius:    12,
-                    callbacks: {
-                        label: c => c.dataset.label ? ` ${c.dataset.label}: ${c.parsed.y !== null ? c.parsed.y.toFixed(1) + ' ¢/L' : 'N/A'}` : null,
-                    },
-                },
-            },
-            scales: {
-                x: {
-                    ticks:  { color: '#475569', font: { size: 11 } },
-                    grid:   { color: 'rgba(15,23,42,0.05)' },
-                    border: { display: false },
-                },
-                y: {
-                    ticks:  { color: '#475569', font: { size: 11 }, callback: v => v + ' ¢' },
-                    grid:   { color: 'rgba(15,23,42,0.05)' },
-                    border: { display: false },
-                    title:  { display: true, text: 'Avg Price (¢/L)', color: '#334155', font: { size: 11 } },
-                },
-            },
-        },
-    });
-
-    $wire.on('weeklyChartUpdated', ({ datasets }) => {
-        weeklyChart.data.datasets = buildWeeklyDatasets(datasets);
-        weeklyChart.update();
-    });
-
-    // ── Chart D: Fuel Type Availability ───────────────────────────
-    const availabilityInitial = @json($availabilityChart);
-    const availabilityCanvas  = document.getElementById('chartAvailability');
-    const availabilityCtx     = availabilityCanvas.getContext('2d');
-
-    const availabilityChart = new Chart(availabilityCanvas, {
-        type: 'line',
-        data: { labels: availabilityInitial.labels, datasets: [] },
-        options: {
-            responsive:          true,
-            maintainAspectRatio: false,
-            animation: { duration: 800, easing: 'easeInOutQuart' },
-            interaction: { mode: 'index', intersect: false },
-            plugins: {
-                legend: {
-                    position: 'top',
-                    labels: {
-                        color:         '#64748b',
-                        usePointStyle: true,
-                        pointStyle:    'circle',
-                        padding:       22,
-                        font: { size: 12, weight: '600', family: 'system-ui, sans-serif' },
-                    },
-                },
-                tooltip: {
-                    backgroundColor: 'rgba(2,6,23,0.94)',
-                    titleColor:      '#e2e8f0',
-                    bodyColor:       '#94a3b8',
-                    borderColor:     'rgba(99,102,241,0.35)',
-                    borderWidth:     1,
-                    padding:         14,
-                    cornerRadius:    12,
-                    callbacks: {
-                        label: c => ` ${c.dataset.label}: ${c.parsed.y !== null ? c.parsed.y + ' sites without' : 'N/A'}`,
-                    },
-                },
-            },
-            scales: {
-                x: {
-                    ticks: { color: '#475569', maxTicksLimit: 9, font: { size: 11 } },
-                    grid:   { color: 'rgba(15,23,42,0.05)' },
-                    border: { display: false },
-                },
-                y: {
-                    min: 0,
-                    ticks: {
-                        color: '#475569',
-                        font:  { size: 11 },
-                        callback: v => v,
-                    },
-                    grid:   { color: 'rgba(15,23,42,0.05)' },
-                    border: { display: false },
-                    title: {
-                        display: true,
-                        text:    'Sites without fuel type',
-                        color:   '#334155',
-                        font:    { size: 11 },
-                    },
-                },
-            },
-        },
-        plugins: [glowPlugin],
-    });
-
-    function hydrateAvailability(labels, datasets) {
-        availabilityChart.data.labels   = labels;
-        availabilityChart.data.datasets = buildDatasets(datasets, availabilityChart.chartArea, availabilityCtx);
-        availabilityChart.update();
-    }
-
-    requestAnimationFrame(() =>
-        requestAnimationFrame(() => hydrateAvailability(availabilityInitial.labels, availabilityInitial.datasets))
-    );
-
-    $wire.on('availabilityChartUpdated', ({ labels, datasets }) => hydrateAvailability(labels, datasets));
 </script>
 @endscript
