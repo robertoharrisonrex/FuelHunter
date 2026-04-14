@@ -35,59 +35,59 @@ $activePreset = match($dateFrom) {
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
 
         {{-- Avg Price --}}
-        <div class="dash-card bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-t-[3px] border-t-indigo-500 relative overflow-hidden">
+        <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm border-t-[3px] border-t-indigo-500 relative overflow-hidden">
             <div class="flex items-center gap-2 mb-3">
-                <div class="w-7 h-7 rounded-lg bg-indigo-50 flex items-center justify-center">
+                <div class="w-7 h-7 rounded-lg bg-indigo-50 dark:bg-indigo-950 flex items-center justify-center">
                     <svg class="w-3.5 h-3.5 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
                     </svg>
                 </div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
                     {{ $stats['fuel_name'] ?: 'Avg Price' }}
                 </p>
             </div>
             @if($stats['avg_price'])
-                <p class="text-[2.2rem] font-bold text-slate-900 leading-none tracking-tight">
-                    ${{ number_format($stats['avg_price'], 3) }}<span class="text-lg text-slate-400 font-medium ml-1.5">/L</span>
+                <p class="text-[2.2rem] font-bold text-slate-900 dark:text-slate-100 leading-none tracking-tight">
+                    ${{ number_format($stats['avg_price'], 3) }}<span class="text-lg text-slate-400 dark:text-slate-500 font-medium ml-1.5">/L</span>
                 </p>
-                <p class="text-xs text-slate-500 mt-2">Current average · all QLD sites</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Current average · all QLD sites</p>
             @else
-                <p class="text-2xl font-bold text-slate-400">—</p>
-                <p class="text-xs text-slate-500 mt-2">Select a fuel type above</p>
+                <p class="text-2xl font-bold text-slate-400 dark:text-slate-500">—</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Select a fuel type above</p>
             @endif
         </div>
 
         {{-- Sites Reporting --}}
-        <div class="dash-card bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-t-[3px] border-t-sky-500 relative overflow-hidden">
+        <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm border-t-[3px] border-t-sky-500 relative overflow-hidden">
             <div class="flex items-center gap-2 mb-3">
-                <div class="w-7 h-7 rounded-lg bg-sky-50 flex items-center justify-center">
+                <div class="w-7 h-7 rounded-lg bg-sky-50 dark:bg-sky-950 flex items-center justify-center">
                     <svg class="w-3.5 h-3.5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
                     </svg>
                 </div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Sites Reporting</p>
+                <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Sites Reporting</p>
             </div>
-            <p class="text-[2.2rem] font-bold text-slate-900 leading-none tracking-tight">
-                {{ $stats['site_count'] > 0 ? number_format($stats['site_count']) : '—' }}<span class="text-lg text-slate-400 font-medium ml-1.5">stations</span>
+            <p class="text-[2.2rem] font-bold text-slate-900 dark:text-slate-100 leading-none tracking-tight">
+                {{ $stats['site_count'] > 0 ? number_format($stats['site_count']) : '—' }}<span class="text-lg text-slate-400 dark:text-slate-500 font-medium ml-1.5">stations</span>
             </p>
-            <p class="text-xs text-slate-500 mt-2">Active Queensland fuel sites</p>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">Active Queensland fuel sites</p>
         </div>
 
         {{-- Date Range --}}
-        <div class="dash-card bg-white rounded-2xl p-5 border border-slate-200 shadow-sm border-t-[3px] border-t-amber-500 relative overflow-hidden">
+        <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl p-5 border border-slate-200 dark:border-slate-700 shadow-sm border-t-[3px] border-t-amber-500 relative overflow-hidden">
             <div class="flex items-center gap-2 mb-3">
-                <div class="w-7 h-7 rounded-lg bg-amber-50 flex items-center justify-center">
+                <div class="w-7 h-7 rounded-lg bg-amber-50 dark:bg-amber-950 flex items-center justify-center">
                     <svg class="w-3.5 h-3.5 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                     </svg>
                 </div>
-                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Date Range</p>
+                <p class="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">Date Range</p>
             </div>
-            <p class="text-[2.2rem] font-bold text-slate-900 leading-none tracking-tight">
-                {{ $stats['day_count'] }}<span class="text-lg text-slate-400 font-medium ml-1.5">days</span>
+            <p class="text-[2.2rem] font-bold text-slate-900 dark:text-slate-100 leading-none tracking-tight">
+                {{ $stats['day_count'] }}<span class="text-lg text-slate-400 dark:text-slate-500 font-medium ml-1.5">days</span>
             </p>
-            <p class="text-xs text-slate-500 mt-2">
+            <p class="text-xs text-slate-500 dark:text-slate-400 mt-2">
                 {{ \Carbon\Carbon::parse($dateFrom)->format('d M') }}
                 &rarr;
                 {{ \Carbon\Carbon::parse($dateTo)->format('d M Y') }}
@@ -97,13 +97,13 @@ $activePreset = match($dateFrom) {
     </div>
 
     {{-- ── Filter Card ─────────────────────────────────────────── --}}
-    <div class="dash-card bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+    <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl border border-gray-100 dark:border-slate-700 shadow-sm p-5">
         <div class="flex flex-col gap-5">
 
             {{-- Row 1: Date range + presets --}}
             <div class="flex flex-wrap items-end gap-4">
                 <div>
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Date Range</label>
+                    <label class="block text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-2">Date Range</label>
                     <div class="flex flex-wrap items-center gap-2">
 
                         {{-- Presets --}}
@@ -113,7 +113,7 @@ $activePreset = match($dateFrom) {
                                         class="px-3 py-1.5 rounded-lg text-xs font-bold border transition-all duration-150
                                                {{ $activePreset === $key
                                                    ? 'bg-indigo-600 text-white border-indigo-600'
-                                                   : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-indigo-300 hover:text-indigo-500 hover:bg-indigo-50' }}">
+                                                   : 'border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:border-indigo-300 hover:text-indigo-500 hover:bg-indigo-50' }}">
                                     {{ $label }}
                                 </button>
                             @endforeach
@@ -122,12 +122,14 @@ $activePreset = match($dateFrom) {
                         <span class="text-gray-200 hidden sm:block">|</span>
 
                         <input type="date" wire:model="dateFrom"
-                               class="border border-gray-200 rounded-xl px-3 py-2 text-sm bg-gray-50
+                               class="border border-gray-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm bg-gray-50 dark:bg-slate-800
+                                      text-gray-900 dark:text-slate-100
                                       focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                                       transition-shadow duration-150">
                         <span class="text-gray-300 text-sm">→</span>
                         <input type="date" wire:model="dateTo"
-                               class="border border-gray-200 rounded-xl px-3 py-2 text-sm bg-gray-50
+                               class="border border-gray-200 dark:border-slate-600 rounded-xl px-3 py-2 text-sm bg-gray-50 dark:bg-slate-800
+                                      text-gray-900 dark:text-slate-100
                                       focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                                       transition-shadow duration-150">
                     </div>
@@ -137,7 +139,7 @@ $activePreset = match($dateFrom) {
             {{-- Row 2: Fuel types + apply button --}}
             <div class="flex flex-wrap items-end gap-5">
                 <div class="flex-1 min-w-0">
-                    <label class="block text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Fuel Types</label>
+                    <label class="block text-[10px] font-bold text-gray-400 dark:text-slate-500 uppercase tracking-widest mb-2">Fuel Types</label>
                     <div class="flex flex-wrap gap-2">
                         @foreach($fuelTypes as $type)
                             <label class="relative cursor-pointer select-none">
@@ -149,7 +151,7 @@ $activePreset = match($dateFrom) {
                                              border cursor-pointer transition-all duration-200"
                                       :class="$wire.selectedFuelTypes.includes('{{ $type->id }}')
                                           ? 'bg-indigo-600 text-white border-indigo-600'
-                                          : 'border-gray-200 bg-gray-50 text-gray-500 hover:border-indigo-300 hover:text-indigo-500 hover:bg-indigo-50'">
+                                          : 'border-gray-200 dark:border-slate-600 bg-gray-50 dark:bg-slate-800 text-gray-500 dark:text-slate-400 hover:border-indigo-300 hover:text-indigo-500 hover:bg-indigo-50'">
                                     {{ $type->name }}
                                 </span>
                             </label>
@@ -181,22 +183,22 @@ $activePreset = match($dateFrom) {
     </div>
 
     {{-- ── Chart Card ───────────────────────────────────────────── --}}
-    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
 
         <div class="p-6">
 
             {{-- Header --}}
             <div class="flex items-start justify-between mb-6">
                 <div>
-                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Average Fuel Price</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Cents per litre · Queensland</p>
+                    <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Average Fuel Price</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Cents per litre · Queensland</p>
                 </div>
-                <div class="flex items-center gap-2 bg-slate-50 rounded-xl px-3 py-1.5 border border-slate-200">
+                <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-3 py-1.5 border border-slate-200 dark:border-slate-700">
                     <span class="relative flex h-2 w-2">
                         <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                         <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
                     </span>
-                    <span class="text-xs text-slate-600 font-semibold">Live Data</span>
+                    <span class="text-xs text-slate-600 dark:text-slate-400 font-semibold">Live Data</span>
                 </div>
             </div>
 
@@ -215,12 +217,12 @@ $activePreset = match($dateFrom) {
     </div>
 
     {{-- ── Brand Market Share ──────────────────────────────────────── --}}
-    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
         <div class="p-6">
             <div class="flex items-start justify-between mb-6">
                 <div>
-                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Brand Market Share</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">Share of total Queensland fuel sites by brand</p>
+                    <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Brand Market Share</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">Share of total Queensland fuel sites by brand</p>
                 </div>
             </div>
             <div wire:ignore class="flex flex-col sm:flex-row items-center gap-6">
@@ -236,12 +238,12 @@ $activePreset = match($dateFrom) {
     </div>
 
     {{-- ── Global Oil Prices ──────────────────────────────────────── --}}
-    <div class="dash-card bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+    <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
         <div class="p-6">
             <div class="flex items-start justify-between mb-4">
                 <div>
-                    <h2 class="text-slate-900 text-xl font-bold tracking-tight">Global Oil Prices</h2>
-                    <p class="text-slate-500 text-sm mt-0.5">USD — last 72 hours</p>
+                    <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Global Oil Prices</h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">USD — last 72 hours</p>
                 </div>
             </div>
 
@@ -256,7 +258,7 @@ $activePreset = match($dateFrom) {
             <div wire:ignore class="relative h-[200px] sm:h-[300px]">
                 <canvas id="chartOilPrices"></canvas>
             </div>
-            <p id="oilPricesEmpty" class="hidden text-center text-sm text-slate-400 mt-4">
+            <p id="oilPricesEmpty" class="hidden text-center text-sm text-slate-400 dark:text-slate-500 mt-4">
                 No oil price data available yet — check back after the ETL has run.
             </p>
         </div>
