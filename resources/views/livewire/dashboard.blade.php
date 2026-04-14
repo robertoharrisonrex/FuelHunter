@@ -456,7 +456,7 @@ $activePreset = match($dateFrom) {
         `).join('');
     }
 
-    const t = getChartTheme();
+    const tShare = getChartTheme();
     const brandShareChart = new Chart(shareCanvas, {
         type: 'doughnut',
         data: {
@@ -464,7 +464,7 @@ $activePreset = match($dateFrom) {
             datasets: [{
                 data:            shareInitial.values,
                 backgroundColor: shareInitial.labels.map((_, i) => PIE_PALETTE[i % PIE_PALETTE.length]),
-                borderColor:     t.pieBorder,
+                borderColor:     tShare.pieBorder,
                 borderWidth:     2,
                 hoverOffset:     8,
             }],
@@ -477,9 +477,9 @@ $activePreset = match($dateFrom) {
             plugins: {
                 legend: { display: false },
                 tooltip: {
-                    backgroundColor: t.tooltipBg,
-                    titleColor:      t.tooltipTitle,
-                    bodyColor:       t.tooltipBody,
+                    backgroundColor: tShare.tooltipBg,
+                    titleColor:      tShare.tooltipTitle,
+                    bodyColor:       tShare.tooltipBody,
                     borderColor:     'rgba(99,102,241,0.35)',
                     borderWidth:     1,
                     padding:         14,
