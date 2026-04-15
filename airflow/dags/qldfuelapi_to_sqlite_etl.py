@@ -81,6 +81,7 @@ def load_brands():
         WHERE id NOT IN (SELECT id FROM brands);
     """))
 
+    conn.commit()
     conn.close()
 
 
@@ -163,6 +164,7 @@ def load_regions():
         where id not in (select id from {region_type})
         """))
 
+    conn.commit()
     conn.close()
 
 
@@ -270,6 +272,7 @@ def load_fuel_sites():
         from temp_fuel_sites
     WHERE id not in (select id from fuel_sites);
     """))
+    conn.commit()
     conn.close()
 
 
@@ -329,6 +332,7 @@ def load_fuel_types():
         SELECT id, name, created_at, updated_at FROM temp_fuel_types
         WHERE id not in (select id from fuel_types);
     """))
+    conn.commit()
     conn.close()
 
 
@@ -347,8 +351,12 @@ def transform_fuel_prices():
     fuel_prices_df = pd.read_json('/tmp/fuelprices.json')
     fuel_prices_df.rename(columns={'SiteId': 'site_id', 'FuelId': 'fuel_id', 'Price':'price', 'CollectionMethod': 'collection_method', 'TransactionDateUtc': 'transaction_date_utc'}, inplace=True)
     fuel_prices_df['transaction_date_utc'] = pd.to_datetime(fuel_prices_df['transaction_date_utc'], errors='coerce')
+    null_date_count = fuel_prices_df['transaction_date_utc'].isna().sum()
+    if null_date_count:
+        print(f"WARNING: dropping {null_date_count} price rows with null/unparseable TransactionDateUtc")
+        print(fuel_prices_df[fuel_prices_df['transaction_date_utc'].isna()][['site_id', 'fuel_id']].to_string())
     fuel_prices_df = fuel_prices_df.dropna(subset=['transaction_date_utc'])
-    fuel_prices_df.loc[fuel_prices_df['price'] == 9999.0, 'fuel_id'] = 0.0
+    fuel_prices_df = fuel_prices_df[fuel_prices_df['price'] != 9999.0]
     fuel_prices_df['price'] = fuel_prices_df['price'] / 10
     fuel_prices_df['created_at'] = datetime.now()
     fuel_prices_df['updated_at'] = datetime.now()
@@ -404,6 +412,7 @@ def load_fuel_prices():
         WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices)
     """))
 
+    conn.commit()
     conn.close()
 
 
