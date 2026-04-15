@@ -182,7 +182,7 @@
                 frameborder="0"
                 style="border:0; display:block;"
                 referrerpolicy="no-referrer-when-downgrade"
-                src="https://www.google.com/maps/embed/v1/place?key={{ env('GOOGLE_API_TOKEN') }}&q={{ $fuelSite->latitude }},{{ $fuelSite->longitude }}&zoom=15"
+                src="https://www.google.com/maps/embed/v1/place?key={{ config('services.google.maps_api_key') }}&q={{ $fuelSite->latitude }},{{ $fuelSite->longitude }}&zoom=15"
                 allowfullscreen>
             </iframe>
         </div>
