@@ -327,7 +327,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
     }
 
     // ── Custom price pin element ──────────────────────────────
-    function makePinEl(price, min, max, brandName, highlight = null) {
+    function makePinEl(price, min, max, brandName, highlight = null, subLabel = null) {
         // No-price pin for sites without data for the selected fuel type
         if (price === null || price === undefined) {
             const el = document.createElement('div');
@@ -397,6 +397,15 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 line-height:1;margin-bottom:1px;
             `;
             textWrap.appendChild(label);
+        } else if (subLabel) {
+            const sl = document.createElement('span');
+            sl.textContent = subLabel;
+            sl.style.cssText = `
+                font-size:8px;font-weight:600;color:#94a3b8;
+                font-family:system-ui,sans-serif;letter-spacing:0.05em;
+                line-height:1;margin-bottom:1px;
+            `;
+            textWrap.appendChild(sl);
         }
 
         const priceEl = document.createElement('span');
