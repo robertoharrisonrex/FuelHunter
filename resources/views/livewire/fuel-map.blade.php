@@ -542,7 +542,8 @@ html.dark .pac-item-query { color: #f1f5f9; }
         if (highlightedMin !== minMarker) {
             if (highlightedMin) {
                 const s = highlightedMin._site;
-                highlightedMin.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+                const { price: rp, subLabel: rl } = resolveFallback(s, currentFuelTypeId);
+                highlightedMin.content = makePinEl(rp, globalMin, globalMax, s.brand, null, rl);
                 highlightedMin.zIndex  = null;
             }
             highlightedMin = minMarker;
@@ -556,7 +557,8 @@ html.dark .pac-item-query { color: #f1f5f9; }
         if (highlightedMax !== maxMarker) {
             if (highlightedMax) {
                 const s = highlightedMax._site;
-                highlightedMax.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+                const { price: rp, subLabel: rl } = resolveFallback(s, currentFuelTypeId);
+                highlightedMax.content = makePinEl(rp, globalMin, globalMax, s.brand, null, rl);
                 highlightedMax.zIndex  = null;
             }
             highlightedMax = maxMarker;
@@ -666,11 +668,12 @@ html.dark .pac-item-query { color: #f1f5f9; }
                     markerRegistry[fuelTypeId][site.id].map = map;
                     return;
                 }
+                const { price: resolvedPrice, subLabel: resolvedLabel } = resolveFallback(site, fuelTypeId);
                 const m = new google.maps.marker.AdvancedMarkerElement({
                     position: { lat: site.lat, lng: site.lng },
                     map,
-                    title:   site.price ? `${site.name} — ${(site.price * 100).toFixed(1)}/L` : site.name,
-                    content: makePinEl(site.price, globalMin, globalMax, site.brand),
+                    title:   resolvedPrice ? `${site.name} — ${(resolvedPrice * 100).toFixed(1)}/L` : site.name,
+                    content: makePinEl(resolvedPrice, globalMin, globalMax, site.brand, null, resolvedLabel),
                 });
                 m._site    = site;
                 m._tileKey = key;
@@ -766,13 +769,15 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
         if (highlightedMin) {
             const s = highlightedMin._site;
-            highlightedMin.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+            const { price: rp, subLabel: rl } = resolveFallback(s, currentFuelTypeId);
+            highlightedMin.content = makePinEl(rp, globalMin, globalMax, s.brand, null, rl);
             highlightedMin.zIndex  = null;
             highlightedMin         = null;
         }
         if (highlightedMax) {
             const s = highlightedMax._site;
-            highlightedMax.content = makePinEl(s.price, globalMin, globalMax, s.brand);
+            const { price: rp, subLabel: rl } = resolveFallback(s, currentFuelTypeId);
+            highlightedMax.content = makePinEl(rp, globalMin, globalMax, s.brand, null, rl);
             highlightedMax.zIndex  = null;
             highlightedMax         = null;
         }
