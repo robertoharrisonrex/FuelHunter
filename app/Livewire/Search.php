@@ -26,7 +26,10 @@ class Search extends Component
                 'Suburb', 'City', 'State', 'Brand',
                 'prices' => fn($q) => $q->where('fuel_id', 2)->where('price', '>', 50),
             ])
-            ->whereAny(['address', 'name'], 'like', "%{$search}%")
+            ->where(function ($q) use ($search) {
+                $q->whereRaw('LOWER(address) LIKE ?', ["%{$search}%"])
+                  ->orWhereRaw('LOWER(name) LIKE ?', ["%{$search}%"]);
+            })
             ->latest()
             ->paginate(12),
         ]);
