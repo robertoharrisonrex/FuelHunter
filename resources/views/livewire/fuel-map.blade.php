@@ -312,17 +312,16 @@ html.dark .pac-item-query { color: #f1f5f9; }
             const el = document.createElement('div');
             el.style.cssText = `
                 display:flex;align-items:center;
-                background:#f8fafc;
-                padding:3px 6px 3px 3px;
+                background:#ffffff;
+                padding:3px 8px 3px 3px;
                 border-radius:10px;
-                border:1px solid #e2e8f0;
-                border-left:3px solid #cbd5e1;
-                box-shadow:0 1px 3px rgba(0,0,0,0.07);
-                opacity:0.7;
+                border:1px solid #e8edf2;
+                border-left:3px solid #1e40af;
+                box-shadow:0 1px 3px rgba(0,0,0,0.10),0 2px 8px rgba(0,0,0,0.06);
                 cursor:pointer;
                 white-space:nowrap;
             `;
-            el.appendChild(makeLogoEl(brandName, '#94a3b8', 20));
+            el.appendChild(makeLogoEl(brandName, '#1e40af', 22));
             el.classList.add('fuel-pin');
             el.style.setProperty('--scale-h', 'scale(1.10)');
             el.style.setProperty('--shadow-h', '0 3px 10px rgba(0,0,0,0.12)');
