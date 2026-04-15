@@ -19,12 +19,14 @@ class Search extends Component
 
     public function render()
     {
+        $search = strtolower($this->search);
+
         return view('livewire.search', [
             'fuelSites' => FuelSite::with([
                 'Suburb', 'City', 'State', 'Brand',
                 'prices' => fn($q) => $q->where('fuel_id', 2)->where('price', '>', 50),
             ])
-            ->whereAny(['address', 'name'], 'like', "%{$this->search}%")
+            ->whereAny(['address', 'name'], 'like', "%{$search}%")
             ->latest()
             ->paginate(12),
         ]);
