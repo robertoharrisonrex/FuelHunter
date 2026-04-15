@@ -313,6 +313,19 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 </div>`;
     }
 
+    // ── Fallback price resolution ─────────────────────────────
+    // Returns { price, subLabel } for the best available price to display.
+    // When the primary fuel type has no price, falls back to a related type.
+    // Fuel type IDs: 2=Unleaded, 3=Diesel, 5=P95, 8=P98, 14=Premium Diesel
+    function resolveFallback(site, fuelTypeId) {
+        if (site.price != null) return { price: site.price, subLabel: null };
+        if (fuelTypeId === 14 && site.price_d  != null) return { price: site.price_d,  subLabel: 'Regular' };
+        if (fuelTypeId === 3  && site.price_pd != null) return { price: site.price_pd, subLabel: 'Premium' };
+        if (fuelTypeId === 2  && site.price_95 != null) return { price: site.price_95, subLabel: '95'      };
+        if (fuelTypeId === 2  && site.price_98 != null) return { price: site.price_98, subLabel: '98'      };
+        return { price: null, subLabel: null };
+    }
+
     // ── Custom price pin element ──────────────────────────────
     function makePinEl(price, min, max, brandName, highlight = null) {
         // No-price pin for sites without data for the selected fuel type
