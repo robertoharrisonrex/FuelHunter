@@ -7,7 +7,7 @@
     <title>FuelHunter</title>
     {{-- FOUC prevention: set dark class synchronously before any paint --}}
     <script>
-        if (localStorage.getItem('theme') === 'dark') {
+        if (localStorage.getItem('theme') !== 'light') {
             document.documentElement.classList.add('dark');
         }
     </script>
@@ -16,7 +16,7 @@
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.store('theme', {
-                dark: localStorage.getItem('theme') === 'dark',
+                dark: localStorage.getItem('theme') !== 'light',
                 toggle() {
                     this.dark = !this.dark;
                     localStorage.setItem('theme', this.dark ? 'dark' : 'light');
