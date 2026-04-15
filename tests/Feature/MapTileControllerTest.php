@@ -24,6 +24,7 @@ test('map tile endpoint returns sites array', function () {
                     'price_95' => null,
                     'price_98' => null,
                     'price_pd' => null,
+                    'price_d'  => null,
                 ],
             ],
         ]);
@@ -63,4 +64,36 @@ test('tile bounds calculation is correct for negative lng tile', function () {
 
     expect($bounds['west'])->toBe(-0.5)
         ->and($bounds['east'])->toBe(0.0);
+});
+
+test('map tile response includes price_d fallback field', function () {
+    Cache::shouldReceive('store')->with('file')->andReturnSelf();
+    Cache::shouldReceive('remember')
+        ->once()
+        ->andReturn([
+            'sites' => [
+                [
+                    'id'       => 1,
+                    'name'     => 'Shell Test',
+                    'lat'      => -27.45,
+                    'lng'      => 153.01,
+                    'addr'     => '1 Test St',
+                    'suburb'   => 'Newmarket',
+                    'postcode' => 4051,
+                    'price'    => null,
+                    'updated'  => null,
+                    'brand'    => 'Shell',
+                    'price_ul' => null,
+                    'price_95' => null,
+                    'price_98' => null,
+                    'price_pd' => null,
+                    'price_d'  => 1.755,
+                ],
+            ],
+        ]);
+
+    $response = $this->getJson('/map-tiles/14/-55/306');
+
+    $response->assertOk()
+             ->assertJsonPath('sites.0.price_d', 1.755);
 });

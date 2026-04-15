@@ -47,6 +47,9 @@ class MapTileController extends Controller
                 ->leftJoin('prices as p_pd', function ($join) {
                     $join->on('p_pd.site_id', '=', 'fuel_sites.id')->where('p_pd.fuel_id', '=', 14);
                 })
+                ->leftJoin('prices as p_d', function ($join) {
+                    $join->on('p_d.site_id', '=', 'fuel_sites.id')->where('p_d.fuel_id', '=', 3);
+                })
                 ->whereBetween('fuel_sites.latitude',  [$bounds['south'], $bounds['north']])
                 ->whereBetween('fuel_sites.longitude', [$bounds['west'],  $bounds['east']])
                 ->select(
@@ -64,6 +67,7 @@ class MapTileController extends Controller
                     'p95.price as price_95',
                     'p98.price as price_98',
                     'p_pd.price as price_pd',
+                    'p_d.price as price_d',
                 )
                 ->get();
 
@@ -82,6 +86,7 @@ class MapTileController extends Controller
                 'price_95' => $r->price_95 ? round($r->price_95 / 100, 3) : null,
                 'price_98' => $r->price_98 ? round($r->price_98 / 100, 3) : null,
                 'price_pd' => $r->price_pd ? round($r->price_pd / 100, 3) : null,
+                'price_d'  => $r->price_d  ? round($r->price_d  / 100, 3) : null,
             ])->values()->toArray();
 
             return ['sites' => $sites];
