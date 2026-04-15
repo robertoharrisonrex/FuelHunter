@@ -29,7 +29,7 @@
 <body class="h-full bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
 
 {{-- ── Navigation ──────────────────────────────────────────────────────── --}}
-<nav class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-900/[0.07] dark:border-slate-700/50 sticky top-0 z-50">
+<nav x-data class="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-900/[0.07] dark:border-slate-700/50 sticky top-0 z-50">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="relative flex h-14 items-center">
 
