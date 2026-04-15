@@ -547,6 +547,7 @@ $activePreset = match($dateFrom) {
             pointRadius:     0,
             tension:         0,
             fill:            false,
+            spanGaps:        true,
             hidden:          code !== OIL_ACTIVE_CODE,
         }));
     }
