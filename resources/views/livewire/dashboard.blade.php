@@ -239,7 +239,7 @@ $activePreset = match($dateFrom) {
 
     {{-- ── Global Oil Prices ──────────────────────────────────────── --}}
     <div class="dash-card bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
-        <div class="p-6">
+        <div wire:ignore class="p-6">
             <div class="flex items-start justify-between mb-4">
                 <div>
                     <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Global Oil Prices</h2>
@@ -255,7 +255,7 @@ $activePreset = match($dateFrom) {
                 <button data-code="GASOLINE_USD"     class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Gasoline</button>
             </div>
 
-            <div wire:ignore class="relative h-[200px] sm:h-[300px]">
+            <div class="relative h-[200px] sm:h-[300px]">
                 <canvas id="chartOilPrices"></canvas>
             </div>
             <p id="oilPricesEmpty" class="hidden text-center text-sm text-slate-400 dark:text-slate-500 mt-4">
