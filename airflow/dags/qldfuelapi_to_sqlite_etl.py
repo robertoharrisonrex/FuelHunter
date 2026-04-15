@@ -64,25 +64,21 @@ def transform_brands():
 
 def load_brands():
     engine = _engine()
-    conn = engine.connect()
+    with engine.begin() as conn:
+        conn.execute(text("""
+            UPDATE brands
+            SET
+                name = (SELECT name FROM temp_brands WHERE temp_brands.id = brands.id),
+                updated_at = (SELECT updated_at FROM temp_brands WHERE temp_brands.id = brands.id)
+            WHERE id IN (SELECT id FROM temp_brands);
+        """))
 
-    conn.execute(text("""
-        UPDATE brands
-        SET
-            name = (SELECT name FROM temp_brands WHERE temp_brands.id = brands.id),
-            updated_at = (SELECT updated_at FROM temp_brands WHERE temp_brands.id = brands.id)
-        WHERE id IN (SELECT id FROM temp_brands);
-    """))
-
-    conn.execute(text("""
-        INSERT INTO brands (id, name, created_at, updated_at)
-        SELECT id, name, created_at, updated_at
-        FROM temp_brands
-        WHERE id NOT IN (SELECT id FROM brands);
-    """))
-
-    conn.commit()
-    conn.close()
+        conn.execute(text("""
+            INSERT INTO brands (id, name, created_at, updated_at)
+            SELECT id, name, created_at, updated_at
+            FROM temp_brands
+            WHERE id NOT IN (SELECT id FROM brands);
+        """))
 
 
 # --------------- REGIONS
@@ -140,32 +136,28 @@ def transform_regions():
 
 def load_regions():
     engine = _engine()
-    conn = engine.connect()
+    with engine.begin() as conn:
+        for region_type in ["suburbs", "cities", "states"]:
+            print(region_type)
+            conn.execute(text(f"""
+            UPDATE {region_type}
+            SET
+                region_level = (SELECT region_level FROM temp_{region_type} where id = {region_type}.id),
+                region_id = (SELECT region_id FROM temp_{region_type} where id = {region_type}.id),
+                type = (SELECT type FROM temp_{region_type} where id = {region_type}.id),
+                name = (SELECT name FROM temp_{region_type} where id = {region_type}.id),
+                abbreviation = (SELECT abbreviation FROM temp_{region_type} where id = {region_type}.id),
+                region_parent_id = (SELECT region_id FROM temp_{region_type} where id = {region_type}.id),
+                updated_at = (SELECT updated_at FROM temp_{region_type} where id = {region_type}.id)
+            where id in (select id FROM temp_{region_type});
+            """))
 
-    for region_type in ["suburbs", "cities", "states"]:
-        print(region_type)
-        conn.execute(text(f"""
-        UPDATE {region_type}
-        SET
-            region_level = (SELECT region_level FROM temp_{region_type} where id = {region_type}.id),
-            region_id = (SELECT region_id FROM temp_{region_type} where id = {region_type}.id),
-            type = (SELECT type FROM temp_{region_type} where id = {region_type}.id),
-            name = (SELECT name FROM temp_{region_type} where id = {region_type}.id),
-            abbreviation = (SELECT abbreviation FROM temp_{region_type} where id = {region_type}.id),
-            region_parent_id = (SELECT region_id FROM temp_{region_type} where id = {region_type}.id),
-            updated_at = (SELECT updated_at FROM temp_{region_type} where id = {region_type}.id)
-        where id in (select id FROM temp_{region_type});
-        """))
-
-        conn.execute(text(f"""
-        insert into {region_type} (id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at)
-            select id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at
-            from temp_{region_type}
-        where id not in (select id from {region_type})
-        """))
-
-    conn.commit()
-    conn.close()
+            conn.execute(text(f"""
+            insert into {region_type} (id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at)
+                select id, region_level, region_id, type, name, abbreviation, region_parent_id, created_at, updated_at
+                from temp_{region_type}
+            where id not in (select id from {region_type})
+            """))
 
 
 def sort_regions(df, region_type):
@@ -244,36 +236,33 @@ def transform_fuel_sites():
 
 def load_fuel_sites():
     engine = _engine()
-    conn = engine.connect()
+    with engine.begin() as conn:
+        conn.execute(text("""
+        UPDATE fuel_sites
+        SET
+            address = (select address from temp_fuel_sites where id = fuel_sites.id),
+            name = (select name from temp_fuel_sites where id = fuel_sites.id),
+            brand_id = (select brand_id from temp_fuel_sites where id = fuel_sites.id),
+            postcode = (select postcode from temp_fuel_sites where id = fuel_sites.id),
+            latitude = (select latitude from temp_fuel_sites where id = fuel_sites.id),
+            longitude = (select longitude from temp_fuel_sites where id = fuel_sites.id),
+            geo_region_1 = (select geo_region_1 from temp_fuel_sites where id = fuel_sites.id),
+            geo_region_2 = (select geo_region_2 from temp_fuel_sites where id = fuel_sites.id),
+            geo_region_3 = (select geo_region_3 from temp_fuel_sites where id = fuel_sites.id),
+            geo_region_4 = (select geo_region_4 from temp_fuel_sites where id = fuel_sites.id),
+            geo_region_5 = (select geo_region_5 from temp_fuel_sites where id = fuel_sites.id),
+            api_last_modified = (select api_last_modified from temp_fuel_sites where id = fuel_sites.id),
+            google_place_id = (select google_place_id from temp_fuel_sites where id = fuel_sites.id),
+            updated_at = (select updated_at from temp_fuel_sites where id = fuel_sites.id)
+        WHERE id in (select id from temp_fuel_sites);
+        """))
 
-    conn.execute(text("""
-    UPDATE fuel_sites
-    SET
-        address = (select address from temp_fuel_sites where id = fuel_sites.id),
-        name = (select name from temp_fuel_sites where id = fuel_sites.id),
-        brand_id = (select brand_id from temp_fuel_sites where id = fuel_sites.id),
-        postcode = (select postcode from temp_fuel_sites where id = fuel_sites.id),
-        latitude = (select latitude from temp_fuel_sites where id = fuel_sites.id),
-        longitude = (select longitude from temp_fuel_sites where id = fuel_sites.id),
-        geo_region_1 = (select geo_region_1 from temp_fuel_sites where id = fuel_sites.id),
-        geo_region_2 = (select geo_region_2 from temp_fuel_sites where id = fuel_sites.id),
-        geo_region_3 = (select geo_region_3 from temp_fuel_sites where id = fuel_sites.id),
-        geo_region_4 = (select geo_region_4 from temp_fuel_sites where id = fuel_sites.id),
-        geo_region_5 = (select geo_region_5 from temp_fuel_sites where id = fuel_sites.id),
-        api_last_modified = (select api_last_modified from temp_fuel_sites where id = fuel_sites.id),
-        google_place_id = (select google_place_id from temp_fuel_sites where id = fuel_sites.id),
-        updated_at = (select updated_at from temp_fuel_sites where id = fuel_sites.id)
-    WHERE id in (select id from temp_fuel_sites);
-    """))
-
-    conn.execute(text("""
-    INSERT INTO fuel_sites (id, address, name, brand_id, postcode, latitude, longitude, geo_region_1, geo_region_2, geo_region_3, geo_region_4, geo_region_5, api_last_modified, google_place_id, created_at, updated_at)
-        select id, address, name, brand_id, postcode, latitude, longitude, geo_region_1, geo_region_2, geo_region_3, geo_region_4, geo_region_5, api_last_modified, google_place_id, created_at, updated_at
-        from temp_fuel_sites
-    WHERE id not in (select id from fuel_sites);
-    """))
-    conn.commit()
-    conn.close()
+        conn.execute(text("""
+        INSERT INTO fuel_sites (id, address, name, brand_id, postcode, latitude, longitude, geo_region_1, geo_region_2, geo_region_3, geo_region_4, geo_region_5, api_last_modified, google_place_id, created_at, updated_at)
+            select id, address, name, brand_id, postcode, latitude, longitude, geo_region_1, geo_region_2, geo_region_3, geo_region_4, geo_region_5, api_last_modified, google_place_id, created_at, updated_at
+            from temp_fuel_sites
+        WHERE id not in (select id from fuel_sites);
+        """))
 
 
 # ------------- FUEL TYPES
@@ -315,25 +304,22 @@ def transform_fuel_types():
 
 def load_fuel_types():
     engine = _engine()
-    conn = engine.connect()
+    with engine.begin() as conn:
+        # UPDATE existing fuel_type if it exists (based on id)
+        conn.execute(text("""
+        UPDATE fuel_types
+            SET
+                name = (select name from temp_fuel_types where id = fuel_types.id),
+                updated_at = (select updated_at from temp_fuel_types where id = fuel_types.id)
+        WHERE id in (select id from temp_fuel_types);
+        """))
 
-    # UPDATE existing fuel_type if it exists (based on id)
-    conn.execute(text("""
-    UPDATE fuel_types
-        SET
-            name = (select name from temp_fuel_types where id = fuel_types.id),
-            updated_at = (select updated_at from temp_fuel_types where id = fuel_types.id)
-    WHERE id in (select id from temp_fuel_types);
-    """))
-
-    # INSERT existing fuel_type if it exists (based on id)
-    conn.execute(text("""
-    INSERT INTO fuel_types (id, name, created_at, updated_at)
-        SELECT id, name, created_at, updated_at FROM temp_fuel_types
-        WHERE id not in (select id from fuel_types);
-    """))
-    conn.commit()
-    conn.close()
+        # INSERT existing fuel_type if it exists (based on id)
+        conn.execute(text("""
+        INSERT INTO fuel_types (id, name, created_at, updated_at)
+            SELECT id, name, created_at, updated_at FROM temp_fuel_types
+            WHERE id not in (select id from fuel_types);
+        """))
 
 
 
@@ -379,41 +365,37 @@ def transform_fuel_prices():
 
 def load_fuel_prices():
     engine = _engine()
-    conn = engine.connect()
-
-    # Archive current prices that are being superseded by a newer incoming price.
-    conn.execute(text("""
-        INSERT INTO historical_site_prices
-            (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
-        SELECT p.site_id, p.fuel_id, p.collection_method, p.transaction_date_utc, p.price, p.created_at, p.updated_at
-        FROM prices p
-        JOIN temp_prices tp ON tp.site_id = p.site_id AND tp.fuel_id = p.fuel_id
-        WHERE tp.transaction_date_utc > p.transaction_date_utc
-    """))
-
-    # Delete the now-archived (superseded) prices from the current prices table.
-    conn.execute(text("""
-        DELETE FROM prices
-        WHERE id IN (
-            SELECT p.id
+    with engine.begin() as conn:
+        # Archive current prices that are being superseded by a newer incoming price.
+        conn.execute(text("""
+            INSERT INTO historical_site_prices
+                (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
+            SELECT p.site_id, p.fuel_id, p.collection_method, p.transaction_date_utc, p.price, p.created_at, p.updated_at
             FROM prices p
             JOIN temp_prices tp ON tp.site_id = p.site_id AND tp.fuel_id = p.fuel_id
             WHERE tp.transaction_date_utc > p.transaction_date_utc
-        )
-    """))
+        """))
 
-    # Insert new prices for: (a) updated pairs just deleted above, and (b) brand-new pairs.
-    # Pairs with the same date as the existing price are ignored (they remain unchanged).
-    conn.execute(text("""
-        INSERT INTO prices
-            (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
-        SELECT site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at
-        FROM temp_prices
-        WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices)
-    """))
+        # Delete the now-archived (superseded) prices from the current prices table.
+        conn.execute(text("""
+            DELETE FROM prices
+            WHERE id IN (
+                SELECT p.id
+                FROM prices p
+                JOIN temp_prices tp ON tp.site_id = p.site_id AND tp.fuel_id = p.fuel_id
+                WHERE tp.transaction_date_utc > p.transaction_date_utc
+            )
+        """))
 
-    conn.commit()
-    conn.close()
+        # Insert new prices for: (a) updated pairs just deleted above, and (b) brand-new pairs.
+        # Pairs with the same date as the existing price are ignored (they remain unchanged).
+        conn.execute(text("""
+            INSERT INTO prices
+                (site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at)
+            SELECT site_id, fuel_id, collection_method, transaction_date_utc, price, created_at, updated_at
+            FROM temp_prices
+            WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices)
+        """))
 
 
 
