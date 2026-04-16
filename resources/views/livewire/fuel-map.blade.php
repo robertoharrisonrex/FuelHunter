@@ -485,7 +485,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
             ? `<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px">
                    <span style="font-size:9px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;background:#eef2ff;padding:2px 8px;border-radius:6px">${currentFuelTypeName}</span>
                    <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
-                       <span style="font-size:10px;color:#94a3b8">${currentFuelTypeName} price last changed ${formatUpdated(site.updated)}</span>
+                       <span style="font-size:10px;color:#94a3b8">Price changed ${formatUpdated(site.updated)}</span>
                        ${checkedLine}
                    </div>
                </div>
