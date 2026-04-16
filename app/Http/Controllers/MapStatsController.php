@@ -31,6 +31,10 @@ class MapStatsController extends Controller
             ];
         });
 
+        $data['last_checked_at'] = DB::table('settings')
+            ->where('key', 'last_prices_checked_at')
+            ->value('value');
+
         return response()->json($data);
     }
 }
