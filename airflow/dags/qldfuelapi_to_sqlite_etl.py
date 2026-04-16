@@ -336,7 +336,7 @@ def extract_fuel_prices():
 def transform_fuel_prices():
     fuel_prices_df = pd.read_json('/tmp/fuelprices.json')
     fuel_prices_df.rename(columns={'SiteId': 'site_id', 'FuelId': 'fuel_id', 'Price':'price', 'CollectionMethod': 'collection_method', 'TransactionDateUtc': 'transaction_date_utc'}, inplace=True)
-    fuel_prices_df['transaction_date_utc'] = pd.to_datetime(fuel_prices_df['transaction_date_utc'], errors='coerce')
+    fuel_prices_df['transaction_date_utc'] = pd.to_datetime(fuel_prices_df['transaction_date_utc'], format='ISO8601', errors='coerce')
     null_date_count = fuel_prices_df['transaction_date_utc'].isna().sum()
     if null_date_count:
         print(f"WARNING: dropping {null_date_count} price rows with null/unparseable TransactionDateUtc")
