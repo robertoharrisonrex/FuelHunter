@@ -194,7 +194,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
     let map, activeInfoWindow, activeMarker;
     let highlightedMin = null, highlightedMax = null;
     let currentFuelTypeName = '';
-    let globalMin = 0, globalMax = 0;
+    let globalMin = 0, globalMax = 0, globalLastChecked = null;
     let currentFuelTypeId = parseInt($wire.selectedFuelTypeId);
 
     // ── Brand → favicon URL mapping ──────────────────────────
@@ -477,10 +477,17 @@ html.dark .pac-item-query { color: #f1f5f9; }
         const fullAddr = [site.addr, `${site.suburb} QLD ${site.postcode}`]
             .filter(Boolean).join(', ');
 
+        const checkedLine = globalLastChecked
+            ? `<span style="font-size:10px;color:#94a3b8">Last checked ${formatUpdated(globalLastChecked)}</span>`
+            : '';
+
         const priceSection = site.price
-            ? `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+            ? `<div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px">
                    <span style="font-size:9px;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.08em;background:#eef2ff;padding:2px 8px;border-radius:6px">${currentFuelTypeName}</span>
-                   <span style="font-size:10px;color:#94a3b8">Updated ${formatUpdated(site.updated)}</span>
+                   <div style="display:flex;flex-direction:column;align-items:flex-end;gap:2px">
+                       <span style="font-size:10px;color:#94a3b8">${currentFuelTypeName} price last changed ${formatUpdated(site.updated)}</span>
+                       ${checkedLine}
+                   </div>
                </div>
                <div style="display:flex;align-items:baseline;gap:3px">
                    <span style="font-size:36px;font-weight:900;color:${color};line-height:1;letter-spacing:-1px">${(site.price * 100).toFixed(1)}</span>
@@ -722,6 +729,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 globalMin           = stats.min;
                 globalMax           = stats.max;
                 currentFuelTypeName = stats.fuel_type_name;
+                globalLastChecked   = stats.last_checked_at ?? null;
                 updateStatsPills(stats);
             }
 
@@ -789,6 +797,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
         globalMin           = stats.min;
         globalMax           = stats.max;
         currentFuelTypeName = stats.fuel_type_name;
+        globalLastChecked   = stats.last_checked_at ?? null;
         updateStatsPills(stats);
 
         if (map && map.getZoom() >= MIN_ZOOM) {
