@@ -397,6 +397,12 @@ def load_fuel_prices():
             WHERE (site_id, fuel_id) NOT IN (SELECT site_id, fuel_id FROM prices)
         """))
 
+        # Record the timestamp of this ETL run for display in the UI.
+        conn.execute(text("""
+            INSERT OR REPLACE INTO settings (key, value)
+            VALUES ('last_prices_checked_at', datetime('now'))
+        """))
+
 
 
 dag = DAG(dag_id='qldfuelapi_to_sqlite_etl',
