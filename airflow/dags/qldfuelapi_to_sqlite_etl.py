@@ -1,7 +1,7 @@
 import json
 import pandas as pd
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import requests
 from airflow import DAG
 from airflow.operators.bash import BashOperator
@@ -398,10 +398,10 @@ def load_fuel_prices():
         """))
 
         # Record the timestamp of this ETL run for display in the UI.
-        conn.execute(text("""
-            INSERT OR REPLACE INTO settings (key, value)
-            VALUES ('last_prices_checked_at', datetime('now'))
-        """))
+        conn.execute(
+            text("INSERT INTO settings (key, value) VALUES (:key, :value) ON CONFLICT (key) DO UPDATE SET value = EXCLUDED.value"),
+            {"key": "last_prices_checked_at", "value": datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')},
+        )
 
 
 
