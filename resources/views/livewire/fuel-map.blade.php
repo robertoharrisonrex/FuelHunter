@@ -290,7 +290,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
     // ── Format price-update timestamp ────────────────────────
     function formatUpdated(dateStr) {
         if (!dateStr) return '—';
-        const d      = new Date(dateStr + 'Z');
+        const d      = new Date(dateStr.replace(' ', 'T') + 'Z');
         const mins   = Math.floor((new Date() - d) / 60000);
         const hours  = Math.floor(mins / 60);
         const days   = Math.floor(hours / 24);
