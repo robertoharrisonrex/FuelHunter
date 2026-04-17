@@ -29,6 +29,7 @@ class FuelSiteController extends Controller
 
     public function filter(Request $request)
     {
+        $request->validate(['search' => ['nullable', 'string', 'max:100']]);
 
         return view('fuelSite.index', ['fuelSites' => FuelSite::with([
             'Suburb','City', 'State'

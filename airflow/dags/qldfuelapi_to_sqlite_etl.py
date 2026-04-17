@@ -134,10 +134,14 @@ def transform_regions():
     states.to_sql('temp_states', con=engine, if_exists='replace', index=False)
 
 
+_VALID_REGION_TYPES = {"suburbs", "cities", "states"}
+
+
 def load_regions():
     engine = _engine()
     with engine.begin() as conn:
         for region_type in ["suburbs", "cities", "states"]:
+            assert region_type in _VALID_REGION_TYPES, f"Unexpected region_type: {region_type}"
             print(region_type)
             conn.execute(text(f"""
             UPDATE {region_type}

@@ -19,7 +19,7 @@ class Search extends Component
 
     public function render()
     {
-        $search = strtolower($this->search);
+        $search = strtolower(substr($this->search, 0, 100));
 
         return view('livewire.search', [
             'fuelSites' => FuelSite::with([

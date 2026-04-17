@@ -31,12 +31,12 @@ Route::controller(FuelSiteController::class)->group(function() {
 
 Route::controller(RegisteredUserController::class)->group(function () {
     Route::get('/register', 'create');
-    Route::post('/register', 'store');
+    Route::post('/register', 'store')->middleware('throttle:5,1');
 });
 
 Route::controller(SessionController::class)->group(function () {
     Route::get('/login', 'create')->name('login');
-    Route::post('/login', 'store');
+    Route::post('/login', 'store')->middleware('throttle:5,1');
     Route::post('/logout', 'destroy');
 
 });
