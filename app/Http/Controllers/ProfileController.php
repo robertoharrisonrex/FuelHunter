@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Validation\Rules\File;
 
 class ProfileController extends Controller
 {
@@ -54,7 +53,7 @@ class ProfileController extends Controller
             'country' => ['nullable','min:3','max:255'],
             'phone_number' => ['nullable','min:8', 'max:255'],
             'website' => ['nullable','url'],
-            'logo' => ['nullable', File::types(['png', 'jpg', 'webp'])],
+            'logo' => ['nullable', 'mimes:png,jpg,webp', 'max:2048'],
         ]);
 
 

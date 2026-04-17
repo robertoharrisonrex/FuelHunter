@@ -32,12 +32,6 @@
                     @enderror
                 </div>
 
-                <div class="flex items-center gap-3">
-                    <input type="checkbox" name="admin" id="admin"
-                           class="w-4 h-4 rounded border-slate-300 text-indigo-600 focus:ring-indigo-500">
-                    <label for="admin" class="text-sm font-medium text-slate-700">Admin</label>
-                </div>
-
                 <div>
                     <label for="email" class="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
                     <input type="email" name="email" id="email"

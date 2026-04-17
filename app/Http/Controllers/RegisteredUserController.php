@@ -34,10 +34,8 @@ class RegisteredUserController extends Controller
           'first_name' => ['required', 'string', 'max:255'],
           'last_name' => ['required', 'string', 'max:255'],
           'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-          'password' => ['required', 'string', 'min:3', 'confirmed'],
+          'password' => ['required', 'string', 'min:8', 'confirmed'],
        ]);
-
-      $attributes['is_admin'] = $request->admin ? 1 : 0;
 
        $user = User::create($attributes);
 
