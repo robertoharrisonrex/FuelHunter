@@ -579,7 +579,10 @@ $activePreset = match($dateFrom) {
             } else {
                 badgeEl.innerHTML = `
                     <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-3 py-1.5 border border-slate-200 dark:border-slate-700">
-                        <span class="inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+                            <span class="relative inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
+                        </span>
                         <span class="text-xs text-slate-600 dark:text-slate-400 font-semibold">Market Closed</span>
                     </div>`;
             }
