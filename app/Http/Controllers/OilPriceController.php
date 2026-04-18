@@ -40,6 +40,9 @@ class OilPriceController extends Controller
             return compact('dates', 'series');
         });
 
+        $day = (int) now()->setTimezone('Australia/Brisbane')->dayOfWeek;
+        $data['market_open'] = !in_array($day, [0, 6]); // 0 = Sunday, 6 = Saturday
+
         return response()->json($data);
     }
 }
