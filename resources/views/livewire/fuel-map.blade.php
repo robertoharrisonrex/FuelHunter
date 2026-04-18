@@ -219,6 +219,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
     {{-- ── Locate Me button ──────────────────────────────────── --}}
     <button id="locateMeBtn"
+            type="button"
             data-state="idle"
             aria-label="Centre map on my location"
             class="locate-me-btn absolute z-10">
