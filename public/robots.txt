@@ -1,2 +1,10 @@
 User-agent: *
-Disallow:
+Disallow: /map-data/
+Disallow: /map-stats/
+Disallow: /map-tiles/
+Disallow: /login
+Disallow: /register
+Disallow: /profile/
+Disallow: /tool/
+
+Sitemap: https://fuelhunter.cloud/sitemap.xml
