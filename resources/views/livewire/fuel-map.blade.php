@@ -557,7 +557,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 <div style="display:flex;align-items:center;gap:11px;padding:14px 16px 11px;background:#fff;">
                     ${logoHtml}
                     <div style="min-width:0">
-                        <a href="/fuel/${site.id}" style="font-weight:700;font-size:13px;color:#0f172a;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;display:block" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${site.name}</a>
+                        <div style="font-weight:700;font-size:13px;color:#0f172a;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${site.name}</div>
                         <div style="font-size:10px;color:#94a3b8;font-weight:500;margin-top:1px">${site.brand || ''}</div>
                     </div>
                 </div>
@@ -574,6 +574,10 @@ html.dark .pac-item-query { color: #f1f5f9; }
                         .filter(f => f.id !== parseInt($wire.selectedFuelTypeId))
                         .map(f => pricePill(f.label, site[f.key], priceColor(site[f.key] || 0, min, max)))
                         .join('')}
+                </div>
+                <div style="height:1px;background:#f1f5f9"></div>
+                <div style="padding:10px 16px;background:#fff;">
+                    <a href="/fuel/${site.id}" style="font-size:12px;font-weight:600;color:#6366f1;text-decoration:none" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">View detail →</a>
                 </div>
             </div>`,
         });

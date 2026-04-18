@@ -86,14 +86,24 @@
     <div class="space-y-6">
 
         {{-- ── Breadcrumb ───────────────────────────────────────── --}}
-        <a href="/fuel"
-           class="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 hover:text-indigo-500 transition-colors duration-150 group">
-            <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-150"
-                 fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
-            </svg>
-            Back to Fuel Sites
-        </a>
+        <div class="flex items-center gap-4">
+            <a href="/fuel"
+               class="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 hover:text-indigo-500 transition-colors duration-150 group">
+                <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-150"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+                </svg>
+                Back to Fuel Sites
+            </a>
+            <a href="/"
+               class="inline-flex items-center gap-1.5 text-xs text-gray-400 dark:text-slate-500 hover:text-indigo-500 transition-colors duration-150 group">
+                <svg class="w-3.5 h-3.5 group-hover:-translate-x-0.5 transition-transform duration-150"
+                     fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/>
+                </svg>
+                Back to map
+            </a>
+        </div>
 
         {{-- ── Hero card ────────────────────────────────────────── --}}
         <div class="bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-200 dark:border-slate-700">
