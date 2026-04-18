@@ -245,6 +245,7 @@ $activePreset = match($dateFrom) {
                     <h2 class="text-slate-900 dark:text-slate-100 text-xl font-bold tracking-tight">Global Oil Prices</h2>
                     <p class="text-slate-500 dark:text-slate-400 text-sm mt-0.5">USD — last 72 hours</p>
                 </div>
+                <div id="oilStatusBadge"></div>
             </div>
 
             {{-- Series toggles --}}
@@ -547,7 +548,7 @@ $activePreset = match($dateFrom) {
             pointRadius:     0,
             tension:         0,
             fill:            false,
-            spanGaps:        true,
+            spanGaps:        false,
             hidden:          code !== OIL_ACTIVE_CODE,
         }));
     }
@@ -561,6 +562,29 @@ $activePreset = match($dateFrom) {
             document.getElementById('chartOilPrices').closest('.relative').classList.add('hidden');
             document.getElementById('oilPricesEmpty').classList.remove('hidden');
             return;
+        }
+
+        // Render Live / Market Closed badge
+        const badgeEl = document.getElementById('oilStatusBadge');
+        if (badgeEl) {
+            if (data.market_open) {
+                badgeEl.innerHTML = `
+                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-3 py-1.5 border border-slate-200 dark:border-slate-700">
+                        <span class="relative flex h-2 w-2">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                            <span class="relative inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
+                        </span>
+                        <span class="text-xs text-slate-600 dark:text-slate-400 font-semibold">Live</span>
+                    </div>`;
+            } else {
+                badgeEl.innerHTML = `
+                    <div class="flex items-center gap-2 bg-slate-50 dark:bg-slate-800 rounded-xl px-3 py-1.5 border border-slate-200 dark:border-slate-700">
+                        <span class="relative flex h-2 w-2">
+                            <span class="relative inline-flex h-2 w-2 rounded-full bg-amber-400"></span>
+                        </span>
+                        <span class="text-xs text-slate-600 dark:text-slate-400 font-semibold">Market Closed</span>
+                    </div>`;
+            }
         }
 
         if (!data.dates || data.dates.length === 0) {
