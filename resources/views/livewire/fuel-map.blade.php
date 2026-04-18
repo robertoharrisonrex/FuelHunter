@@ -760,10 +760,10 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
     // ── Locate Me button state ────────────────────────────────
     function setLocateState(state) {
-        const btn = document.getElementById('locateMeBtn');
-        if (!btn) return;
+        const btn     = document.getElementById('locateMeBtn');
         const icon    = document.getElementById('locateMeIcon');
         const spinner = document.getElementById('locateMeSpinner');
+        if (!btn || !icon || !spinner) return;
         btn.dataset.state = state;
         if (state === 'loading') {
             icon.classList.add('hidden');
