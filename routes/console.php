@@ -9,3 +9,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote')->hourly();
 
 Schedule::command('migrate:fresh --seed')->dailyAt('01:00');
+Schedule::command('sitemap:generate')->weekly();
