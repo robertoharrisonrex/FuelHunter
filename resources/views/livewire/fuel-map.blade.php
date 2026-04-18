@@ -557,7 +557,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 <div style="display:flex;align-items:center;gap:11px;padding:14px 16px 11px;background:#fff;">
                     ${logoHtml}
                     <div style="min-width:0">
-                        <div style="font-weight:700;font-size:13px;color:#0f172a;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${site.name}</div>
+                        <a href="/fuel/${site.id}" style="font-weight:700;font-size:13px;color:#0f172a;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;display:block" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">${site.name}</a>
                         <div style="font-size:10px;color:#94a3b8;font-weight:500;margin-top:1px">${site.brand || ''}</div>
                     </div>
                 </div>
