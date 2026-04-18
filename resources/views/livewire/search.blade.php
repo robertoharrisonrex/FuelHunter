@@ -1,5 +1,25 @@
 <div class="space-y-5">
 
+    @php
+    $itemListElements = $fuelSites->map(function ($site, $index) use ($fuelSites) {
+        return [
+            '@type'    => 'ListItem',
+            'position' => $fuelSites->firstItem() + $index,
+            'url'      => rtrim(config('app.url'), '/') . '/fuel/' . $site->id,
+            'name'     => trim(($site->brand?->name ?? $site->name) . ' ' . ($site->suburb?->name ?? '')),
+        ];
+    })->values()->toArray();
+
+    $itemListSchema = [
+        '@context'        => 'https://schema.org',
+        '@type'           => 'ItemList',
+        'name'            => 'Queensland Fuel Stations',
+        'numberOfItems'   => $fuelSites->total(),
+        'itemListElement' => $itemListElements,
+    ];
+    @endphp
+    <script type="application/ld+json">{!! json_encode($itemListSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+
     {{-- ── Search bar ────────────────────────────────────────────── --}}
     <div class="relative">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-4">
