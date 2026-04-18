@@ -577,7 +577,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 </div>
                 <div style="height:1px;background:#f1f5f9"></div>
                 <div style="padding:10px 16px;background:#fff;">
-                    <a href="/fuel/${site.id}" style="font-size:12px;font-weight:600;color:#6366f1;text-decoration:none" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">View detail →</a>
+                    <a href="/fuel/${site.id}" style="font-size:12px;font-weight:600;color:#6366f1;text-decoration:none;outline:none" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">View detail →</a>
                 </div>
             </div>`,
         });
