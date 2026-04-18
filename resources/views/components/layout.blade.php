@@ -36,6 +36,8 @@
     <meta name="twitter:image" content="{{ $seoImage }}">
     @endif
 
+    <meta name="google-site-verification" content="6ZfOGUhFAlCKPaMzExsuYsDwqY6tMKd7GFhBJGVH53Y">
+
     @if(isset($head))
         {{ $head }}
     @endif
