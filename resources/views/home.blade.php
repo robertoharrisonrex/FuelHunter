@@ -16,8 +16,16 @@
             'url'         => config('app.url'),
             'description' => 'Track live fuel prices across Queensland.',
         ];
+        $orgSchema = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'Organization',
+            'name'     => 'FuelHunter',
+            'url'      => config('app.url'),
+            'logo'     => rtrim(config('app.url'), '/') . '/logo.png',
+        ];
         @endphp
         <script type="application/ld+json">{!! json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+        <script type="application/ld+json">{!! json_encode($orgSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
     </x-slot:head>
 
     <livewire:fuel-map />
