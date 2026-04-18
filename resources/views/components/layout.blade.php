@@ -1,10 +1,44 @@
-@props(['fullBleed' => false])
+@props([
+    'fullBleed' => false,
+    'seo' => [],
+])
+
+@php
+    $seoTitle       = $seo['title']       ?? 'FuelHunter';
+    $seoDescription = $seo['description'] ?? 'Track live fuel prices across Queensland. Find the cheapest petrol, diesel and LPG near you.';
+    $seoCanonical   = $seo['canonical']   ?? rtrim(config('app.url'), '/') . request()->getPathInfo();
+    $seoImage       = $seo['og_image']    ?? null;
+@endphp
+
 <!doctype html>
 <html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>FuelHunter</title>
+
+    <title>{{ $seoTitle }}</title>
+    <meta name="description" content="{{ $seoDescription }}">
+    <link rel="canonical" href="{{ $seoCanonical }}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="FuelHunter">
+    <meta property="og:title" content="{{ $seoTitle }}">
+    <meta property="og:description" content="{{ $seoDescription }}">
+    <meta property="og:url" content="{{ $seoCanonical }}">
+    @if($seoImage)
+    <meta property="og:image" content="{{ $seoImage }}">
+    @endif
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoTitle }}">
+    <meta name="twitter:description" content="{{ $seoDescription }}">
+    @if($seoImage)
+    <meta name="twitter:image" content="{{ $seoImage }}">
+    @endif
+
+    @if(isset($head))
+        {{ $head }}
+    @endif
     {{-- FOUC prevention: set dark class synchronously before any paint --}}
     <script>
         if (localStorage.getItem('theme') !== 'light') {
