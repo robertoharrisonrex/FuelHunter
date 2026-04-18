@@ -760,10 +760,10 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
     // ── Locate Me button state ────────────────────────────────
     function setLocateState(state) {
-        const btn     = document.getElementById('locateMeBtn');
+        const btn = document.getElementById('locateMeBtn');
+        if (!btn) return;
         const icon    = document.getElementById('locateMeIcon');
         const spinner = document.getElementById('locateMeSpinner');
-        if (!btn) return;
         btn.dataset.state = state;
         if (state === 'loading') {
             icon.classList.add('hidden');
@@ -778,6 +778,12 @@ html.dark .pac-item-query { color: #f1f5f9; }
     function locateMe() {
         const btn = document.getElementById('locateMeBtn');
         if (!btn || btn.dataset.state === 'loading') return;
+
+        if (!navigator.geolocation) {
+            setLocateState('error');
+            setTimeout(() => setLocateState('idle'), 2000);
+            return;
+        }
 
         if (btn.dataset.state === 'active' && userLocationMarker) {
             map.panTo(userLocationMarker.position);
@@ -797,7 +803,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
                     map,
                     position: pos,
                     content:  makeUserLocationEl(),
-                    zIndex:   999,
+                    zIndex:   1001,
                 });
                 setLocateState('active');
             },
