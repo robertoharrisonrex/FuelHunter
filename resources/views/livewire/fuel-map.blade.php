@@ -76,6 +76,45 @@ html.dark .pac-item-query { color: #f1f5f9; }
     transform: var(--scale-h) !important;
     box-shadow: var(--shadow-h) !important;
 }
+
+/* ── Locate Me button ─────────────────────────────────── */
+.locate-me-btn {
+    bottom: 70px; right: 10px;
+    width: 40px; height: 40px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, box-shadow 0.15s;
+}
+.locate-me-btn[data-state="idle"] {
+    background: #1e293b;
+    border: 1px solid #334155;
+    color: #94a3b8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+.locate-me-btn[data-state="loading"] {
+    background: #1e293b;
+    border: 1px solid #0ea5e9;
+    color: #0ea5e9;
+    box-shadow: 0 2px 8px rgba(14,165,233,0.2);
+}
+.locate-me-btn[data-state="active"] {
+    background: #0ea5e9;
+    border: 1px solid #38bdf8;
+    color: white;
+    box-shadow: 0 2px 12px rgba(14,165,233,0.5);
+}
+.locate-me-btn[data-state="error"] {
+    background: #1e293b;
+    border: 1px solid #ef4444;
+    color: #ef4444;
+    box-shadow: 0 2px 8px rgba(239,68,68,0.2);
+}
+@keyframes locatePulse {
+    0%   { box-shadow: 0 0 0 0 rgba(59,130,246,0.4); }
+    70%  { box-shadow: 0 0 0 8px rgba(59,130,246,0); }
+    100% { box-shadow: 0 0 0 0 rgba(59,130,246,0); }
+}
 </style>
 @endassets
 
@@ -177,6 +216,20 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
     {{-- ── Map canvas ───────────────────────────────────────── --}}
     <div wire:ignore id="fuelMap" class="w-full h-full bg-slate-800"></div>
+
+    {{-- ── Locate Me button ──────────────────────────────────── --}}
+    <button id="locateMeBtn"
+            data-state="idle"
+            aria-label="Centre map on my location"
+            class="locate-me-btn absolute z-10">
+        <svg id="locateMeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M12 2v3M12 19v3M2 12h3M19 12h3"/>
+        </svg>
+        <svg id="locateMeSpinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" class="hidden animate-spin">
+            <path d="M12 2a10 10 0 0 1 10 10"/>
+        </svg>
+    </button>
 
 </div>
 
