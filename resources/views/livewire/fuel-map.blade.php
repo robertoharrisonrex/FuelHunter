@@ -247,6 +247,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
     // ── Map state ─────────────────────────────────────────────
     let map, activeInfoWindow, activeMarker;
     let highlightedMin = null, highlightedMax = null;
+    let userLocationMarker = null;
     let currentFuelTypeName = '';
     let globalMin = 0, globalMax = 0, globalLastChecked = null;
     let currentFuelTypeId = parseInt($wire.selectedFuelTypeId);
@@ -746,6 +747,68 @@ html.dark .pac-item-query { color: #f1f5f9; }
         updateHighlights();
     }
 
+    // ── User location dot element ─────────────────────────────
+    function makeUserLocationEl() {
+        const el = document.createElement('div');
+        el.style.cssText = [
+            'width:16px', 'height:16px', 'border-radius:50%',
+            'background:#3b82f6', 'border:2px solid white',
+            'animation:locatePulse 2s infinite',
+        ].join(';');
+        return el;
+    }
+
+    // ── Locate Me button state ────────────────────────────────
+    function setLocateState(state) {
+        const btn     = document.getElementById('locateMeBtn');
+        const icon    = document.getElementById('locateMeIcon');
+        const spinner = document.getElementById('locateMeSpinner');
+        if (!btn) return;
+        btn.dataset.state = state;
+        if (state === 'loading') {
+            icon.classList.add('hidden');
+            spinner.classList.remove('hidden');
+        } else {
+            icon.classList.remove('hidden');
+            spinner.classList.add('hidden');
+        }
+    }
+
+    // ── Locate Me ─────────────────────────────────────────────
+    function locateMe() {
+        const btn = document.getElementById('locateMeBtn');
+        if (!btn || btn.dataset.state === 'loading') return;
+
+        if (btn.dataset.state === 'active' && userLocationMarker) {
+            map.panTo(userLocationMarker.position);
+            map.setZoom(14);
+            return;
+        }
+
+        setLocateState('loading');
+
+        navigator.geolocation.getCurrentPosition(
+            ({ coords: { latitude: lat, longitude: lng } }) => {
+                const pos = { lat, lng };
+                map.panTo(pos);
+                map.setZoom(14);
+                if (userLocationMarker) userLocationMarker.map = null;
+                userLocationMarker = new google.maps.marker.AdvancedMarkerElement({
+                    map,
+                    position: pos,
+                    content:  makeUserLocationEl(),
+                    zIndex:   999,
+                });
+                setLocateState('active');
+            },
+            () => {
+                setLocateState('error');
+                setTimeout(() => setLocateState('idle'), 2000);
+            },
+            { timeout: 10000 }
+        );
+    }
+
     // ── Initialise Google Map ─────────────────────────────────
     async function initMap() {
         const { Map }          = await google.maps.importLibrary('maps');
@@ -811,6 +874,8 @@ html.dark .pac-item-query { color: #f1f5f9; }
                 map.setZoom(15);
             }
         });
+
+        document.getElementById('locateMeBtn').addEventListener('click', locateMe);
     }
 
     initMap();
