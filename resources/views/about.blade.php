@@ -72,7 +72,7 @@
                 </svg>
                 <p class="text-xs text-amber-800 dark:text-amber-300 leading-relaxed">
                     <span class="font-bold">Fuel price data:</span>
-                    Sourced from the Queensland Government's Fuel Price Reporting Scheme API under
+                    Sourced from the Queensland Government's Fuel Price Reporting Scheme API every 30 minutes under
                     the Queensland Government's open data licence. FuelHunter is an independent tool and is not
                     affiliated with or endorsed by the Queensland Government.
                 </p>
@@ -103,19 +103,19 @@
                                 R
                             </div>
                             <div>
-                                <p class="text-sm font-bold text-gray-900 dark:text-slate-100">Roberto</p>
-                                <p class="text-xs text-gray-400 dark:text-slate-500">Lead Developer</p>
+                                <p class="text-sm font-bold text-gray-900 dark:text-slate-100">Roberto Harrison</p>
+                                <p class="text-xs text-gray-400 dark:text-slate-500">Lead Engineer</p>
                             </div>
                         </div>
 
-                        <a href="mailto:roberto@boffincentral.com"
+                        <a href="mailto:fuelhunter@outlook.com"
                            class="flex items-center gap-2.5 text-xs text-gray-500 dark:text-slate-400 hover:text-indigo-600 transition-colors group">
                             <div class="w-7 h-7 rounded-lg bg-gray-100 dark:bg-slate-800 group-hover:bg-indigo-50 flex items-center justify-center transition-colors flex-shrink-0">
                                 <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                                 </svg>
                             </div>
-                            roberto@boffincentral.com
+                            fuelhunter@outlook.com
                         </a>
 
                         <div class="flex items-center gap-2.5 text-xs text-gray-500 dark:text-slate-400">
