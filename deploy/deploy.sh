@@ -22,6 +22,9 @@ php artisan view:cache
 echo "==> Running migrations"
 php artisan migrate --force
 
+echo "==> Generating sitemap"
+php artisan sitemap:generate
+
 echo "==> Restarting queue worker"
 sudo supervisorctl restart fuelHunter-queue:*
 
