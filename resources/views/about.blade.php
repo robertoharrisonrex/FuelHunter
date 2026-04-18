@@ -1,4 +1,4 @@
-<x-layout>
+<x-layout :seo="['title' => 'About FuelHunter | Queensland Fuel Price Tracker', 'description' => 'How FuelHunter works and where our fuel price data comes from.']">
     <x-slot:heading>About</x-slot:heading>
 
     <div class="space-y-8 max-w-4xl">
