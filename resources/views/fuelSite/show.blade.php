@@ -1,5 +1,40 @@
-<x-layout>
+<x-layout
+    :seo="[
+        'title'       => ($fuelSite->brand?->name ?? $fuelSite->name) . ' ' . ($fuelSite->suburb?->name ?? '') . ' Fuel Prices | FuelHunter',
+        'description' => 'Live fuel prices at ' . ($fuelSite->brand?->name ?? $fuelSite->name) . ', ' . $fuelSite->address . '. Compare unleaded, diesel and premium prices.',
+        'canonical'   => rtrim(config('app.url'), '/') . '/fuel/' . $fuelSite->id,
+    ]"
+>
     <x-slot:heading>{{ $fuelSite->name }}</x-slot:heading>
+
+    <x-slot:head>
+        @php
+        $gasStationSchema = [
+            '@context' => 'https://schema.org',
+            '@type'    => 'GasStation',
+            'name'     => trim(($fuelSite->brand?->name ?? $fuelSite->name) . ' ' . ($fuelSite->suburb?->name ?? '')),
+            'address'  => [
+                '@type'           => 'PostalAddress',
+                'streetAddress'   => $fuelSite->address,
+                'addressLocality' => $fuelSite->suburb?->name,
+                'addressRegion'   => 'QLD',
+                'postalCode'      => $fuelSite->postcode,
+                'addressCountry'  => 'AU',
+            ],
+            'geo' => [
+                '@type'     => 'GeoCoordinates',
+                'latitude'  => (float) $fuelSite->latitude,
+                'longitude' => (float) $fuelSite->longitude,
+            ],
+            'brand' => [
+                '@type' => 'Brand',
+                'name'  => $fuelSite->brand?->name,
+            ],
+            'url' => rtrim(config('app.url'), '/') . '/fuel/' . $fuelSite->id,
+        ];
+        @endphp
+        <script type="application/ld+json">{!! json_encode($gasStationSchema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES) !!}</script>
+    </x-slot:head>
 
     @php
         $brandName   = $fuelSite->brand?->name ?? $fuelSite->name;
