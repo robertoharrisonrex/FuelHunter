@@ -263,5 +263,6 @@
 
 </nav>
 
+@livewireScripts
 </body>
 </html>
