@@ -35,7 +35,7 @@
                       dark:bg-slate-900 dark:border-slate-700 dark:text-slate-100 dark:placeholder-slate-500
                       focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-transparent
                       transition-shadow duration-150">
-        <div wire:loading class="absolute inset-y-0 right-0 flex items-center pr-4">
+        <div wire:loading style="display:none" class="absolute inset-y-0 right-0 flex items-center pr-4">
             <svg class="animate-spin w-4 h-4 text-indigo-400" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
