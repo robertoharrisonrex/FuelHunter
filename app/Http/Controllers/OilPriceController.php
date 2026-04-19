@@ -37,6 +37,38 @@ class OilPriceController extends Controller
                 );
             }
 
+            // Strip weekend dates and insert a null break at each session boundary,
+            // so the chart pauses (line ends Friday, resumes Monday) with no empty x-axis space.
+            $filteredDates  = [];
+            $filteredSeries = array_fill_keys($codes, []);
+            $needsBreak     = false;
+
+            foreach ($dates as $i => $date) {
+                $dow = (int) \Carbon\Carbon::createFromFormat('Y-m-d H:i', $date)->dayOfWeek;
+                if ($dow === 0 || $dow === 6) {
+                    if (!empty($filteredDates)) {
+                        $needsBreak = true;
+                    }
+                    continue;
+                }
+
+                if ($needsBreak) {
+                    $filteredDates[] = $date;
+                    foreach ($codes as $code) {
+                        $filteredSeries[$code][] = null;
+                    }
+                    $needsBreak = false;
+                }
+
+                $filteredDates[] = $date;
+                foreach ($codes as $code) {
+                    $filteredSeries[$code][] = $series[$code][$i];
+                }
+            }
+
+            $dates  = $filteredDates;
+            $series = $filteredSeries;
+
             return compact('dates', 'series');
         });
 
