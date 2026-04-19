@@ -182,7 +182,7 @@ html.dark .pac-item-query { color: #f1f5f9; }
         </div>
 
         {{-- Loading state --}}
-        <div wire:loading class="flex items-center gap-2 px-3.5 py-2.5 bg-white/90 backdrop-blur-xl border border-indigo-200 dark:bg-slate-900/90 dark:border-slate-700 rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
+        <div wire:loading style="display:none" class="flex items-center gap-2 px-3.5 py-2.5 bg-white/90 backdrop-blur-xl border border-indigo-200 dark:bg-slate-900/90 dark:border-slate-700 rounded-xl shadow-[0_4px_16px_rgba(0,0,0,0.08)]">
             <svg class="animate-spin h-3.5 w-3.5 text-indigo-500 flex-shrink-0" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/>
@@ -890,16 +890,8 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
     initMap();
 
-    // ── Persist selected fuel type across visits ──────────────
-    let FUEL_TYPE_KEY = 'fuelmap_fuel_type';
-    let savedFuelType = localStorage.getItem(FUEL_TYPE_KEY);
-    if (savedFuelType && parseInt(savedFuelType) !== currentFuelTypeId) {
-        $wire.set('selectedFuelTypeId', parseInt(savedFuelType));
-    }
-
     // ── Livewire event — fuel type changed ───────────────────
     $wire.on('fuelTypeChanged', async ({ fuelTypeId }) => {
-        localStorage.setItem(FUEL_TYPE_KEY, fuelTypeId);
 
         if (activeInfoWindow) { activeInfoWindow.close(); activeInfoWindow = null; }
         if (activeMarker)     { activeMarker.zIndex = null; activeMarker = null; }

@@ -13,6 +13,8 @@ class FuelMap extends Component
 
     public function mount(): void
     {
+        $this->selectedFuelTypeId = (int) session('fuelmap_fuel_type', 2);
+
         $orderedIds = [2, 14, 3, 5, 8, 12, 4]; // Unleaded, Premium Diesel, Diesel, Premium 95, Premium 98, e10, LPG
 
         $this->fuelTypes = FuelType::select('fuel_types.*')
@@ -26,6 +28,7 @@ class FuelMap extends Component
 
     public function updatedSelectedFuelTypeId(): void
     {
+        session(['fuelmap_fuel_type' => $this->selectedFuelTypeId]);
         $this->dispatch('fuelTypeChanged', fuelTypeId: $this->selectedFuelTypeId);
     }
 
