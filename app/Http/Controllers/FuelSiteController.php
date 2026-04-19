@@ -21,8 +21,10 @@ class FuelSiteController extends Controller
         $history = HistoricalSitePrice::where('site_id', $fuelSite->id)
             ->with('fuelType')
             ->orderByDesc('transaction_date_utc')
-            ->limit(30)
-            ->get();
+            ->get()
+            ->unique(fn($e) => $e->fuel_id . '_' . \Carbon\Carbon::parse($e->transaction_date_utc)->toDateString() . '_' . $e->price)
+            ->take(30)
+            ->values();
 
         return view('fuelSite.show', compact('fuelSite', 'history'));
     }
