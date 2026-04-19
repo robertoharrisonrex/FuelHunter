@@ -194,23 +194,15 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
 
     {{-- ── Zoom overlay ──────────────────────────────────────── --}}
-    <div id="zoomOverlay" class="hidden absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-        <div class="bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200 dark:bg-slate-900/95 dark:border-slate-700 p-8 text-center max-w-xs mx-4 pointer-events-auto">
-            <div class="w-14 h-14 rounded-2xl bg-indigo-50 dark:bg-slate-800 flex items-center justify-center mx-auto mb-4">
-                <svg class="w-7 h-7 text-indigo-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+    <div id="zoomOverlay" class="hidden absolute inset-0 z-20 flex items-start justify-center pt-24 sm:items-center sm:pt-0 pointer-events-none">
+        <div class="bg-white/30 backdrop-blur-md rounded-xl sm:rounded-2xl border border-white/20 dark:bg-slate-900/30 dark:border-slate-700/30 p-5 sm:p-8 text-center max-w-[220px] sm:max-w-xs mx-4 pointer-events-none">
+            <div class="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl bg-white/40 dark:bg-slate-800/40 flex items-center justify-center mx-auto mb-3 sm:mb-4">
+                <svg class="w-5 h-5 sm:w-7 sm:h-7 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607ZM10.5 7.5v6m3-3h-6"/>
                 </svg>
             </div>
-            <h3 class="text-slate-900 dark:text-slate-100 font-bold text-base mb-1">Zoom in to see fuel stations</h3>
-            <p class="text-slate-500 dark:text-slate-400 text-sm">Zoom in to suburb level to load nearby fuel sites.</p>
-            <button id="refocusMapBtn"
-                    class="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold transition-colors duration-150">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/>
-                </svg>
-                Reset Map
-            </button>
+            <h3 class="text-white dark:text-slate-100 font-bold text-sm sm:text-base mb-1 drop-shadow">Zoom in to see fuel stations</h3>
+            <p class="text-white/80 dark:text-slate-300 text-xs sm:text-sm drop-shadow">Zoom in to suburb level to load nearby fuel sites.</p>
         </div>
     </div>
 
@@ -647,8 +639,6 @@ html.dark .pac-item-query { color: #f1f5f9; }
         map.setCenter({ lat: -27.4698, lng: 153.0251 });
         map.setZoom(12);
     }
-    document.getElementById('refocusMapBtn').addEventListener('click', refocusMap);
-
     // ── Tile coordinate helpers ───────────────────────────────
     function tileKey(latTile, lngTile) {
         return `${latTile}_${lngTile}`;
