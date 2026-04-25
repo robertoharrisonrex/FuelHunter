@@ -7,6 +7,7 @@ from airflow import DAG
 from airflow.models import Variable
 from airflow.operators.python import PythonOperator
 from sqlalchemy import create_engine, text
+import time
 
 COMMODITY_CODES = ['WTI_USD', 'BRENT_CRUDE_USD', 'NATURAL_GAS_USD', 'GASOLINE_USD']
 
@@ -42,14 +43,16 @@ def fetch_and_store_oil_prices():
     with engine.begin() as conn:
         for code in COMMODITY_CODES:
             try:
+                time.sleep(5)
                 resp = requests.get(
                     'https://api.oilpriceapi.com/v1/prices/latest',
                     headers=headers,
                     params={'by_code': code},
-                    timeout=10,
+                    timeout=30,
                 )
                 resp.raise_for_status()
                 data = resp.json()['data']
+                logging.info(data)
                 conn.execute(text(insert_sql), {
                     'code':        data['code'],
                     'price':       float(data['price']),
