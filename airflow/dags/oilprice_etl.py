@@ -57,7 +57,7 @@ def fetch_and_store_oil_prices():
                     'code':        data['code'],
                     'price':       float(data['price']),
                     'currency':    data.get('currency', 'USD'),
-                    'recorded_at': data['created_at'],
+                    'recorded_at': datetime.now(timezone.utc) if data['code'] == 'GASOLINE_USD' else data['created_at'],
                 })
             except Exception as e:
                 logging.warning('oilprice_etl: failed to fetch %s: %s', code, e)
@@ -66,7 +66,7 @@ def fetch_and_store_oil_prices():
 dag = DAG(
     dag_id='oilprice_etl',
     start_date=datetime(2026, 4, 14),
-    schedule_interval=timedelta(minutes=20),
+    schedule_interval=timedelta(minutes=30),
     catchup=False,
     default_args={'owner': 'Roberto', 'email': ['roberto@boffincentral.com']},
 )
