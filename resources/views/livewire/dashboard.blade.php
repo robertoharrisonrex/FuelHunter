@@ -332,7 +332,7 @@ $activePreset = match($dateFrom) {
                 pointHoverBackgroundColor:'#fff',
                 pointHoverBorderColor:    color,
                 pointHoverBorderWidth:    2.5,
-                spanGaps:                 false,
+                spanGaps:                 true,
             };
         });
     }
