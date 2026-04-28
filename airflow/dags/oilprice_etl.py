@@ -9,7 +9,7 @@ from airflow.operators.python import PythonOperator
 from sqlalchemy import create_engine, text
 import time
 
-COMMODITY_CODES = ['WTI_USD', 'BRENT_CRUDE_USD', 'NATURAL_GAS_USD', 'GASOLINE_USD']
+COMMODITY_CODES = ['WTI_USD', 'BRENT_CRUDE_USD', 'NATURAL_GAS_USD']
 
 
 def _engine():
@@ -57,7 +57,7 @@ def fetch_and_store_oil_prices():
                     'code':        data['code'],
                     'price':       float(data['price']),
                     'currency':    data.get('currency', 'USD'),
-                    'recorded_at': datetime.now(timezone.utc) if data['code'] == 'GASOLINE_USD' else data['created_at'],
+                    'recorded_at': data['created_at'],
                 })
             except Exception as e:
                 logging.warning('oilprice_etl: failed to fetch %s: %s', code, e)

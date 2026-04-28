@@ -253,7 +253,6 @@ $activePreset = match($dateFrom) {
                 <button data-code="WTI_USD"          class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">WTI Crude</button>
                 <button data-code="BRENT_CRUDE_USD"  class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Brent Crude</button>
                 <button data-code="NATURAL_GAS_USD"  class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Natural Gas</button>
-                <button data-code="GASOLINE_USD"     class="oil-toggle px-3 py-1 rounded-full text-xs font-semibold border transition-colors">Gasoline</button>
             </div>
 
             <div class="relative h-[200px] sm:h-[300px]">
@@ -515,13 +514,11 @@ $activePreset = match($dateFrom) {
         WTI_USD:         '#f59e0b',
         BRENT_CRUDE_USD: '#3b82f6',
         NATURAL_GAS_USD: '#10b981',
-        GASOLINE_USD:    '#8b5cf6',
     };
     let OIL_LABELS = {
         WTI_USD:         'WTI Crude',
         BRENT_CRUDE_USD: 'Brent Crude',
         NATURAL_GAS_USD: 'Natural Gas',
-        GASOLINE_USD:    'Gasoline',
     };
     let OIL_ACTIVE_CODE = 'WTI_USD';
 
