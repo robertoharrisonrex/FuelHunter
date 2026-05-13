@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\FuelType;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
@@ -13,7 +14,7 @@ class FuelMap extends Component
 
     public function mount(): void
     {
-        $this->selectedFuelTypeId = (int) session('fuelmap_fuel_type', 2);
+        $this->selectedFuelTypeId = (int) (request()->cookie('fuelmap_fuel_type') ?? 2);
 
         $orderedIds = [2, 14, 3, 5, 8, 12, 4]; // Unleaded, Premium Diesel, Diesel, Premium 95, Premium 98, e10, LPG
 
@@ -28,7 +29,7 @@ class FuelMap extends Component
 
     public function updatedSelectedFuelTypeId(): void
     {
-        session(['fuelmap_fuel_type' => $this->selectedFuelTypeId]);
+        Cookie::queue('fuelmap_fuel_type', $this->selectedFuelTypeId, 60 * 24 * 30); // 30 days
         $this->dispatch('fuelTypeChanged', fuelTypeId: $this->selectedFuelTypeId);
     }
 
