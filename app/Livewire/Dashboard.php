@@ -13,12 +13,16 @@ class Dashboard extends Component
 {
     public string $dateFrom = '';
     public string $dateTo = '';
+    public string $activePreset = '30d';
     public array $selectedFuelTypes = [];
 
     public $fuelTypes = [];
 
     public function mount(): void
     {
+        $stored = Cookie::get('dash_active_preset');
+        $this->activePreset = in_array($stored, ['7d', '30d', '90d', '1yr']) ? $stored : '30d';
+
         $this->dateFrom  = Cookie::get('dash_date_from') ?? now()->subDays(29)->format('Y-m-d');
         $this->dateTo    = Cookie::get('dash_date_to')   ?? now()->format('Y-m-d');
         $orderedIds = [2, 14, 3, 5, 8, 12, 4]; // Unleaded, Premium Diesel, Diesel, Premium 95, Premium 98, e10, LPG
@@ -48,33 +52,39 @@ class Dashboard extends Component
 
     public function setPreset(string $preset): void
     {
+        if (! in_array($preset, ['7d', '30d', '90d', '1yr'])) {
+            return;
+        }
+
+        $this->activePreset = $preset;
+
         [$this->dateFrom, $this->dateTo] = match ($preset) {
-            '7d'  => [now()->subDays(6)->format('Y-m-d'),        now()->format('Y-m-d')],
-            '30d' => [now()->subDays(29)->format('Y-m-d'),       now()->format('Y-m-d')],
-            '90d' => [now()->subDays(89)->format('Y-m-d'),       now()->format('Y-m-d')],
+            '7d'  => [now()->subDays(6)->format('Y-m-d'),         now()->format('Y-m-d')],
+            '30d' => [now()->subDays(29)->format('Y-m-d'),        now()->format('Y-m-d')],
+            '90d' => [now()->subDays(89)->format('Y-m-d'),        now()->format('Y-m-d')],
             '1yr' => [now()->subYear()->addDay()->format('Y-m-d'), now()->format('Y-m-d')],
-            default => [$this->dateFrom, $this->dateTo],
         };
 
-        Cookie::queue('dash_date_from', $this->dateFrom, 43200);
-        Cookie::queue('dash_date_to',   $this->dateTo,   43200);
+        Cookie::queue('dash_active_preset', $preset,         60 * 24 * 365);
+        Cookie::queue('dash_date_from',     $this->dateFrom, 60 * 24 * 365);
+        Cookie::queue('dash_date_to',       $this->dateTo,   60 * 24 * 365);
     }
 
     public function applyFilters(): void {}
 
     public function updatedDateFrom(): void
     {
-        Cookie::queue('dash_date_from', $this->dateFrom, 43200);
+        Cookie::queue('dash_date_from', $this->dateFrom, 60 * 24 * 365);
     }
 
     public function updatedDateTo(): void
     {
-        Cookie::queue('dash_date_to', $this->dateTo, 43200);
+        Cookie::queue('dash_date_to', $this->dateTo, 60 * 24 * 365);
     }
 
     public function updatedSelectedFuelTypes(): void
     {
-        Cookie::queue('dash_fuel_types', json_encode($this->selectedFuelTypes), 43200);
+        Cookie::queue('dash_fuel_types', json_encode($this->selectedFuelTypes), 60 * 24 * 365);
     }
 
     private function cacheKey(string $prefix): string
