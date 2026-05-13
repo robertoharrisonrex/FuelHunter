@@ -77,17 +77,6 @@
                     affiliated with or endorsed by the Queensland Government.
                 </p>
             </div>
-            <div class="bg-blue-50 dark:bg-blue-950/30 border border-blue-100 dark:border-blue-900/50 rounded-2xl px-6 py-4 flex gap-4 items-start">
-                <svg class="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
-                </svg>
-                <p class="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
-                    <span class="font-bold">Global oil price data:</span>
-                    WTI Crude, Brent Crude, Natural Gas, and Gasoline commodity prices are sourced from the
-                    <span class="font-medium">OilPrice API</span> (oilpriceapi.com), updated every 20 minutes.
-                    FuelHunter is not affiliated with OilPrice API.
-                </p>
-            </div>
         </div>
 
         {{-- ── Developer + Feedback (two-column) ───────────────── --}}
