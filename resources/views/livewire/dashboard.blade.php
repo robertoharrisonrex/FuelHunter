@@ -691,21 +691,6 @@ $activePreset = match($dateFrom) {
             shareInitial.counts
         );
 
-        // Oil chart (may not be initialised yet)
-        if (oilChartRef) {
-            oilChartRef.options.scales.x.ticks.color             = t.tickColor;
-            oilChartRef.options.scales.y.ticks.color             = t.tickColor;
-            oilChartRef.options.scales.y.grid.color              = t.gridColor;
-            oilChartRef.options.plugins.tooltip.backgroundColor  = t.tooltipBg;
-            oilChartRef.options.plugins.tooltip.titleColor       = t.tooltipTitle;
-            oilChartRef.options.plugins.tooltip.bodyColor        = t.tooltipBody;
-            oilChartRef.update('none');
-        }
-
-        // Oil toggle buttons
-        if (oilToggleBtns) {
-            oilToggleBtns.forEach(b => applyOilToggleStyle(b, b.dataset.code === OIL_ACTIVE_CODE));
-        }
     }).observe(document.documentElement, { attributeFilter: ['class'] });
 </script>
 @endscript

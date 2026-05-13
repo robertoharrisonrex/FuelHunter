@@ -68,6 +68,7 @@ dag = DAG(
     start_date=datetime(2026, 4, 14),
     schedule_interval=timedelta(minutes=30),
     catchup=False,
+    is_paused_upon_creation=True,
     default_args={'owner': 'Roberto', 'email': ['roberto@boffincentral.com']},
 )
 
