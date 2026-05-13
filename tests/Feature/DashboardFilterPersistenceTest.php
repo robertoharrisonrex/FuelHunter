@@ -44,7 +44,7 @@ test('updating dateFrom queues a cookie', function () {
         ->set('dateFrom', '2026-03-01');
 
     Cookie::shouldHaveReceived('queue')
-        ->with('dash_date_from', '2026-03-01', 43200)
+        ->with('dash_date_from', '2026-03-01', 60 * 24 * 365)
         ->once();
 });
 
@@ -55,7 +55,7 @@ test('updating dateTo queues a cookie', function () {
         ->set('dateTo', '2026-03-31');
 
     Cookie::shouldHaveReceived('queue')
-        ->with('dash_date_to', '2026-03-31', 43200)
+        ->with('dash_date_to', '2026-03-31', 60 * 24 * 365)
         ->once();
 });
 
@@ -66,7 +66,7 @@ test('updating selectedFuelTypes queues a cookie', function () {
         ->set('selectedFuelTypes', ['2', '4']);
 
     Cookie::shouldHaveReceived('queue')
-        ->with('dash_fuel_types', '["2","4"]', 43200)
+        ->with('dash_fuel_types', '["2","4"]', 60 * 24 * 365)
         ->once();
 });
 
@@ -77,9 +77,9 @@ test('setPreset queues date cookies', function () {
         ->call('setPreset', '7d');
 
     Cookie::shouldHaveReceived('queue')
-        ->with('dash_date_from', now()->subDays(6)->format('Y-m-d'), 43200)
+        ->with('dash_date_from', now()->subDays(6)->format('Y-m-d'), 60 * 24 * 365)
         ->once();
     Cookie::shouldHaveReceived('queue')
-        ->with('dash_date_to', now()->format('Y-m-d'), 43200)
+        ->with('dash_date_to', now()->format('Y-m-d'), 60 * 24 * 365)
         ->once();
 });
