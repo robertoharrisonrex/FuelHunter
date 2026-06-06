@@ -50,7 +50,7 @@
             document.documentElement.classList.add('dark');
         }
     </script>
-    @vite('resources/css/app.css')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     {{-- Alpine theme store (Alpine is bundled with Livewire 3) --}}
     <script>
         document.addEventListener('alpine:init', () => {
