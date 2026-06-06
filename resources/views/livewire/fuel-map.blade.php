@@ -811,6 +811,9 @@ html.dark .pac-item-query { color: #f1f5f9; }
 
     // ── Initialise Google Map ─────────────────────────────────
     async function initMap() {
+        while (!window.google?.maps?.importLibrary) {
+            await new Promise(r => setTimeout(r, 50));
+        }
         const { Map }          = await google.maps.importLibrary('maps');
         await google.maps.importLibrary('marker');
         const { Autocomplete } = await google.maps.importLibrary('places');
