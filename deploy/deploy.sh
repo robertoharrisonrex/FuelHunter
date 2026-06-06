@@ -15,6 +15,10 @@ echo "==> Installing JS dependencies and building assets"
 npm ci
 npm run build
 
+echo "==> Enforcing production .env settings"
+sed -i 's/^APP_DEBUG=.*/APP_DEBUG=false/' "$DEPLOY_PATH/.env"
+sed -i 's/^APP_ENV=.*/APP_ENV=production/' "$DEPLOY_PATH/.env"
+
 echo "==> Caching Laravel config / routes / views"
 php artisan config:cache
 php artisan route:cache
