@@ -328,6 +328,10 @@ $activePreset = match($dateFrom) {
     const canvas  = document.getElementById('chartFuelTrends');
     const ctx     = canvas.getContext('2d');
 
+    while (!window.Chart) {
+        await new Promise(r => setTimeout(r, 50));
+    }
+
     const t = getChartTheme();
     const chart = new Chart(canvas, {
         type: 'line',
