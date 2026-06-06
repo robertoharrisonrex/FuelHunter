@@ -2,11 +2,12 @@
 set -euo pipefail
 
 DEPLOY_PATH=/var/www/fuelHunter
+COMMIT_SHA="${1:?Usage: rollback.sh <commit-sha>}"
 
-echo "==> Pulling latest code"
+echo "==> Rolling back to $COMMIT_SHA"
 cd "$DEPLOY_PATH"
-git fetch origin main
-git reset --hard origin/main
+git fetch origin
+git reset --hard "$COMMIT_SHA"
 
 echo "==> Installing PHP dependencies"
 composer install --no-dev --optimize-autoloader
@@ -15,18 +16,15 @@ echo "==> Installing JS dependencies and building assets"
 npm ci
 npm run build
 
-echo "==> Caching Laravel config / routes / views"
+echo "==> Clearing and rebuilding Laravel caches"
+php artisan config:clear
+php artisan route:clear
+php artisan view:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-echo "==> Running migrations"
-php artisan migrate --force
-
-echo "==> Generating sitemap"
-php artisan sitemap:generate
-
 echo "==> Restarting queue worker"
 sudo supervisorctl restart fuelHunter-queue:*
 
-echo "==> Done."
+echo "==> Rollback to $COMMIT_SHA complete."
