@@ -20,4 +20,18 @@ jobs:
           host: ${{ secrets.DEPLOY_HOST }}
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
-          script: cd /var/www/fuelHunter && bash deploy/rollback.sh ${{ github.event.inputs.commit_sha }}
+          script: |
+            set -euo pipefail
+            cd /var/www/fuelHunter
+            git fetch origin
+            git reset --hard ${{ github.event.inputs.commit_sha }}
+            composer install --no-dev --optimize-autoloader
+            npm ci
+            npm run build
+            php artisan config:clear
+            php artisan route:clear
+            php artisan view:clear
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            sudo supervisorctl restart fuelHunter-queue:*
